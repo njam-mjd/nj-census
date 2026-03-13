@@ -227,24 +227,27 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
     <div class="mob-c" id="mob-c"><button class="mc-btn" id="mc-btn"><span id="mc-lbl">Atlantic County</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="mc-dd" id="mc-dd"></div></div>
     <div class="top-row">
       <div class="sbar" id="sbar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="search" placeholder="Search any NJ town&hellip;" autocomplete="off"/><div class="sdd" id="sdd"></div></div>
-      <button class="chat-toggle" id="chat-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="chat-toggle-label">Ask AI</span></button>
+      <button class="chat-toggle" id="chat-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="chat-toggle-label">Rank Data</span></button>
     </div>
     <!-- INLINE CHAT PANEL -->
     <div class="chat-panel" id="chat-panel">
       <div class="chat-body" id="chat-body">
         <div class="chat-welcome">
-          <p>Ask questions to rank and compare NJ towns using Census data.</p>
+          <p>Rank NJ towns and counties by any Census metric. Try a question:</p>
           <div class="chat-prompts">
-            <button class="chat-prompt" data-q="Which towns in Bergen County have the highest median household income?">🏆 Highest income towns in Bergen?</button>
-            <button class="chat-prompt" data-q="Rank all NJ counties by median home value from highest to lowest">🏠 Rank counties by home value</button>
-            <button class="chat-prompt" data-q="Which towns have the highest percentage of residents with a bachelor's degree?">🎓 Most educated towns in NJ?</button>
-            <button class="chat-prompt" data-q="What are the most diverse towns in Middlesex County by race and ethnicity?">🌍 Most diverse in Middlesex?</button>
-            <button class="chat-prompt" data-q="Which NJ towns have the lowest poverty rates?">📊 Lowest poverty rates?</button>
+            <button class="chat-prompt" data-q="Highest income towns in Bergen County">🏆 Highest income in Bergen</button>
+            <button class="chat-prompt" data-q="Rank counties by median home value">🏠 Counties by home value</button>
+            <button class="chat-prompt" data-q="Most educated towns in NJ">🎓 Most educated towns</button>
+            <button class="chat-prompt" data-q="Most diverse towns in Middlesex County">🌍 Most diverse in Middlesex</button>
+            <button class="chat-prompt" data-q="Lowest poverty rates in NJ">📊 Lowest poverty</button>
+            <button class="chat-prompt" data-q="Youngest towns in NJ">👶 Youngest towns</button>
+            <button class="chat-prompt" data-q="Highest work from home rate">🏡 Most WFH</button>
+            <button class="chat-prompt" data-q="Most expensive rent in Hudson County">💰 Priciest rent in Hudson</button>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
-        <textarea class="chat-input" id="chat-input" placeholder="Ask about NJ Census data&hellip;" rows="1"></textarea>
+        <textarea class="chat-input" id="chat-input" placeholder="e.g. richest towns in Morris County&hellip;" rows="1"></textarea>
         <button class="chat-send" id="chat-send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
       </div>
     </div>
@@ -485,87 +488,145 @@ document.querySelectorAll('.chat-prompt').forEach(b=>{b.onclick=()=>{chatInput.v
 
 async function sendChat(){
   const q=chatInput.value.trim();if(!q)return;
-  // Remove welcome
   const welcome=chatBody.querySelector('.chat-welcome');if(welcome)welcome.remove();
-  // Add user msg
   addMsg(q,'user');chatInput.value='';chatSend.disabled=true;chatInput.style.height='auto';
 
-  // Show typing
+  // Brief delay for feel
   const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
 
-  try{
-    // Gather all cached data into a summary for the AI
-    const dataSummary=buildDataSummary();
+  // Gather all loaded town data
+  const allTowns=getAllTowns();
 
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        system:`You are a data analyst for NJ.com embedded inside a New Jersey Census Explorer tool. You have access to real U.S. Census Bureau data (2020-2024 ACS 5-Year Estimates) for NJ municipalities.
+  await new Promise(r=>setTimeout(r,400));
+  typing.remove();
 
-Your job: answer questions by RANKING towns or counties using the data provided. Be concise and data-driven.
+  if(!allTowns.length){
+    addMsg("I don't have any Census data loaded yet. Browse a few counties first — the data loads automatically when you click a county in the sidebar.","ai");
+    return;
+  }
 
-RESPONSE FORMAT — always respond in this exact JSON structure, nothing else:
-{
-  "intro": "Brief 1-sentence context",
-  "rankings": [
-    {"rank": 1, "name": "Town Name", "value": "$125,000", "detail": "optional short note"},
-    ...up to 10 items
-  ],
-  "note": "Optional 1-sentence caveat or insight"
+  const result=queryData(q.toLowerCase(),allTowns);
+  renderResult(result);
 }
 
-Rules:
-- Use ONLY the Census data provided — do not guess or make up numbers
-- If the question asks about counties, aggregate the town data by county (population-weighted averages for rates/percentages, sums for counts)
-- If data is not loaded for the requested area, say so in the "intro" field and return empty rankings
-- Keep rankings to the top 10 most relevant results
-- Format dollar values with $ and commas, percentages with one decimal + %
-- The "value" field should show the specific metric being ranked`,
-        messages:[{role:'user',content:`Here is the Census data currently loaded:\n\n${dataSummary}\n\nUser question: ${q}`}]
-      })
-    });
-
-    typing.remove();
-    const data=await resp.json();
-    const text=data.content?.[0]?.text||'';
-
-    try{
-      const clean=text.replace(/```json|```/g,'').trim();
-      const parsed=JSON.parse(clean);
-      renderAIResponse(parsed);
-    }catch{
-      // Fallback: show as plain text
-      addMsg(text,'ai');
+function getAllTowns(){
+  const out=[];
+  for(const [fips,data] of Object.entries(cache)){
+    const county=TOWNS.find(t=>t.fips===fips)?.county||'';
+    for(const d of Object.values(data)){
+      if(!d||!d.pop||d.pop<=0)continue;
+      const name=d.name?.split(',')[0]?.trim()||'Unknown';
+      out.push({...d,shortName:name,county});
     }
-  }catch(err){
-    typing.remove();
-    addMsg('Unable to process your question. The AI service may be temporarily unavailable. Please try again.','ai');
   }
+  return out;
 }
 
-function buildDataSummary(){
-  const parts=[];
-  for(const [countyFips,data] of Object.entries(cache)){
-    const countyName=Object.values(data)[0]?.name?.split(',')[0]?.replace(/^.*?(township|borough|city|town|village|CDP).*?,\s*/i,'')?.trim()||countyFips;
-    // Get county from the first entry
-    const towns=Object.values(data).filter(d=>d.pop>0);
-    if(!towns.length)continue;
+/* ═══ LOCAL QUERY ENGINE ═══ */
+const METRICS=[
+  {keys:['population','populous','people','residents','biggest','largest','smallest'],field:'pop',label:'Population',fmt:fN,dir:'desc',type:'count'},
+  {keys:['income','earn','salary','rich','wealthy','wealthiest','poorest income','highest income','lowest income'],field:'medIncome',label:'Median Household Income',fmt:fD,dir:'desc',type:'dollar'},
+  {keys:['home value','house value','property value','expensive','home price','house price','cheapest home','priciest'],field:'medHome',label:'Median Home Value',fmt:fD,dir:'desc',type:'dollar'},
+  {keys:['rent','rental','renter cost'],field:'medRent',label:'Median Gross Rent',fmt:fD,dir:'desc',type:'dollar'},
+  {keys:['age','oldest','youngest','median age'],field:'medAge',label:'Median Age',fmt:fV,dir:'desc',type:'num'},
+  {keys:['poverty','poor','impoverished','low income'],field:'poverty',label:'Poverty Rate',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['bachelor','college','educated','education','degree'],field:'bachelors',label:"Bachelor's Degree or Higher",fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['graduate degree','masters','advanced degree','phd'],field:'graduate',label:'Graduate Degree or Higher',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['unemploy','jobless'],field:'unempRate',label:'Unemployment Rate',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['employ','job','working','labor'],field:'empRate',label:'Employment Rate',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['homeowner','own','ownership'],field:'owner',label:'Homeownership Rate',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['diverse','diversity','minority','nonwhite','non-white'],field:'_diverse',label:'Diversity (non-White %)',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['white'],field:'white',label:'% White',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['black','african american'],field:'black',label:'% Black',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['asian'],field:'asian',label:'% Asian',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['hispanic','latino','latina'],field:'hispanic',label:'% Hispanic/Latino',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['foreign','immigrant','born abroad'],field:'foreignBorn',label:'% Foreign Born',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['commute','travel time','drive'],field:'commute',label:'Mean Commute (min)',fmt:v=>v?v.toFixed(1)+' min':'—',dir:'desc',type:'num'},
+  {keys:['work from home','remote','wfh','telework'],field:'wfh',label:'% Work from Home',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['transit','public transport','bus','train','subway'],field:'transit',label:'% Public Transit',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['internet','broadband','connected','online'],field:'internet',label:'% Broadband Internet',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['disab','handicap'],field:'disability',label:'% With Disability',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['insur','health coverage','covered'],field:'insured',label:'% Health Insured',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['vacant','empty','unoccupied'],field:'vacant',label:'% Vacant Housing',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['per capita'],field:'perCapita',label:'Per Capita Income',fmt:fD,dir:'desc',type:'dollar'},
+];
 
-    // Find real county name from town list
-    const matchedTown=TOWNS.find(t=>t.fips===countyFips);
-    const cName=matchedTown?matchedTown.county+' County':'County '+countyFips;
-
-    const summary=towns.map(t=>{
-      const n=t.name.split(',')[0].trim();
-      return `${n}: pop=${fN(t.pop)}, medIncome=${fD(t.medIncome)}, medHome=${fD(t.medHome)}, medRent=${fD(t.medRent)}, medAge=${fV(t.medAge)}, poverty=${fPc(t.poverty)}, bachelors=${fPc(t.bachelors)}, graduate=${fPc(t.graduate)}, white=${fPc(t.white)}, black=${fPc(t.black)}, asian=${fPc(t.asian)}, hispanic=${fPc(t.hispanic)}, owner=${fPc(t.owner)}, renter=${fPc(t.renter)}, unempRate=${fPc(t.unempRate)}, wfh=${fPc(t.wfh)}, foreignBorn=${fPc(t.foreignBorn)}, internet=${fPc(t.internet)}`;
-    }).join('\n');
-    parts.push(`--- ${cName} ---\n${summary}`);
+function queryData(q,allTowns){
+  // Detect if asking about counties
+  const isCounty=q.includes('county')||q.includes('counties');
+  // Detect direction
+  const wantLow=q.includes('lowest')||q.includes('least')||q.includes('cheapest')||q.includes('youngest')||q.includes('smallest')||q.includes('fewest')||q.includes('shortest')||q.includes('poorest')||q.includes('bottom');
+  // Detect specific county filter
+  let filterCounty=null;
+  for(const c of C){
+    if(q.includes(c.toLowerCase())){filterCounty=c;break}
   }
-  if(!parts.length)return 'No county data loaded yet. The user needs to browse counties first to load data.';
-  return parts.join('\n\n');
+
+  // Find best matching metric
+  let bestMetric=null;let bestScore=0;
+  for(const m of METRICS){
+    for(const k of m.keys){
+      if(q.includes(k)){
+        const score=k.length;
+        if(score>bestScore){bestScore=score;bestMetric=m}
+      }
+    }
+  }
+
+  if(!bestMetric){
+    // Default: try to guess from common words
+    if(q.includes('safe')||q.includes('crime'))return{intro:"Crime data isn't available in the Census ACS profiles. Try questions about income, education, housing, demographics, or employment.",rankings:[],note:null};
+    if(q.includes('school')||q.includes('district'))return{intro:"School data isn't in the Census profiles. For school-related data, check the NJDOE School District Compare tool.",rankings:[],note:null};
+    return{intro:"I can rank towns by: population, income, home value, rent, age, poverty, education, employment, homeownership, diversity, commute, work-from-home, internet access, and more. Try asking something like \"highest income towns\" or \"most educated towns in Bergen County.\"",rankings:[],note:null};
+  }
+
+  const dir=wantLow?'asc':'desc';
+  const field=bestMetric.field;
+
+  if(isCounty&&!filterCounty){
+    // Aggregate by county
+    const countyAgg={};
+    allTowns.forEach(t=>{
+      if(!t.county)return;
+      if(!countyAgg[t.county])countyAgg[t.county]={name:t.county+' County',totalPop:0,wSum:0,wN:0,sum:0,count:0};
+      const ca=countyAgg[t.county];
+      const val=field==='_diverse'?(t.white!=null?100-t.white:null):t[field];
+      ca.totalPop+=t.pop;
+      if(val!=null){
+        if(bestMetric.type==='count'){ca.sum+=val;ca.count++}
+        else{ca.wSum+=val*t.pop;ca.wN+=t.pop;ca.count++}
+      }
+    });
+    let counties=Object.values(countyAgg).filter(c=>c.count>0).map(c=>({
+      name:c.name,
+      value:bestMetric.type==='count'?c.sum:(c.wN>0?c.wSum/c.wN:null),
+      pop:c.totalPop
+    })).filter(c=>c.value!=null);
+
+    counties.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
+    const top=counties.slice(0,10);
+    return{
+      intro:`NJ counties ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first):`,
+      rankings:top.map((c,i)=>({rank:i+1,name:c.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(c.value):c.value)})),
+      note:bestMetric.type!=='count'?'Values are population-weighted averages across loaded municipalities.':null
+    };
+  }
+
+  // Town-level ranking
+  let towns=filterCounty?allTowns.filter(t=>t.county===filterCounty):[...allTowns];
+  towns=towns.map(t=>{
+    const val=field==='_diverse'?(t.white!=null?+(100-t.white).toFixed(1):null):t[field];
+    return{name:t.shortName,county:t.county,value:val};
+  }).filter(t=>t.value!=null);
+
+  towns.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
+  const top=towns.slice(0,10);
+  const scope=filterCounty?filterCounty+' County':'New Jersey';
+  return{
+    intro:`Towns in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first):`,
+    rankings:top.map((t,i)=>({rank:i+1,name:t.name,value:bestMetric.fmt(t.value),detail:filterCounty?null:t.county+' Co.'})),
+    note:`Based on ${towns.length} municipalities with available data${Object.keys(cache).length<21?' (browse more counties to expand results).':'.'}`
+  };
 }
 
 function addMsg(text,type){
@@ -576,7 +637,7 @@ function addMsg(text,type){
   chatBody.scrollTop=chatBody.scrollHeight;
 }
 
-function renderAIResponse(parsed){
+function renderResult(parsed){
   const d=document.createElement('div');
   d.className='chat-msg ai';
   let html='';
@@ -585,7 +646,7 @@ function renderAIResponse(parsed){
     html+=parsed.rankings.map(r=>`<div class="rank-item"><span class="rank-num">${r.rank}.</span><span class="rank-name">${r.name}</span><span class="rank-val">${r.value||''}${r.detail?' · '+r.detail:''}</span></div>`).join('');
   }
   if(parsed.note)html+=`<div class="ai-note">${parsed.note}</div>`;
-  d.innerHTML=html||'No rankings available for this query.';
+  d.innerHTML=html||'No results found. Try a different question.';
   chatBody.appendChild(d);
   chatBody.scrollTop=chatBody.scrollHeight;
 }
@@ -599,7 +660,6 @@ async function preloadForChat(){
     }
   }
 }
-// Start preloading after initial render
 setTimeout(preloadForChat,2000);
 
 buildSB();buildMob();updMob();render();
