@@ -155,59 +155,55 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .ftr{padding:20px;border-top:1px solid var(--bdr);text-align:center;font-size:11px;color:var(--txm)}
 .ftr a{color:var(--lime);text-decoration:none}
 
-/* CHAT */
-.chat-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--lime);color:var(--bg3);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.3);z-index:180;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s}
-.chat-fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(0,0,0,.4)}
-.chat-fab svg{width:26px;height:26px}
-.chat-fab.hide{display:none}
+/* TOP ROW: search + chat toggle */
+.top-row{display:flex;gap:10px;align-items:stretch;margin-bottom:14px;max-width:680px}
+.top-row .sbar{flex:1;margin-bottom:0}
 
-.chat-panel{position:fixed;bottom:24px;right:24px;width:420px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 100px);background:var(--bg3);border:1px solid var(--bdr);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.4);z-index:190;display:none;flex-direction:column;overflow:hidden}
+.chat-toggle{display:flex;align-items:center;gap:7px;padding:0 18px;background:var(--lime);color:var(--bg3);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,box-shadow .15s;flex-shrink:0}
+.chat-toggle:hover{background:#d4e838;box-shadow:0 2px 12px rgba(188,208,49,.25)}
+.chat-toggle.active{background:var(--bg3);color:var(--lime);box-shadow:inset 0 0 0 2px var(--lime)}
+.chat-toggle svg{flex-shrink:0}
+
+/* INLINE CHAT PANEL */
+.chat-panel{background:var(--card);border:1px solid var(--bdr);border-radius:12px;margin-bottom:16px;display:none;flex-direction:column;overflow:hidden;max-width:680px;animation:slideDown .25s ease}
 .chat-panel.open{display:flex}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
-.chat-hdr{padding:14px 16px;background:var(--bg3);border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-.chat-hdr-left{display:flex;align-items:center;gap:8px}
-.chat-hdr-icon{width:28px;height:28px;border-radius:8px;background:var(--lime);display:flex;align-items:center;justify-content:center}
-.chat-hdr-icon svg{width:16px;height:16px;color:var(--bg3)}
-.chat-title{font-size:14px;font-weight:800;letter-spacing:-.01em}
-.chat-title span{color:var(--lime)}
-.chat-close{background:none;border:none;color:var(--txm);cursor:pointer;font-size:20px;padding:4px;line-height:1;transition:color .15s}
-.chat-close:hover{color:var(--tx)}
-
-.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
+.chat-body{max-height:360px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
 .chat-body::-webkit-scrollbar{width:4px}
 .chat-body::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
 
-.chat-welcome{text-align:center;padding:20px 10px}
-.chat-welcome p{font-size:13px;color:var(--txs);margin-bottom:12px;line-height:1.5}
-.chat-prompts{display:flex;flex-direction:column;gap:6px}
-.chat-prompt{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;font-family:var(--font);font-size:12px;color:var(--txs);cursor:pointer;text-align:left;transition:border-color .15s,color .15s}
+.chat-welcome{padding:8px 4px}
+.chat-welcome p{font-size:13px;color:var(--txs);margin-bottom:10px;line-height:1.5}
+.chat-prompts{display:flex;flex-wrap:wrap;gap:6px}
+.chat-prompt{background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:8px 12px;font-family:var(--font);font-size:11px;color:var(--txs);cursor:pointer;text-align:left;transition:border-color .15s,color .15s;white-space:nowrap}
 .chat-prompt:hover{border-color:var(--lime);color:var(--lime)}
 
 .chat-msg{max-width:92%;font-size:13px;line-height:1.55;animation:fadeIn .2s ease}
-.chat-msg.user{align-self:flex-end;background:var(--lime);color:var(--bg3);padding:10px 14px;border-radius:14px 14px 4px 14px;font-weight:600}
-.chat-msg.ai{align-self:flex-start;background:var(--card);color:var(--tx);padding:12px 14px;border-radius:14px 14px 14px 4px;border:1px solid var(--bdr)}
+.chat-msg.user{align-self:flex-end;background:var(--lime);color:var(--bg3);padding:10px 14px;border-radius:12px 12px 4px 12px;font-weight:600}
+.chat-msg.ai{align-self:flex-start;background:var(--bg3);color:var(--tx);padding:12px 14px;border-radius:12px 12px 12px 4px;border:1px solid var(--bdr)}
 .chat-msg.ai .rank-item{display:flex;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .chat-msg.ai .rank-item:last-child{border-bottom:none}
 .chat-msg.ai .rank-num{color:var(--lime);font-weight:800;font-size:15px;min-width:20px}
 .chat-msg.ai .rank-name{font-weight:700;color:var(--wh)}
 .chat-msg.ai .rank-val{color:var(--txs);font-size:12px;margin-left:auto;flex-shrink:0}
 .chat-msg.ai .ai-note{font-size:11px;color:var(--txm);margin-top:8px;font-style:italic}
-.chat-typing{align-self:flex-start;display:flex;gap:4px;padding:12px 16px}
-.chat-typing span{width:8px;height:8px;background:var(--txm);border-radius:50%;animation:bounce .6s infinite alternate}
+.chat-typing{align-self:flex-start;display:flex;gap:4px;padding:10px 14px}
+.chat-typing span{width:7px;height:7px;background:var(--txm);border-radius:50%;animation:bounce .6s infinite alternate}
 .chat-typing span:nth-child(2){animation-delay:.15s}
 .chat-typing span:nth-child(3){animation-delay:.3s}
 @keyframes bounce{to{opacity:.3;transform:translateY(-4px)}}
 
-.chat-input-wrap{padding:12px;border-top:1px solid var(--bdr);flex-shrink:0;display:flex;gap:8px}
-.chat-input{flex:1;padding:10px 14px;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;color:var(--tx);font-family:var(--font);font-size:14px;outline:none;resize:none;min-height:42px;max-height:80px}
+.chat-input-wrap{padding:10px 14px;border-top:1px solid var(--bdr);display:flex;gap:8px;flex-shrink:0}
+.chat-input{flex:1;padding:9px 12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;color:var(--tx);font-family:var(--font);font-size:14px;outline:none;resize:none;min-height:40px;max-height:72px}
 .chat-input:focus{border-color:var(--lime)}
 .chat-input::placeholder{color:var(--txm)}
-.chat-send{width:42px;height:42px;border-radius:10px;background:var(--lime);color:var(--bg3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s;flex-shrink:0}
+.chat-send{width:40px;height:40px;border-radius:8px;background:var(--lime);color:var(--bg3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s;flex-shrink:0}
 .chat-send:disabled{opacity:.4;cursor:default}
-.chat-send svg{width:18px;height:18px}
+.chat-send svg{width:16px;height:16px}
 
 @media(max-width:1024px){.tg{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}.cdr-g{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.sidebar{display:none}.mob-c{display:block}.app{flex-direction:column}.main{padding:14px 16px 16px}.hero{padding:20px 16px 14px}.sbar{max-width:100%}.sbar input{font-size:16px}.tg{grid-template-columns:1fr}.cdr-g{grid-template-columns:1fr 1fr}.cdr{padding:12px 16px}.toolbar{flex-direction:column;align-items:stretch}.chat-panel{bottom:0;right:0;width:100%;max-width:100%;height:100vh;max-height:100vh;border-radius:0}.chat-fab{bottom:16px;right:16px}}
+@media(max-width:768px){.sidebar{display:none}.mob-c{display:block}.app{flex-direction:column}.main{padding:14px 16px 16px}.hero{padding:20px 16px 14px}.sbar{max-width:100%}.sbar input{font-size:16px}.tg{grid-template-columns:1fr}.cdr-g{grid-template-columns:1fr 1fr}.cdr{padding:12px 16px}.toolbar{flex-direction:column;align-items:stretch}.top-row{max-width:100%}.chat-panel{max-width:100%}.chat-prompts{flex-wrap:wrap}.chat-toggle-label{display:none}.chat-toggle{padding:0 14px}}
 @media(max-width:420px){.cdr-g{grid-template-columns:1fr}.hdr-lbl,.hdr-sep{display:none}}
 </style>
 </head>
@@ -229,7 +225,29 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
   </nav>
   <div class="main">
     <div class="mob-c" id="mob-c"><button class="mc-btn" id="mc-btn"><span id="mc-lbl">Atlantic County</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="mc-dd" id="mc-dd"></div></div>
-    <div class="sbar" id="sbar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="search" placeholder="Search any NJ town&hellip;" autocomplete="off"/><div class="sdd" id="sdd"></div></div>
+    <div class="top-row">
+      <div class="sbar" id="sbar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="search" placeholder="Search any NJ town&hellip;" autocomplete="off"/><div class="sdd" id="sdd"></div></div>
+      <button class="chat-toggle" id="chat-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="chat-toggle-label">Ask AI</span></button>
+    </div>
+    <!-- INLINE CHAT PANEL -->
+    <div class="chat-panel" id="chat-panel">
+      <div class="chat-body" id="chat-body">
+        <div class="chat-welcome">
+          <p>Ask questions to rank and compare NJ towns using Census data.</p>
+          <div class="chat-prompts">
+            <button class="chat-prompt" data-q="Which towns in Bergen County have the highest median household income?">🏆 Highest income towns in Bergen?</button>
+            <button class="chat-prompt" data-q="Rank all NJ counties by median home value from highest to lowest">🏠 Rank counties by home value</button>
+            <button class="chat-prompt" data-q="Which towns have the highest percentage of residents with a bachelor's degree?">🎓 Most educated towns in NJ?</button>
+            <button class="chat-prompt" data-q="What are the most diverse towns in Middlesex County by race and ethnicity?">🌍 Most diverse in Middlesex?</button>
+            <button class="chat-prompt" data-q="Which NJ towns have the lowest poverty rates?">📊 Lowest poverty rates?</button>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-wrap">
+        <textarea class="chat-input" id="chat-input" placeholder="Ask about NJ Census data&hellip;" rows="1"></textarea>
+        <button class="chat-send" id="chat-send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+    </div>
     <div class="toolbar"><div class="tl"><span class="co-sum" id="co-sum"></span></div>
       <select class="sort-sel" id="sort"><option value="name">Sort: A-Z</option><option value="pop">Population ↓</option><option value="inc">Income ↓</option><option value="hv">Home Value ↓</option></select>
     </div>
@@ -237,38 +255,6 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
   </div>
 </div>
 <div class="cdr" id="cdr"><div class="cdr-in"><div class="cdr-top"><span class="cdr-t">Comparing <span id="cd-nm"></span></span><button class="cdr-x" id="cd-x">&#10005; Clear</button></div><div class="cdr-g" id="cd-g"></div></div></div>
-<!-- CHAT FAB -->
-<button class="chat-fab" id="chat-fab" title="Ask about NJ Census data">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-</button>
-
-<!-- CHAT PANEL -->
-<div class="chat-panel" id="chat-panel">
-<div class="chat-hdr">
-  <div class="chat-hdr-left">
-    <div class="chat-hdr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-    <div class="chat-title">Census <span>Q&amp;A</span></div>
-  </div>
-  <button class="chat-close" id="chat-close">&times;</button>
-</div>
-<div class="chat-body" id="chat-body">
-  <div class="chat-welcome">
-    <p>Ask questions to rank and compare NJ towns using real Census data. Try one of these:</p>
-    <div class="chat-prompts">
-      <button class="chat-prompt" data-q="Which towns in Bergen County have the highest median household income?">🏆 Highest income towns in Bergen County?</button>
-      <button class="chat-prompt" data-q="Rank all NJ counties by median home value from highest to lowest">🏠 Rank NJ counties by home value</button>
-      <button class="chat-prompt" data-q="Which towns have the highest percentage of residents with a bachelor's degree?">🎓 Most educated towns in NJ?</button>
-      <button class="chat-prompt" data-q="What are the most diverse towns in Middlesex County by race and ethnicity?">🌍 Most diverse towns in Middlesex?</button>
-      <button class="chat-prompt" data-q="Which NJ towns have the lowest poverty rates?">📊 Lowest poverty rates in NJ?</button>
-    </div>
-  </div>
-</div>
-<div class="chat-input-wrap">
-  <textarea class="chat-input" id="chat-input" placeholder="Ask about NJ towns&hellip;" rows="1"></textarea>
-  <button class="chat-send" id="chat-send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-</div>
-</div>
-
 <footer class="ftr">Data: U.S. Census Bureau &middot; 2020-2024 ACS 5-Year Estimates (Data Profiles) &middot; <a href="https://data.census.gov" target="_blank">data.census.gov</a><br>&copy; <script>document.write(new Date().getFullYear())</script> NJ Advance Media for NJ.com</footer>
 
 <script>
@@ -479,14 +465,17 @@ function fPc(v){return v!=null?v.toFixed(1)+'%':'—'}
 function fV(v){return v!=null?v.toFixed(1):'—'}
 
 /* ═══ CHAT ═══ */
-const chatFab=document.getElementById('chat-fab');
+const chatToggle=document.getElementById('chat-toggle');
 const chatPanel=document.getElementById('chat-panel');
 const chatBody=document.getElementById('chat-body');
 const chatInput=document.getElementById('chat-input');
 const chatSend=document.getElementById('chat-send');
 
-chatFab.onclick=()=>{chatPanel.classList.add('open');chatFab.classList.add('hide');chatInput.focus()};
-document.getElementById('chat-close').onclick=()=>{chatPanel.classList.remove('open');chatFab.classList.remove('hide')};
+chatToggle.onclick=()=>{
+  const isOpen=chatPanel.classList.toggle('open');
+  chatToggle.classList.toggle('active',isOpen);
+  if(isOpen)chatInput.focus();
+};
 
 chatInput.addEventListener('input',()=>{chatSend.disabled=!chatInput.value.trim();chatInput.style.height='auto';chatInput.style.height=Math.min(chatInput.scrollHeight,80)+'px'});
 chatInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
