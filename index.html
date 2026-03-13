@@ -155,8 +155,59 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .ftr{padding:20px;border-top:1px solid var(--bdr);text-align:center;font-size:11px;color:var(--txm)}
 .ftr a{color:var(--lime);text-decoration:none}
 
+/* CHAT */
+.chat-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--lime);color:var(--bg3);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.3);z-index:180;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s}
+.chat-fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(0,0,0,.4)}
+.chat-fab svg{width:26px;height:26px}
+.chat-fab.hide{display:none}
+
+.chat-panel{position:fixed;bottom:24px;right:24px;width:420px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 100px);background:var(--bg3);border:1px solid var(--bdr);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.4);z-index:190;display:none;flex-direction:column;overflow:hidden}
+.chat-panel.open{display:flex}
+
+.chat-hdr{padding:14px 16px;background:var(--bg3);border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.chat-hdr-left{display:flex;align-items:center;gap:8px}
+.chat-hdr-icon{width:28px;height:28px;border-radius:8px;background:var(--lime);display:flex;align-items:center;justify-content:center}
+.chat-hdr-icon svg{width:16px;height:16px;color:var(--bg3)}
+.chat-title{font-size:14px;font-weight:800;letter-spacing:-.01em}
+.chat-title span{color:var(--lime)}
+.chat-close{background:none;border:none;color:var(--txm);cursor:pointer;font-size:20px;padding:4px;line-height:1;transition:color .15s}
+.chat-close:hover{color:var(--tx)}
+
+.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
+.chat-body::-webkit-scrollbar{width:4px}
+.chat-body::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+
+.chat-welcome{text-align:center;padding:20px 10px}
+.chat-welcome p{font-size:13px;color:var(--txs);margin-bottom:12px;line-height:1.5}
+.chat-prompts{display:flex;flex-direction:column;gap:6px}
+.chat-prompt{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;font-family:var(--font);font-size:12px;color:var(--txs);cursor:pointer;text-align:left;transition:border-color .15s,color .15s}
+.chat-prompt:hover{border-color:var(--lime);color:var(--lime)}
+
+.chat-msg{max-width:92%;font-size:13px;line-height:1.55;animation:fadeIn .2s ease}
+.chat-msg.user{align-self:flex-end;background:var(--lime);color:var(--bg3);padding:10px 14px;border-radius:14px 14px 4px 14px;font-weight:600}
+.chat-msg.ai{align-self:flex-start;background:var(--card);color:var(--tx);padding:12px 14px;border-radius:14px 14px 14px 4px;border:1px solid var(--bdr)}
+.chat-msg.ai .rank-item{display:flex;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.chat-msg.ai .rank-item:last-child{border-bottom:none}
+.chat-msg.ai .rank-num{color:var(--lime);font-weight:800;font-size:15px;min-width:20px}
+.chat-msg.ai .rank-name{font-weight:700;color:var(--wh)}
+.chat-msg.ai .rank-val{color:var(--txs);font-size:12px;margin-left:auto;flex-shrink:0}
+.chat-msg.ai .ai-note{font-size:11px;color:var(--txm);margin-top:8px;font-style:italic}
+.chat-typing{align-self:flex-start;display:flex;gap:4px;padding:12px 16px}
+.chat-typing span{width:8px;height:8px;background:var(--txm);border-radius:50%;animation:bounce .6s infinite alternate}
+.chat-typing span:nth-child(2){animation-delay:.15s}
+.chat-typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{to{opacity:.3;transform:translateY(-4px)}}
+
+.chat-input-wrap{padding:12px;border-top:1px solid var(--bdr);flex-shrink:0;display:flex;gap:8px}
+.chat-input{flex:1;padding:10px 14px;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;color:var(--tx);font-family:var(--font);font-size:14px;outline:none;resize:none;min-height:42px;max-height:80px}
+.chat-input:focus{border-color:var(--lime)}
+.chat-input::placeholder{color:var(--txm)}
+.chat-send{width:42px;height:42px;border-radius:10px;background:var(--lime);color:var(--bg3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s;flex-shrink:0}
+.chat-send:disabled{opacity:.4;cursor:default}
+.chat-send svg{width:18px;height:18px}
+
 @media(max-width:1024px){.tg{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}.cdr-g{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.sidebar{display:none}.mob-c{display:block}.app{flex-direction:column}.main{padding:14px 16px 16px}.hero{padding:20px 16px 14px}.sbar{max-width:100%}.sbar input{font-size:16px}.tg{grid-template-columns:1fr}.cdr-g{grid-template-columns:1fr 1fr}.cdr{padding:12px 16px}.toolbar{flex-direction:column;align-items:stretch}}
+@media(max-width:768px){.sidebar{display:none}.mob-c{display:block}.app{flex-direction:column}.main{padding:14px 16px 16px}.hero{padding:20px 16px 14px}.sbar{max-width:100%}.sbar input{font-size:16px}.tg{grid-template-columns:1fr}.cdr-g{grid-template-columns:1fr 1fr}.cdr{padding:12px 16px}.toolbar{flex-direction:column;align-items:stretch}.chat-panel{bottom:0;right:0;width:100%;max-width:100%;height:100vh;max-height:100vh;border-radius:0}.chat-fab{bottom:16px;right:16px}}
 @media(max-width:420px){.cdr-g{grid-template-columns:1fr}.hdr-lbl,.hdr-sep{display:none}}
 </style>
 </head>
@@ -186,6 +237,38 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
   </div>
 </div>
 <div class="cdr" id="cdr"><div class="cdr-in"><div class="cdr-top"><span class="cdr-t">Comparing <span id="cd-nm"></span></span><button class="cdr-x" id="cd-x">&#10005; Clear</button></div><div class="cdr-g" id="cd-g"></div></div></div>
+<!-- CHAT FAB -->
+<button class="chat-fab" id="chat-fab" title="Ask about NJ Census data">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<!-- CHAT PANEL -->
+<div class="chat-panel" id="chat-panel">
+<div class="chat-hdr">
+  <div class="chat-hdr-left">
+    <div class="chat-hdr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <div class="chat-title">Census <span>Q&amp;A</span></div>
+  </div>
+  <button class="chat-close" id="chat-close">&times;</button>
+</div>
+<div class="chat-body" id="chat-body">
+  <div class="chat-welcome">
+    <p>Ask questions to rank and compare NJ towns using real Census data. Try one of these:</p>
+    <div class="chat-prompts">
+      <button class="chat-prompt" data-q="Which towns in Bergen County have the highest median household income?">🏆 Highest income towns in Bergen County?</button>
+      <button class="chat-prompt" data-q="Rank all NJ counties by median home value from highest to lowest">🏠 Rank NJ counties by home value</button>
+      <button class="chat-prompt" data-q="Which towns have the highest percentage of residents with a bachelor's degree?">🎓 Most educated towns in NJ?</button>
+      <button class="chat-prompt" data-q="What are the most diverse towns in Middlesex County by race and ethnicity?">🌍 Most diverse towns in Middlesex?</button>
+      <button class="chat-prompt" data-q="Which NJ towns have the lowest poverty rates?">📊 Lowest poverty rates in NJ?</button>
+    </div>
+  </div>
+</div>
+<div class="chat-input-wrap">
+  <textarea class="chat-input" id="chat-input" placeholder="Ask about NJ towns&hellip;" rows="1"></textarea>
+  <button class="chat-send" id="chat-send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+</div>
+</div>
+
 <footer class="ftr">Data: U.S. Census Bureau &middot; 2020-2024 ACS 5-Year Estimates (Data Profiles) &middot; <a href="https://data.census.gov" target="_blank">data.census.gov</a><br>&copy; <script>document.write(new Date().getFullYear())</script> NJ Advance Media for NJ.com</footer>
 
 <script>
@@ -394,6 +477,141 @@ function fN(v){return v!=null?v.toLocaleString():'—'}
 function fD(v){return v!=null?'$'+Math.round(v).toLocaleString():'—'}
 function fPc(v){return v!=null?v.toFixed(1)+'%':'—'}
 function fV(v){return v!=null?v.toFixed(1):'—'}
+
+/* ═══ CHAT ═══ */
+const chatFab=document.getElementById('chat-fab');
+const chatPanel=document.getElementById('chat-panel');
+const chatBody=document.getElementById('chat-body');
+const chatInput=document.getElementById('chat-input');
+const chatSend=document.getElementById('chat-send');
+
+chatFab.onclick=()=>{chatPanel.classList.add('open');chatFab.classList.add('hide');chatInput.focus()};
+document.getElementById('chat-close').onclick=()=>{chatPanel.classList.remove('open');chatFab.classList.remove('hide')};
+
+chatInput.addEventListener('input',()=>{chatSend.disabled=!chatInput.value.trim();chatInput.style.height='auto';chatInput.style.height=Math.min(chatInput.scrollHeight,80)+'px'});
+chatInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
+chatSend.onclick=sendChat;
+
+document.querySelectorAll('.chat-prompt').forEach(b=>{b.onclick=()=>{chatInput.value=b.dataset.q;chatSend.disabled=false;sendChat()}});
+
+async function sendChat(){
+  const q=chatInput.value.trim();if(!q)return;
+  // Remove welcome
+  const welcome=chatBody.querySelector('.chat-welcome');if(welcome)welcome.remove();
+  // Add user msg
+  addMsg(q,'user');chatInput.value='';chatSend.disabled=true;chatInput.style.height='auto';
+
+  // Show typing
+  const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
+
+  try{
+    // Gather all cached data into a summary for the AI
+    const dataSummary=buildDataSummary();
+
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`You are a data analyst for NJ.com embedded inside a New Jersey Census Explorer tool. You have access to real U.S. Census Bureau data (2020-2024 ACS 5-Year Estimates) for NJ municipalities.
+
+Your job: answer questions by RANKING towns or counties using the data provided. Be concise and data-driven.
+
+RESPONSE FORMAT — always respond in this exact JSON structure, nothing else:
+{
+  "intro": "Brief 1-sentence context",
+  "rankings": [
+    {"rank": 1, "name": "Town Name", "value": "$125,000", "detail": "optional short note"},
+    ...up to 10 items
+  ],
+  "note": "Optional 1-sentence caveat or insight"
+}
+
+Rules:
+- Use ONLY the Census data provided — do not guess or make up numbers
+- If the question asks about counties, aggregate the town data by county (population-weighted averages for rates/percentages, sums for counts)
+- If data is not loaded for the requested area, say so in the "intro" field and return empty rankings
+- Keep rankings to the top 10 most relevant results
+- Format dollar values with $ and commas, percentages with one decimal + %
+- The "value" field should show the specific metric being ranked`,
+        messages:[{role:'user',content:`Here is the Census data currently loaded:\n\n${dataSummary}\n\nUser question: ${q}`}]
+      })
+    });
+
+    typing.remove();
+    const data=await resp.json();
+    const text=data.content?.[0]?.text||'';
+
+    try{
+      const clean=text.replace(/```json|```/g,'').trim();
+      const parsed=JSON.parse(clean);
+      renderAIResponse(parsed);
+    }catch{
+      // Fallback: show as plain text
+      addMsg(text,'ai');
+    }
+  }catch(err){
+    typing.remove();
+    addMsg('Unable to process your question. The AI service may be temporarily unavailable. Please try again.','ai');
+  }
+}
+
+function buildDataSummary(){
+  const parts=[];
+  for(const [countyFips,data] of Object.entries(cache)){
+    const countyName=Object.values(data)[0]?.name?.split(',')[0]?.replace(/^.*?(township|borough|city|town|village|CDP).*?,\s*/i,'')?.trim()||countyFips;
+    // Get county from the first entry
+    const towns=Object.values(data).filter(d=>d.pop>0);
+    if(!towns.length)continue;
+
+    // Find real county name from town list
+    const matchedTown=TOWNS.find(t=>t.fips===countyFips);
+    const cName=matchedTown?matchedTown.county+' County':'County '+countyFips;
+
+    const summary=towns.map(t=>{
+      const n=t.name.split(',')[0].trim();
+      return `${n}: pop=${fN(t.pop)}, medIncome=${fD(t.medIncome)}, medHome=${fD(t.medHome)}, medRent=${fD(t.medRent)}, medAge=${fV(t.medAge)}, poverty=${fPc(t.poverty)}, bachelors=${fPc(t.bachelors)}, graduate=${fPc(t.graduate)}, white=${fPc(t.white)}, black=${fPc(t.black)}, asian=${fPc(t.asian)}, hispanic=${fPc(t.hispanic)}, owner=${fPc(t.owner)}, renter=${fPc(t.renter)}, unempRate=${fPc(t.unempRate)}, wfh=${fPc(t.wfh)}, foreignBorn=${fPc(t.foreignBorn)}, internet=${fPc(t.internet)}`;
+    }).join('\n');
+    parts.push(`--- ${cName} ---\n${summary}`);
+  }
+  if(!parts.length)return 'No county data loaded yet. The user needs to browse counties first to load data.';
+  return parts.join('\n\n');
+}
+
+function addMsg(text,type){
+  const d=document.createElement('div');
+  d.className='chat-msg '+type;
+  d.textContent=text;
+  chatBody.appendChild(d);
+  chatBody.scrollTop=chatBody.scrollHeight;
+}
+
+function renderAIResponse(parsed){
+  const d=document.createElement('div');
+  d.className='chat-msg ai';
+  let html='';
+  if(parsed.intro)html+=`<div style="margin-bottom:8px">${parsed.intro}</div>`;
+  if(parsed.rankings&&parsed.rankings.length){
+    html+=parsed.rankings.map(r=>`<div class="rank-item"><span class="rank-num">${r.rank}.</span><span class="rank-name">${r.name}</span><span class="rank-val">${r.value||''}${r.detail?' · '+r.detail:''}</span></div>`).join('');
+  }
+  if(parsed.note)html+=`<div class="ai-note">${parsed.note}</div>`;
+  d.innerHTML=html||'No rankings available for this query.';
+  chatBody.appendChild(d);
+  chatBody.scrollTop=chatBody.scrollHeight;
+}
+
+/* Auto-load all counties in background for chat */
+async function preloadForChat(){
+  for(const county of C){
+    const fips=BC[county]?.[0]?.fips;
+    if(fips&&!cache[fips]){
+      try{await fetchCounty(fips);await new Promise(r=>setTimeout(r,200))}catch{}
+    }
+  }
+}
+// Start preloading after initial render
+setTimeout(preloadForChat,2000);
 
 buildSB();buildMob();updMob();render();
 </script>
