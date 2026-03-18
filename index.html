@@ -82,7 +82,7 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .chat-panel{background:var(--card);border:1px solid var(--bdr);border-radius:12px;margin-bottom:16px;display:none;flex-direction:column;overflow:hidden;max-width:680px;animation:slideDown .25s ease}
 .chat-panel.open{display:flex}
 @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-.chat-body{max-height:480px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
+.chat-body{max-height:60vh;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
 .chat-body::-webkit-scrollbar{width:4px}
 .chat-body::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
 .chat-welcome{padding:8px 4px}
@@ -94,9 +94,9 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .chat-msg.user{align-self:flex-end;background:var(--lime);color:var(--bg3);padding:10px 14px;border-radius:12px 12px 4px 12px;font-weight:600}
 .chat-msg.ai{align-self:flex-start;background:var(--bg3);color:var(--tx);padding:12px 14px;border-radius:12px 12px 12px 4px;border:1px solid var(--bdr)}
-.chat-msg.ai .rank-item{display:flex;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.chat-msg.ai .rank-item{display:flex;align-items:baseline;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px}
 .chat-msg.ai .rank-item:last-child{border-bottom:none}
-.chat-msg.ai .rank-num{color:var(--lime);font-weight:800;font-size:14px;min-width:22px}
+.chat-msg.ai .rank-num{color:var(--lime);font-weight:800;font-size:13px;min-width:28px;font-variant-numeric:tabular-nums}
 .chat-msg.ai .rank-name{font-weight:700;color:var(--wh);font-size:12px}
 .chat-msg.ai .rank-val{color:var(--txs);font-size:11px;margin-left:auto;flex-shrink:0}
 .chat-msg.ai .ai-note{font-size:11px;color:var(--txm);margin-top:8px;font-style:italic}
@@ -219,21 +219,21 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
     <div class="chat-panel" id="chat-panel">
       <div class="chat-body" id="chat-body">
         <div class="chat-welcome">
-          <p>Get top 25 rankings using Census data. Browse counties first to load data, then ask:</p>
+          <p>Rank towns, counties, or states using Census data. Specify a number for results up to 500 (default 25). Browse counties to load data, or use "load all" to fetch an entire state.</p>
           <div class="chat-prompts">
-            <button class="chat-prompt" data-q="Highest income towns">🏆 Highest income</button>
-            <button class="chat-prompt" data-q="Rank counties by median home value">🏠 Counties by home value</button>
-            <button class="chat-prompt" data-q="Most educated towns">🎓 Most educated</button>
-            <button class="chat-prompt" data-q="Most diverse towns">🌍 Most diverse</button>
-            <button class="chat-prompt" data-q="Lowest poverty rates">📊 Lowest poverty</button>
-            <button class="chat-prompt" data-q="Youngest towns">👶 Youngest towns</button>
-            <button class="chat-prompt" data-q="Highest work from home rate">🏡 Most WFH</button>
-            <button class="chat-prompt" data-q="Most expensive rent">💰 Priciest rent</button>
+            <button class="chat-prompt" data-q="Top 50 highest income towns">🏆 Top 50 income</button>
+            <button class="chat-prompt" data-q="Rank states by median home value">🏠 States by home value</button>
+            <button class="chat-prompt" data-q="Top 100 most educated towns">🎓 Top 100 educated</button>
+            <button class="chat-prompt" data-q="Rank counties by population">📊 Counties by population</button>
+            <button class="chat-prompt" data-q="Top 25 lowest poverty towns">📉 Lowest poverty</button>
+            <button class="chat-prompt" data-q="Rank states by diversity">🌍 States by diversity</button>
+            <button class="chat-prompt" data-q="Top 50 youngest towns">👶 Top 50 youngest</button>
+            <button class="chat-prompt" data-q="Load all counties for this state">⬇️ Load all counties</button>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
-        <textarea class="chat-input" id="chat-input" placeholder="e.g. richest towns, rank counties by population&hellip;" rows="1"></textarea>
+        <textarea class="chat-input" id="chat-input" placeholder="e.g. top 100 richest towns, rank states by education&hellip;" rows="1"></textarea>
         <button class="chat-send" id="chat-send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
       </div>
     </div>
@@ -458,17 +458,6 @@ function getAllTowns(){
   return out;
 }
 
-async function sendChat(){
-  const q=chatInput.value.trim();if(!q)return;
-  const welcome=chatBody.querySelector('.chat-welcome');if(welcome)welcome.remove();
-  addMsg(q,'user');chatInput.value='';chatSend.disabled=true;chatInput.style.height='auto';
-  const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
-  const allTowns=getAllTowns();
-  await new Promise(r=>setTimeout(r,300));typing.remove();
-  if(!allTowns.length){addMsg("No Census data loaded yet. Browse some counties first — data loads automatically when you select a county.","ai");return}
-  renderResult(queryData(q.toLowerCase(),allTowns));
-}
-
 const METRICS=[
   {keys:['population','populous','people','residents','biggest','largest','smallest'],field:'pop',label:'Population',fmt:fN,dir:'desc',type:'count'},
   {keys:['income','earn','salary','rich','wealthy','wealthiest'],field:'medIncome',label:'Median Household Income',fmt:fD,dir:'desc',type:'dollar'},
@@ -497,40 +486,129 @@ const METRICS=[
   {keys:['per capita'],field:'perCapita',label:'Per Capita Income',fmt:fD,dir:'desc',type:'dollar'},
 ];
 
+async function sendChat(){
+  const q=chatInput.value.trim();if(!q)return;
+  const welcome=chatBody.querySelector('.chat-welcome');if(welcome)welcome.remove();
+  addMsg(q,'user');chatInput.value='';chatSend.disabled=true;chatInput.style.height='auto';
+  const ql=q.toLowerCase();
+
+  // Handle "load all" command
+  if(ql.includes('load all')){
+    const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
+    const stateName=STATES.find(s=>s[0]===curState)?.[1]||'';
+    let loaded=0,failed=0;
+    if(!countyCache[curState])try{await fetchCounties(curState)}catch{}
+    const cList=countyCache[curState]||[];
+    for(const c of cList){
+      const key=curState+'-'+c.fips;
+      if(!cache[key]){try{await fetchTowns(curState,c.fips);loaded++;await new Promise(r=>setTimeout(r,150))}catch{failed++}}
+    }
+    typing.remove();
+    const total=cList.length;const already=total-loaded-failed;
+    addMsg(`Loaded ${loaded} new counties for ${stateName} (${already} already cached${failed?', '+failed+' failed':''}). ${total} counties total — all town data is now available for rankings.`,'ai');
+    return;
+  }
+
+  // Handle "load state X" or "load california" etc.
+  let loadStateFips=null;
+  const loadMatch=ql.match(/load\s+(.+)/);
+  if(loadMatch){
+    const target=loadMatch[1].trim();
+    const st=STATES.find(s=>s[1].toLowerCase()===target);
+    if(st){loadStateFips=st[0];
+      const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
+      let loaded=0;
+      if(!countyCache[loadStateFips])try{await fetchCounties(loadStateFips)}catch{}
+      const cList=countyCache[loadStateFips]||[];
+      for(const c of cList){const key=loadStateFips+'-'+c.fips;if(!cache[key]){try{await fetchTowns(loadStateFips,c.fips);loaded++;await new Promise(r=>setTimeout(r,150))}catch{}}}
+      typing.remove();
+      addMsg(`Loaded ${st[1]}: ${cList.length} counties, all town data now available.`,'ai');
+      return;
+    }
+  }
+
+  const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
+  const allTowns=getAllTowns();
+  await new Promise(r=>setTimeout(r,200));typing.remove();
+  if(!allTowns.length){addMsg("No Census data loaded yet. Browse some counties first, or type \"load all\" to fetch every county in the current state.","ai");return}
+  renderResult(queryData(ql,allTowns));
+}
+
+/* ═══ PARSE REQUESTED COUNT ═══ */
+function parseCount(q){
+  // Match patterns: "top 50", "100 richest", "show 200", "rank 75", "list 300"
+  const m=q.match(/(?:top|show|list|rank|first|give me|get)\s+(\d+)/i)||q.match(/(\d+)\s+(?:most|least|highest|lowest|richest|poorest|youngest|oldest|biggest|smallest|cheapest|priciest)/i)||q.match(/(\d+)\s+(?:towns?|cities|counties|states|places|municipalities)/i);
+  if(m){const n=parseInt(m[1]);if(n>=1&&n<=500)return n}
+  return 25;
+}
+
+/* ═══ QUERY ENGINE ═══ */
 function queryData(q,allTowns){
+  const count=parseCount(q);
+  const isState=q.includes('state')||q.includes('states')||q.includes('national')||q.includes('nationwide');
   const isCounty=q.includes('county')||q.includes('counties');
   const wantLow=q.includes('lowest')||q.includes('least')||q.includes('cheapest')||q.includes('youngest')||q.includes('smallest')||q.includes('fewest')||q.includes('shortest')||q.includes('poorest')||q.includes('bottom');
+
   // Detect county filter
   let filterCounty=null;
   const uniqueCounties=[...new Set(allTowns.map(t=>t.county))].filter(Boolean);
   for(const c of uniqueCounties){if(c&&q.includes(c.toLowerCase())){filterCounty=c;break}}
 
+  // Detect state filter
+  let filterState=null;
+  for(const s of STATES){if(q.includes(s[1].toLowerCase())){filterState=s[1];break}}
+
   let bestMetric=null,bestScore=0;
   for(const m of METRICS){for(const k of m.keys){if(q.includes(k)&&k.length>bestScore){bestScore=k.length;bestMetric=m}}}
-  if(!bestMetric)return{intro:"I can rank towns by: population, income, home value, rent, age, poverty, education, employment, homeownership, diversity, commute, work-from-home, internet, and more.",rankings:[],note:null};
+  if(!bestMetric)return{intro:"I can rank towns, counties, or states by: population, income, home value, rent, age, poverty, education, employment, homeownership, diversity, commute, work-from-home, internet access, and more. Include a number for custom result counts (e.g. \"top 100\").",rankings:[],note:null};
 
   const dir=wantLow?'asc':'desc';const field=bestMetric.field;
 
+  // ── STATE-LEVEL RANKING ──
+  if(isState&&!filterState){
+    const sa={};allTowns.forEach(t=>{
+      if(!t.state)return;
+      if(!sa[t.state])sa[t.state]={name:t.state,tp:0,wS:0,wN:0,sum:0,ct:0};
+      const s=sa[t.state];const val=field==='_diverse'?(t.white!=null?100-t.white:null):t[field];
+      s.tp+=t.pop;if(val!=null){if(bestMetric.type==='count'){s.sum+=val;s.ct++}else{s.wS+=val*t.pop;s.wN+=t.pop;s.ct++}}
+    });
+    let list=Object.values(sa).filter(s=>s.ct>0).map(s=>({name:s.name,value:bestMetric.type==='count'?s.sum:(s.wN>0?s.wS/s.wN:null),towns:s.ct})).filter(s=>s.value!=null);
+    list.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
+    const top=list.slice(0,Math.min(count,list.length));
+    const loadedStates=[...new Set(allTowns.map(t=>t.state))].length;
+    return{intro:`States ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length}):`,
+      rankings:top.map((s,i)=>({rank:i+1,name:s.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(s.value):s.value),detail:s.towns+' towns loaded'})),
+      note:`${loadedStates} state${loadedStates>1?'s':''} with loaded data. Load more states for broader rankings (e.g. "load california").`};
+  }
+
+  // ── COUNTY-LEVEL RANKING ──
   if(isCounty&&!filterCounty){
-    const ca={};allTowns.forEach(t=>{
-      const k=t.state+' > '+t.county;if(!k||!t.county)return;
+    const pool=filterState?allTowns.filter(t=>t.state===filterState):allTowns;
+    const ca={};pool.forEach(t=>{
+      const k=(t.county||'')+'|'+(t.state||'');if(!t.county)return;
       if(!ca[k])ca[k]={name:t.county+(t.state?', '+t.state:''),tp:0,wS:0,wN:0,sum:0,ct:0};
       const c=ca[k];const val=field==='_diverse'?(t.white!=null?100-t.white:null):t[field];
       c.tp+=t.pop;if(val!=null){if(bestMetric.type==='count'){c.sum+=val;c.ct++}else{c.wS+=val*t.pop;c.wN+=t.pop;c.ct++}}
     });
     let list=Object.values(ca).filter(c=>c.ct>0).map(c=>({name:c.name,value:bestMetric.type==='count'?c.sum:(c.wN>0?c.wS/c.wN:null)})).filter(c=>c.value!=null);
     list.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
-    const top=list.slice(0,25);
-    return{intro:`Counties ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first):`,rankings:top.map((c,i)=>({rank:i+1,name:c.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(c.value):c.value)})),note:'Population-weighted averages across loaded data.'};
+    const top=list.slice(0,Math.min(count,list.length));
+    const scope=filterState?filterState:'all loaded states';
+    return{intro:`Counties in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length}):`,
+      rankings:top.map((c,i)=>({rank:i+1,name:c.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(c.value):c.value)})),
+      note:`Population-weighted averages. ${list.length} total counties with data.`};
   }
 
-  let towns=filterCounty?allTowns.filter(t=>t.county===filterCounty):[...allTowns];
-  towns=towns.map(t=>{const val=field==='_diverse'?(t.white!=null?+(100-t.white).toFixed(1):null):t[field];
+  // ── TOWN-LEVEL RANKING ──
+  let pool=allTowns;
+  if(filterState)pool=pool.filter(t=>t.state===filterState);
+  if(filterCounty)pool=pool.filter(t=>t.county===filterCounty);
+  let towns=pool.map(t=>{const val=field==='_diverse'?(t.white!=null?+(100-t.white).toFixed(1):null):t[field];
     return{name:t.shortName,county:t.county,state:t.state,value:val}}).filter(t=>t.value!=null);
   towns.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
-  const top=towns.slice(0,25);
-  const scope=filterCounty?filterCounty+' County':'all loaded areas';
-  return{intro:`Towns in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first):`,
+  const top=towns.slice(0,Math.min(count,towns.length));
+  const scope=filterCounty?filterCounty+' County'+(filterState?', '+filterState:''):filterState?filterState:'all loaded areas';
+  return{intro:`Towns in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length}):`,
     rankings:top.map((t,i)=>({rank:i+1,name:t.name,value:bestMetric.fmt(t.value),detail:(t.county||'')+(t.state?', '+t.state:'')})),
     note:`${towns.length} municipalities with data across ${Object.keys(cache).length} loaded counties.`};
 }
