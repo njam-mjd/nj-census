@@ -219,21 +219,21 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
     <div class="chat-panel" id="chat-panel">
       <div class="chat-body" id="chat-body">
         <div class="chat-welcome">
-          <p>Rank towns, counties, or states using Census data. Specify a number for results up to 500 (default 25). Browse counties to load data, or use "load all" to fetch an entire state.</p>
+          <p>Rank towns, counties, or states using Census data. Say "national" for cross-state town rankings. Specify a number up to 500 (default 25).</p>
           <div class="chat-prompts">
-            <button class="chat-prompt" data-q="Top 50 highest income towns">🏆 Top 50 income</button>
+            <button class="chat-prompt" data-q="Top 50 richest towns in New Jersey">🏆 Top 50 NJ income</button>
+            <button class="chat-prompt" data-q="Top 100 national richest towns">💰 Top 100 national income</button>
             <button class="chat-prompt" data-q="Rank states by median home value">🏠 States by home value</button>
-            <button class="chat-prompt" data-q="Top 100 most educated towns">🎓 Top 100 educated</button>
+            <button class="chat-prompt" data-q="Top 100 most educated towns nationally">🎓 Top 100 educated nationally</button>
             <button class="chat-prompt" data-q="Rank counties by population">📊 Counties by population</button>
-            <button class="chat-prompt" data-q="Top 25 lowest poverty towns">📉 Lowest poverty</button>
-            <button class="chat-prompt" data-q="Rank states by diversity">🌍 States by diversity</button>
-            <button class="chat-prompt" data-q="Top 50 youngest towns">👶 Top 50 youngest</button>
+            <button class="chat-prompt" data-q="Top 200 youngest towns nationally">👶 Top 200 youngest nationally</button>
+            <button class="chat-prompt" data-q="Top 50 lowest poverty towns in New Jersey">📉 NJ lowest poverty</button>
             <button class="chat-prompt" data-q="Load all counties for this state">⬇️ Load all counties</button>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
-        <textarea class="chat-input" id="chat-input" placeholder="e.g. top 100 richest towns, rank states by education&hellip;" rows="1"></textarea>
+        <textarea class="chat-input" id="chat-input" placeholder="e.g. top 100 national richest towns, rank New Jersey counties by education&hellip;" rows="1"></textarea>
         <button class="chat-send" id="chat-send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
       </div>
     </div>
@@ -545,27 +545,37 @@ function parseCount(q){
 /* ═══ QUERY ENGINE ═══ */
 function queryData(q,allTowns){
   const count=parseCount(q);
-  const isState=q.includes('state')||q.includes('states')||q.includes('national')||q.includes('nationwide');
-  const isCounty=q.includes('county')||q.includes('counties');
   const wantLow=q.includes('lowest')||q.includes('least')||q.includes('cheapest')||q.includes('youngest')||q.includes('smallest')||q.includes('fewest')||q.includes('shortest')||q.includes('poorest')||q.includes('bottom');
+
+  // Determine ranking level: states, counties, or towns
+  // "rank states" = aggregate to state level
+  // "rank counties" = aggregate to county level
+  // "national/nationwide/across all states/all states + towns" = town-level, all loaded data
+  // "towns in [state]" = town-level, one state
+  // default = town-level, all loaded data
+  const wantStateAgg=(q.includes('rank state')||q.includes('states by')||q.includes('compare state')||q.includes('state ranking'))&&!q.includes('town')&&!q.includes('cities')&&!q.includes('municipal');
+  const wantCountyAgg=(q.includes('county')||q.includes('counties'))&&!q.includes('town')&&!q.includes('cities')&&!q.includes('municipal')&&!q.includes('in ')&&!q.match(/\bcounty\b(?!\s+ranking|\s+by)/)||q.includes('rank count')||q.includes('counties by');
+  const isNational=q.includes('national')||q.includes('nationwide')||q.includes('across all')||q.includes('all states')||q.includes('in america')||q.includes('in the us')||q.includes('in the country');
 
   // Detect county filter
   let filterCounty=null;
   const uniqueCounties=[...new Set(allTowns.map(t=>t.county))].filter(Boolean);
-  for(const c of uniqueCounties){if(c&&q.includes(c.toLowerCase())){filterCounty=c;break}}
+  for(const c of uniqueCounties){if(c&&c.length>3&&q.includes(c.toLowerCase())){filterCounty=c;break}}
 
-  // Detect state filter
+  // Detect state filter — but not if asking for state-level aggregation
   let filterState=null;
-  for(const s of STATES){if(q.includes(s[1].toLowerCase())){filterState=s[1];break}}
+  if(!wantStateAgg){
+    for(const s of STATES){if(q.includes(s[1].toLowerCase())){filterState=s[1];break}}
+  }
 
   let bestMetric=null,bestScore=0;
   for(const m of METRICS){for(const k of m.keys){if(q.includes(k)&&k.length>bestScore){bestScore=k.length;bestMetric=m}}}
-  if(!bestMetric)return{intro:"I can rank towns, counties, or states by: population, income, home value, rent, age, poverty, education, employment, homeownership, diversity, commute, work-from-home, internet access, and more. Include a number for custom result counts (e.g. \"top 100\").",rankings:[],note:null};
+  if(!bestMetric)return{intro:"I can rank towns, counties, or states by: population, income, home value, rent, age, poverty, education, employment, homeownership, diversity, commute, work-from-home, internet access, and more. Say \"national\" for cross-state rankings. Include a number up to 500 (e.g. \"top 200\").",rankings:[],note:null};
 
   const dir=wantLow?'asc':'desc';const field=bestMetric.field;
 
-  // ── STATE-LEVEL RANKING ──
-  if(isState&&!filterState){
+  // ── STATE-LEVEL AGGREGATION ──
+  if(wantStateAgg){
     const sa={};allTowns.forEach(t=>{
       if(!t.state)return;
       if(!sa[t.state])sa[t.state]={name:t.state,tp:0,wS:0,wN:0,sum:0,ct:0};
@@ -578,11 +588,11 @@ function queryData(q,allTowns){
     const loadedStates=[...new Set(allTowns.map(t=>t.state))].length;
     return{intro:`States ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length}):`,
       rankings:top.map((s,i)=>({rank:i+1,name:s.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(s.value):s.value),detail:s.towns+' towns loaded'})),
-      note:`${loadedStates} state${loadedStates>1?'s':''} with loaded data. Load more states for broader rankings (e.g. "load california").`};
+      note:`${loadedStates} state${loadedStates>1?'s':''} with loaded data. Load more with "load [state name]".`};
   }
 
-  // ── COUNTY-LEVEL RANKING ──
-  if(isCounty&&!filterCounty){
+  // ── COUNTY-LEVEL AGGREGATION ──
+  if(wantCountyAgg){
     const pool=filterState?allTowns.filter(t=>t.state===filterState):allTowns;
     const ca={};pool.forEach(t=>{
       const k=(t.county||'')+'|'+(t.state||'');if(!t.county)return;
@@ -593,7 +603,7 @@ function queryData(q,allTowns){
     let list=Object.values(ca).filter(c=>c.ct>0).map(c=>({name:c.name,value:bestMetric.type==='count'?c.sum:(c.wN>0?c.wS/c.wN:null)})).filter(c=>c.value!=null);
     list.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
     const top=list.slice(0,Math.min(count,list.length));
-    const scope=filterState?filterState:'all loaded states';
+    const scope=filterState||'all loaded states';
     return{intro:`Counties in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length}):`,
       rankings:top.map((c,i)=>({rank:i+1,name:c.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(c.value):c.value)})),
       note:`Population-weighted averages. ${list.length} total counties with data.`};
@@ -601,16 +611,17 @@ function queryData(q,allTowns){
 
   // ── TOWN-LEVEL RANKING ──
   let pool=allTowns;
-  if(filterState)pool=pool.filter(t=>t.state===filterState);
+  if(filterState&&!isNational)pool=pool.filter(t=>t.state===filterState);
   if(filterCounty)pool=pool.filter(t=>t.county===filterCounty);
   let towns=pool.map(t=>{const val=field==='_diverse'?(t.white!=null?+(100-t.white).toFixed(1):null):t[field];
     return{name:t.shortName,county:t.county,state:t.state,value:val}}).filter(t=>t.value!=null);
   towns.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
   const top=towns.slice(0,Math.min(count,towns.length));
-  const scope=filterCounty?filterCounty+' County'+(filterState?', '+filterState:''):filterState?filterState:'all loaded areas';
-  return{intro:`Towns in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length}):`,
+  const loadedStates=[...new Set(allTowns.map(t=>t.state))].filter(Boolean);
+  const scope=filterCounty?filterCounty+' County'+(filterState?', '+filterState:''):filterState?filterState:isNational?'all '+loadedStates.length+' loaded states':'all loaded areas';
+  return{intro:`Towns in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length} of ${towns.length}):`,
     rankings:top.map((t,i)=>({rank:i+1,name:t.name,value:bestMetric.fmt(t.value),detail:(t.county||'')+(t.state?', '+t.state:'')})),
-    note:`${towns.length} municipalities with data across ${Object.keys(cache).length} loaded counties.`};
+    note:`${towns.length} municipalities with data across ${Object.keys(cache).length} loaded counties${loadedStates.length>1?' in '+loadedStates.length+' states':''}.`};
 }
 
 function addMsg(text,type){const d=document.createElement('div');d.className='chat-msg '+type;d.textContent=text;chatBody.appendChild(d);chatBody.scrollTop=chatBody.scrollHeight}
