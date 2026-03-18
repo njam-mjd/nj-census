@@ -219,16 +219,16 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
     <div class="chat-panel" id="chat-panel">
       <div class="chat-body" id="chat-body">
         <div class="chat-welcome">
-          <p>Rank towns, counties, or states using Census data. Say "national" for cross-state town rankings. Specify a number up to 500 (default 25).</p>
+          <p>Rank towns, counties, or states. Say "national" for cross-state rankings. Specify a count up to 500. Use "load national" to fetch all 51 states (~1 min).</p>
           <div class="chat-prompts">
-            <button class="chat-prompt" data-q="Top 50 richest towns in New Jersey">🏆 Top 50 NJ income</button>
-            <button class="chat-prompt" data-q="Top 100 national richest towns">💰 Top 100 national income</button>
+            <button class="chat-prompt" data-q="Load national">⬇️ Load all 51 states</button>
+            <button class="chat-prompt" data-q="Load all">⬇️ Load current state</button>
+            <button class="chat-prompt" data-q="Top 100 richest towns nationally">💰 Top 100 national income</button>
             <button class="chat-prompt" data-q="Rank states by median home value">🏠 States by home value</button>
-            <button class="chat-prompt" data-q="Top 100 most educated towns nationally">🎓 Top 100 educated nationally</button>
+            <button class="chat-prompt" data-q="Top 500 most educated towns nationally">🎓 Top 500 educated nationally</button>
             <button class="chat-prompt" data-q="Rank counties by population">📊 Counties by population</button>
-            <button class="chat-prompt" data-q="Top 200 youngest towns nationally">👶 Top 200 youngest nationally</button>
-            <button class="chat-prompt" data-q="Top 50 lowest poverty towns in New Jersey">📉 NJ lowest poverty</button>
-            <button class="chat-prompt" data-q="Load all counties for this state">⬇️ Load all counties</button>
+            <button class="chat-prompt" data-q="Top 50 richest towns in New Jersey">🏆 NJ top 50 income</button>
+            <button class="chat-prompt" data-q="Top 200 youngest towns nationally">👶 200 youngest nationally</button>
           </div>
         </div>
       </div>
@@ -288,6 +288,25 @@ async function fetchTowns(stateFips,countyFips){
   return data;
 }
 
+/* Fetch ALL county subdivisions in a state in ONE call */
+const stateFullyLoaded={};
+async function fetchState(stateFips){
+  if(stateFullyLoaded[stateFips])return;
+  const url=`${ACS}?get=${VARS}&for=county%20subdivision:*&in=state:${stateFips}`;
+  const res=await fetch(url);
+  if(!res.ok)throw new Error('API error '+res.status);
+  const raw=await res.json();
+  const hdr=raw[0];
+  // Group rows by county FIPS and store into cache
+  raw.slice(1).forEach(row=>{
+    const o={};hdr.forEach((h,i)=>o[h]=row[i]);
+    const cf=o['county'];const key=stateFips+'-'+cf;
+    if(!cache[key])cache[key]={};
+    cache[key][o['county subdivision']]=parseRow(o);
+  });
+  stateFullyLoaded[stateFips]=true;
+}
+
 function parseRow(o){
   const v=k=>{const x=parseFloat(o[k]);return(isNaN(x)||x<0)?null:x};
   return{name:o.NAME||'',pop:v('DP05_0001E'),malePct:v('DP05_0002PE'),femalePct:v('DP05_0003PE'),medAge:v('DP05_0018E'),under5:v('DP05_0019PE'),under18:v('DP05_0024PE'),over65:v('DP05_0029PE'),white:v('DP05_0077PE'),black:v('DP05_0078PE'),asian:v('DP05_0080PE'),twoPlus:v('DP05_0083PE'),hispanic:v('DP05_0071PE'),empRate:v('DP03_0004PE'),unempRate:v('DP03_0009PE'),droveAlone:v('DP03_0019PE'),transit:v('DP03_0021PE'),wfh:v('DP03_0024PE'),commute:v('DP03_0025E'),medIncome:v('DP03_0062E'),perCapita:v('DP03_0088E'),insured:v('DP03_0096PE'),poverty:v('DP03_0128PE'),totalUnits:v('DP04_0001E'),occupied:v('DP04_0002PE'),vacant:v('DP04_0003PE'),owner:v('DP04_0046PE'),renter:v('DP04_0047PE'),medHome:v('DP04_0089E'),medRent:v('DP04_0134E'),hsGrad:v('DP02_0065PE'),bachelors:v('DP02_0067PE'),graduate:v('DP02_0068PE'),foreignBorn:v('DP02_0113PE'),nonEnglish:v('DP02_0114PE'),disability:v('DP02_0072PE'),computer:v('DP02_0152PE'),internet:v('DP02_0153PE')};
@@ -296,11 +315,13 @@ function parseRow(o){
 /* ═══ STATE & COUNTY SELECTORS ═══ */
 // Desktop
 const stateSel=document.getElementById('state-sel');
+{const o=document.createElement('option');o.value='US';o.textContent='🇺🇸 United States (All States)';stateSel.appendChild(o)}
 STATES.forEach(s=>{const o=document.createElement('option');o.value=s[0];o.textContent=s[1];if(s[0]==='34')o.selected=true;stateSel.appendChild(o)});
 stateSel.onchange=()=>{curState=stateSel.value;document.getElementById('mob-state').value=curState;loadState()};
 
 // Mobile
 const mobState=document.getElementById('mob-state');
+{const o=document.createElement('option');o.value='US';o.textContent='🇺🇸 United States (All)';mobState.appendChild(o)}
 STATES.forEach(s=>{const o=document.createElement('option');o.value=s[0];o.textContent=s[1];if(s[0]==='34')o.selected=true;mobState.appendChild(o)});
 mobState.onchange=()=>{curState=mobState.value;stateSel.value=curState;loadState()};
 
@@ -309,10 +330,39 @@ mobCounty.onchange=()=>{const f=mobCounty.value;if(f){curCounty=f;updSB();render
 
 async function loadState(){
   const list=document.getElementById('sb-list');
-  list.innerHTML='<div class="sb-loading">Loading counties&hellip;</div>';
+  const content=document.getElementById('content');
   curCounty=null;
-  document.getElementById('content').innerHTML='';
+  content.innerHTML='';
   document.getElementById('co-sum').textContent='';
+
+  // ── FULL U.S. LOAD ──
+  if(curState==='US'){
+    list.innerHTML='<div class="sb-loading">Loading all 51 states&hellip;</div>';
+    content.innerHTML='<div class="loading"><div class="spin"></div><p>Loading national dataset &mdash; 51 states&hellip;</p><div id="us-prog" style="max-width:300px;margin:12px auto"><div style="background:var(--bdr);border-radius:4px;height:8px;overflow:hidden"><div id="us-bar" style="height:100%;background:var(--lime);border-radius:4px;width:0%;transition:width .3s"></div></div><div id="us-status" style="font-size:11px;color:var(--txm);margin-top:6px;text-align:center">0 of 51</div></div></div>';
+    let done=0,failed=0;
+    counties=[];
+    for(const st of STATES){
+      try{
+        if(!countyCache[st[0]])await fetchCounties(st[0]);
+        if(!stateFullyLoaded[st[0]])await fetchState(st[0]);
+      }catch{failed++}
+      done++;
+      const bar=document.getElementById('us-bar');if(bar)bar.style.width=(done/STATES.length*100)+'%';
+      const status=document.getElementById('us-status');if(status)status.textContent=done+' of '+STATES.length+' — '+st[1];
+      // Collect all counties for sidebar
+      if(countyCache[st[0]])countyCache[st[0]].forEach(c=>{counties.push({...c,state:st[1],stateFips:st[0]})});
+      await new Promise(r=>setTimeout(r,600));
+    }
+    counties.sort((a,b)=>a.name.localeCompare(b.name)||(a.state||'').localeCompare(b.state||''));
+    buildSB_US();buildMobCounty_US();
+    const allTowns=getAllTowns();
+    content.innerHTML='<div style="text-align:center;padding:40px 20px"><div style="font-size:20px;font-weight:800;margin-bottom:6px;color:var(--lime)">'+allTowns.length.toLocaleString()+' Municipalities Loaded</div><div style="font-size:13px;color:var(--txs)">All 50 states + DC. Select a county from the sidebar, search for a town, or use <strong>Rank Data</strong> for national rankings.</div></div>';
+    document.getElementById('co-sum').textContent=allTowns.length.toLocaleString()+' municipalities across '+STATES.length+' states';
+    return;
+  }
+
+  // ── SINGLE STATE LOAD ──
+  list.innerHTML='<div class="sb-loading">Loading counties&hellip;</div>';
   try{
     counties=await fetchCounties(curState);
     buildSB();buildMobCounty();
@@ -320,6 +370,24 @@ async function loadState(){
   }catch(e){
     list.innerHTML='<div class="sb-loading" style="color:#e85a3a">Failed to load counties.</div>';
   }
+}
+
+/* US-mode sidebar: shows counties with state labels */
+function buildSB_US(){
+  const list=document.getElementById('sb-list');list.innerHTML='';
+  counties.forEach(c=>{
+    const d=document.createElement('div');d.className='sb-item';
+    d.dataset.f=c.fips;d.dataset.sf=c.stateFips;d.dataset.n=(c.name+' '+c.state).toLowerCase();
+    d.innerHTML=c.name+'<span class="sb-ct">'+c.state+'</span>';
+    d.onclick=()=>{curCounty=c.fips;curState=c.stateFips;stateSel.value='US';
+      document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));
+      d.classList.add('active');render()};
+    list.appendChild(d);
+  });
+}
+function buildMobCounty_US(){
+  mobCounty.innerHTML='';
+  counties.slice(0,200).forEach(c=>{const o=document.createElement('option');o.value=c.stateFips+'-'+c.fips;o.textContent=c.name+', '+c.state;mobCounty.appendChild(o)});
 }
 
 function buildSB(){
@@ -352,8 +420,11 @@ si.addEventListener('input',()=>{
   const ms=all.filter(t=>t.shortName.toLowerCase().includes(q)).sort((a,b)=>{const aS=a.shortName.toLowerCase().startsWith(q)?0:1;const bS=b.shortName.toLowerCase().startsWith(q)?0:1;return aS-bS||(b.pop||0)-(a.pop||0)}).slice(0,25);
   sd.innerHTML='';ms.forEach(t=>{const d=document.createElement('div');d.className='sdd-i';
     const nm=t.shortName;const idx=nm.toLowerCase().indexOf(q);let hl=nm;if(idx>=0)hl=nm.slice(0,idx)+'<strong style="color:var(--lime)">'+nm.slice(idx,idx+q.length)+'</strong>'+nm.slice(idx+q.length);
-    d.innerHTML='<span>'+hl+'</span><span class="st">'+t.county+'</span>';
-    d.onclick=()=>{si.value='';sd.classList.remove('open');curCounty=t.countyFips;updSB();mobCounty.value=curCounty;render();
+    d.innerHTML='<span>'+hl+'</span><span class="st">'+(t.state?t.county+', '+t.state:t.county)+'</span>';
+    d.onclick=()=>{si.value='';sd.classList.remove('open');
+      // If in US mode, keep US but set curState for render resolution
+      if(stateSel.value!=='US'){curState=t.stateFips;stateSel.value=curState;document.getElementById('mob-state').value=curState}
+      curCounty=t.countyFips;updSB();render();
       setTimeout(()=>{const c=document.querySelector('[data-t="'+CSS.escape(t.shortName)+'"]');if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.style.borderColor='var(--lime)';setTimeout(()=>{c.style.borderColor=''},2000)}},600)};
     sd.appendChild(d)});sd.classList.add('open')});
 si.addEventListener('focus',()=>{if(si.value.length>=1)si.dispatchEvent(new Event('input'))});
@@ -363,13 +434,16 @@ document.addEventListener('click',e=>{if(!e.target.closest('#sbar'))sd.classList
 async function render(){
   const el=document.getElementById('content');
   if(!curCounty){el.innerHTML='<p style="color:var(--txm)">Select a county.</p>';return}
-  const countyName=counties.find(c=>c.fips===curCounty)?.name||'';
-  const stateName=STATES.find(s=>s[0]===curState)?.[1]||'';
+  // Resolve actual state FIPS (curState might be 'US')
+  const countyObj=counties.find(c=>c.fips===curCounty);
+  const actualStateFips=countyObj?.stateFips||curState;
+  const countyName=countyObj?.name||'';
+  const stateName=countyObj?.state||STATES.find(s=>s[0]===actualStateFips)?.[1]||'';
   document.getElementById('co-sum').textContent=countyName+' County, '+stateName;
 
   el.innerHTML='<div class="loading"><div class="spin"></div><p>Loading '+countyName+' County&hellip;</p></div>';
   try{
-    const data=await fetchTowns(curState,curCounty);
+    const data=await fetchTowns(actualStateFips,curCounty);
     const enriched=Object.values(data).filter(d=>d.pop>0).map(d=>{
       const parts=d.name.split(',')[0].trim();
       const typeMatch=parts.match(/(township|borough|city|town|village|CDP|plantation|municipality)/i);
@@ -492,45 +566,74 @@ async function sendChat(){
   addMsg(q,'user');chatInput.value='';chatSend.disabled=true;chatInput.style.height='auto';
   const ql=q.toLowerCase();
 
-  // Handle "load all" command
-  if(ql.includes('load all')){
-    const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
-    const stateName=STATES.find(s=>s[0]===curState)?.[1]||'';
-    let loaded=0,failed=0;
-    if(!countyCache[curState])try{await fetchCounties(curState)}catch{}
-    const cList=countyCache[curState]||[];
-    for(const c of cList){
-      const key=curState+'-'+c.fips;
-      if(!cache[key]){try{await fetchTowns(curState,c.fips);loaded++;await new Promise(r=>setTimeout(r,150))}catch{failed++}}
+  // ── LOAD NATIONAL (all 51 states, ~1 min) ──
+  if(ql.includes('load national')||ql.includes('load all states')||ql.includes('load entire')||ql.includes('load everything')){
+    const prog=document.createElement('div');prog.className='chat-msg ai';prog.id='load-prog';prog.innerHTML='<div style="margin-bottom:6px"><strong>Loading national dataset&hellip;</strong></div><div id="load-bar-wrap" style="background:var(--bdr);border-radius:3px;height:8px;overflow:hidden;margin:6px 0"><div id="load-bar" style="height:100%;background:var(--lime);border-radius:3px;width:0%;transition:width .3s"></div></div><div id="load-status" style="font-size:11px;color:var(--txm)">0 of 51 states&hellip;</div>';
+    chatBody.appendChild(prog);chatBody.scrollTop=chatBody.scrollHeight;
+    let done=0,failed=0,skipped=0,totalTowns=0;
+    for(const st of STATES){
+      const bar=document.getElementById('load-bar');
+      const status=document.getElementById('load-status');
+      if(stateFullyLoaded[st[0]]){skipped++;done++;
+        if(bar)bar.style.width=(done/STATES.length*100)+'%';
+        if(status)status.textContent=`${done} of ${STATES.length} — skipped ${st[1]} (cached)`;
+        continue}
+      try{
+        if(!countyCache[st[0]])await fetchCounties(st[0]);
+        await fetchState(st[0]);
+        totalTowns+=Object.values(cache).reduce((s,d)=>{return typeof d==='object'?s+Object.keys(d).length:s},0);
+        done++;
+      }catch{failed++;done++}
+      if(bar)bar.style.width=(done/STATES.length*100)+'%';
+      if(status)status.textContent=`${done} of ${STATES.length} — loaded ${st[1]}`;
+      chatBody.scrollTop=chatBody.scrollHeight;
+      await new Promise(r=>setTimeout(r,800));
     }
-    typing.remove();
-    const total=cList.length;const already=total-loaded-failed;
-    addMsg(`Loaded ${loaded} new counties for ${stateName} (${already} already cached${failed?', '+failed+' failed':''}). ${total} counties total — all town data is now available for rankings.`,'ai');
+    const progEl=document.getElementById('load-prog');
+    if(progEl){
+      const towns=getAllTowns();
+      progEl.innerHTML=`<strong>National dataset loaded.</strong> ${STATES.length-failed} states, ~${towns.length.toLocaleString()} municipalities ready for ranking.${failed?' ('+failed+' failed)':''}`}
+    chatBody.scrollTop=chatBody.scrollHeight;
     return;
   }
 
-  // Handle "load state X" or "load california" etc.
-  let loadStateFips=null;
+  // ── LOAD ALL (current state, 1 API call) ──
+  if(ql.includes('load all')){
+    const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
+    const stateName=STATES.find(s=>s[0]===curState)?.[1]||'';
+    try{
+      if(!countyCache[curState])await fetchCounties(curState);
+      await fetchState(curState);
+      typing.remove();
+      const towns=Object.entries(cache).filter(([k])=>k.startsWith(curState+'-')).reduce((s,[,d])=>s+Object.keys(d).length,0);
+      addMsg(`Loaded all of ${stateName} in one request — ${towns} municipalities now cached for rankings.`,'ai');
+    }catch(e){typing.remove();addMsg(`Failed to load ${stateName}: ${e.message}`,'ai')}
+    return;
+  }
+
+  // ── LOAD [STATE NAME] (1 API call) ──
   const loadMatch=ql.match(/load\s+(.+)/);
   if(loadMatch){
     const target=loadMatch[1].trim();
     const st=STATES.find(s=>s[1].toLowerCase()===target);
-    if(st){loadStateFips=st[0];
+    if(st){
       const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
-      let loaded=0;
-      if(!countyCache[loadStateFips])try{await fetchCounties(loadStateFips)}catch{}
-      const cList=countyCache[loadStateFips]||[];
-      for(const c of cList){const key=loadStateFips+'-'+c.fips;if(!cache[key]){try{await fetchTowns(loadStateFips,c.fips);loaded++;await new Promise(r=>setTimeout(r,150))}catch{}}}
-      typing.remove();
-      addMsg(`Loaded ${st[1]}: ${cList.length} counties, all town data now available.`,'ai');
+      try{
+        if(!countyCache[st[0]])await fetchCounties(st[0]);
+        await fetchState(st[0]);
+        typing.remove();
+        const towns=Object.entries(cache).filter(([k])=>k.startsWith(st[0]+'-')).reduce((s,[,d])=>s+Object.keys(d).length,0);
+        addMsg(`Loaded ${st[1]} — ${towns} municipalities now cached.`,'ai');
+      }catch(e){typing.remove();addMsg(`Failed to load ${st[1]}: ${e.message}`,'ai')}
       return;
     }
   }
 
+  // ── RANKING QUERY ──
   const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
   const allTowns=getAllTowns();
   await new Promise(r=>setTimeout(r,200));typing.remove();
-  if(!allTowns.length){addMsg("No Census data loaded yet. Browse some counties first, or type \"load all\" to fetch every county in the current state.","ai");return}
+  if(!allTowns.length){addMsg("No Census data loaded yet. Try:\n• \"load all\" — loads current state\n• \"load california\" — loads a specific state\n• \"load national\" — loads all 51 states (~1 min)","ai");return}
   renderResult(queryData(ql,allTowns));
 }
 
