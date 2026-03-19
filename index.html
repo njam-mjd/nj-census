@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Census Data Explorer | NJ.com</title>
+<title>NJ Town Census Data Explorer | NJ.com</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#505050;--bg2:#474747;--bg3:#3b3b3b;--card:#4a4a4a;--bdr:#5e5e5e;--bdr2:#6a6a6a;--lime:#BCD031;--lime-d:#9aab28;--lime-bg:rgba(188,208,49,.08);--wh:#fff;--tx:#f0f0f0;--txs:#bbb;--txm:#888;--font:'Libre Franklin',sans-serif;--sidebar:240px;--hdr:56px}
+:root{--bg:#505050;--bg2:#474747;--bg3:#3b3b3b;--card:#4a4a4a;--bdr:#5e5e5e;--bdr2:#6a6a6a;--lime:#BCD031;--lime-d:#9aab28;--lime-bg:rgba(188,208,49,.08);--wh:#fff;--tx:#f0f0f0;--txs:#bbb;--txm:#888;--font:'Libre Franklin',sans-serif;--sidebar:220px;--hdr:56px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1.55;-webkit-font-smoothing:antialiased}
 
@@ -18,8 +18,8 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .hdr-sep{width:1px;height:26px;background:var(--bdr)}
 .hdr-lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txs)}
 
-.hero{background:linear-gradient(180deg,var(--bg3),var(--bg2));padding:24px 20px 16px;text-align:center}
-.hero h1{font-size:clamp(20px,3.5vw,34px);font-weight:900;line-height:1.08;margin-bottom:6px;letter-spacing:-.025em}
+.hero{background:linear-gradient(180deg,var(--bg3),var(--bg2));padding:28px 20px 18px;text-align:center}
+.hero h1{font-size:clamp(22px,4vw,36px);font-weight:900;line-height:1.08;margin-bottom:6px;letter-spacing:-.025em}
 .hero h1 em{color:var(--lime);font-style:normal}
 .hero p{font-size:13px;color:var(--txs);max-width:580px;margin:0 auto;font-weight:300}
 .hero .src{font-size:10px;color:var(--txm);margin-top:4px}
@@ -28,41 +28,41 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .app{max-width:1400px;margin:0 auto;display:flex;min-height:calc(100vh - var(--hdr) - 140px)}
 
 /* SIDEBAR */
-.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--bg3);border-right:1px solid var(--bdr);position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;display:flex;flex-direction:column}
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--bg3);border-right:1px solid var(--bdr);position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
 .sidebar::-webkit-scrollbar{width:4px}
 .sidebar::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
-.sb-section{padding:10px 10px 6px}
-.sb-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txm);padding:0 4px 4px}
-.sb-sel{width:100%;padding:8px 10px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;color:var(--tx);font-family:var(--font);font-size:12px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
-.sb-sel:focus{border-color:var(--lime)}
-.sb-flt{padding:0 10px 6px;position:relative}
-.sb-flt svg{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:var(--txm);pointer-events:none;margin-top:-3px}
-.sb-flt input{width:100%;padding:7px 10px 7px 28px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;color:var(--tx);font-family:var(--font);font-size:11px;outline:none}
+.sb-hd{padding:14px 14px 4px;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txm)}
+.sb-flt{padding:0 10px 8px;position:relative}
+.sb-flt svg{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:var(--txm);pointer-events:none;margin-top:-4px}
+.sb-flt input{width:100%;padding:8px 10px 8px 30px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;color:var(--tx);font-family:var(--font);font-size:12px;outline:none}
 .sb-flt input:focus{border-color:var(--lime)}
 .sb-flt input::placeholder{color:var(--txm)}
-.sb-list{flex:1;overflow-y:auto;padding:0 6px 14px}
-.sb-list::-webkit-scrollbar{width:3px}
-.sb-list::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
-.sb-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:7px;cursor:pointer;transition:all .12s;font-size:12px;font-weight:500;color:var(--txs);margin-bottom:1px}
+.sb-list{padding:0 6px 14px}
+.sb-item{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border-radius:7px;cursor:pointer;transition:all .12s;font-size:13px;font-weight:500;color:var(--txs);margin-bottom:1px}
 .sb-item:hover{background:rgba(255,255,255,.05);color:var(--tx)}
 .sb-item.active{background:var(--lime-bg);color:var(--lime);font-weight:700}
-.sb-item .sb-ct{font-size:9px;color:var(--txm);background:rgba(255,255,255,.06);padding:1px 5px;border-radius:4px;font-weight:600}
+.sb-item .sb-ct{font-size:10px;color:var(--txm);background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;font-weight:600}
 .sb-item.active .sb-ct{color:var(--lime-d);background:rgba(188,208,49,.12)}
-.sb-loading{text-align:center;padding:20px 10px;font-size:11px;color:var(--txm)}
 
-/* MOBILE */
-.mob-nav{display:none;padding:0 0 10px}
-.mob-row{display:flex;gap:8px}
-.mob-sel{flex:1;padding:11px 14px;background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;color:var(--tx);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
-.mob-sel:focus{border-color:var(--lime)}
+/* MOBILE COUNTY */
+.mob-c{display:none;padding:0 0 12px}
+.mc-btn{width:100%;padding:12px 16px;background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;color:var(--tx);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.mc-btn.open{border-color:var(--lime)}
+.mc-btn svg{transition:transform .2s}
+.mc-btn.open svg{transform:rotate(180deg)}
+.mc-dd{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;margin-top:6px;max-height:0;overflow:hidden;transition:max-height .3s ease}
+.mc-dd.open{max-height:70vh;overflow-y:auto}
+.mc-ddi{padding:12px 16px;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.04)}
+.mc-ddi:last-child{border-bottom:none}
+.mc-ddi:hover{background:rgba(255,255,255,.05)}
+.mc-ddi.active{color:var(--lime);font-weight:700;background:var(--lime-bg)}
+.mc-ddi .mc-ct{font-size:11px;color:var(--txm)}
 
 /* MAIN */
 .main{flex:1;min-width:0;padding:16px 24px 24px}
 
 /* SEARCH */
-.top-row{display:flex;gap:10px;align-items:stretch;margin-bottom:14px;max-width:680px}
-.top-row .sbar{flex:1;margin-bottom:0}
-.sbar{position:relative}
+.sbar{position:relative;max-width:520px;margin-bottom:14px}
 .sbar svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--txm);pointer-events:none}
 .sbar input{width:100%;padding:11px 14px 11px 42px;background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;color:var(--tx);font-family:var(--font);font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
 .sbar input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(188,208,49,.15)}
@@ -72,46 +72,6 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .sdd-i{padding:10px 14px;cursor:pointer;font-size:13px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.04);transition:background .12s}
 .sdd-i:hover{background:var(--card)}
 .sdd-i .st{font-size:10px;color:var(--txm);background:rgba(255,255,255,.06);padding:2px 8px;border-radius:4px;flex-shrink:0;margin-left:10px}
-
-.chat-toggle{display:flex;align-items:center;gap:7px;padding:0 18px;background:var(--lime);color:var(--bg3);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,box-shadow .15s;flex-shrink:0}
-.chat-toggle:hover{background:#d4e838}
-.chat-toggle.active{background:var(--bg3);color:var(--lime);box-shadow:inset 0 0 0 2px var(--lime)}
-.chat-toggle svg{flex-shrink:0}
-
-/* CHAT PANEL */
-.chat-panel{background:var(--card);border:1px solid var(--bdr);border-radius:12px;margin-bottom:16px;display:none;flex-direction:column;overflow:hidden;max-width:680px;animation:slideDown .25s ease}
-.chat-panel.open{display:flex}
-@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-.chat-body{max-height:60vh;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
-.chat-body::-webkit-scrollbar{width:4px}
-.chat-body::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
-.chat-welcome{padding:8px 4px}
-.chat-welcome p{font-size:13px;color:var(--txs);margin-bottom:10px;line-height:1.5}
-.chat-prompts{display:flex;flex-wrap:wrap;gap:6px}
-.chat-prompt{background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:8px 12px;font-family:var(--font);font-size:11px;color:var(--txs);cursor:pointer;text-align:left;transition:border-color .15s,color .15s;white-space:nowrap}
-.chat-prompt:hover{border-color:var(--lime);color:var(--lime)}
-.chat-msg{max-width:92%;font-size:13px;line-height:1.55;animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.chat-msg.user{align-self:flex-end;background:var(--lime);color:var(--bg3);padding:10px 14px;border-radius:12px 12px 4px 12px;font-weight:600}
-.chat-msg.ai{align-self:flex-start;background:var(--bg3);color:var(--tx);padding:12px 14px;border-radius:12px 12px 12px 4px;border:1px solid var(--bdr)}
-.chat-msg.ai .rank-item{display:flex;align-items:baseline;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px}
-.chat-msg.ai .rank-item:last-child{border-bottom:none}
-.chat-msg.ai .rank-num{color:var(--lime);font-weight:800;font-size:13px;min-width:28px;font-variant-numeric:tabular-nums}
-.chat-msg.ai .rank-name{font-weight:700;color:var(--wh);font-size:12px}
-.chat-msg.ai .rank-val{color:var(--txs);font-size:11px;margin-left:auto;flex-shrink:0}
-.chat-msg.ai .ai-note{font-size:11px;color:var(--txm);margin-top:8px;font-style:italic}
-.chat-typing{align-self:flex-start;display:flex;gap:4px;padding:10px 14px}
-.chat-typing span{width:7px;height:7px;background:var(--txm);border-radius:50%;animation:bounce .6s infinite alternate}
-.chat-typing span:nth-child(2){animation-delay:.15s}
-.chat-typing span:nth-child(3){animation-delay:.3s}
-@keyframes bounce{to{opacity:.3;transform:translateY(-4px)}}
-.chat-input-wrap{padding:10px 14px;border-top:1px solid var(--bdr);display:flex;gap:8px;flex-shrink:0}
-.chat-input{flex:1;padding:9px 12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;color:var(--tx);font-family:var(--font);font-size:14px;outline:none;resize:none;min-height:40px;max-height:72px}
-.chat-input:focus{border-color:var(--lime)}
-.chat-input::placeholder{color:var(--txm)}
-.chat-send{width:40px;height:40px;border-radius:8px;background:var(--lime);color:var(--bg3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s;flex-shrink:0}
-.chat-send:disabled{opacity:.4;cursor:default}
-.chat-send svg{width:16px;height:16px}
 
 /* TOOLBAR */
 .toolbar{display:flex;justify-content:space-between;align-items:center;padding:0 0 14px;flex-wrap:wrap;gap:8px}
@@ -125,7 +85,10 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .spin{width:32px;height:32px;border:3px solid var(--bdr);border-top-color:var(--lime);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 12px}
 @keyframes sp{to{transform:rotate(360deg)}}
 .loading p{font-size:13px;color:var(--txs)}
+
+/* ERROR */
 .err-msg{background:rgba(232,90,58,.1);border:1px solid #e85a3a;border-radius:10px;padding:16px;font-size:13px;margin:20px 0;text-align:center}
+.err-msg a{color:var(--lime)}
 
 /* TOWN CARDS */
 .tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;padding-bottom:24px}
@@ -138,21 +101,33 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .tc-pop{text-align:right;flex-shrink:0}
 .tc-pv{font-size:18px;font-weight:800;color:var(--lime)}
 .tc-pl{font-size:9px;color:var(--txm);text-transform:uppercase;letter-spacing:.06em}
+
+/* TABS inside card */
 .tc-tabs{display:flex;padding:12px 16px 0;gap:2px;border-bottom:1px solid var(--bdr)}
 .tc-tab{padding:6px 12px;font-family:var(--font);font-size:11px;font-weight:600;color:var(--txm);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;margin-bottom:-1px}
 .tc-tab:hover{color:var(--txs)}
 .tc-tab.active{color:var(--lime);border-bottom-color:var(--lime)}
+
 .tc-body{padding:12px 16px 16px;min-height:140px}
-.tc-panel{display:none}.tc-panel.active{display:block;animation:fadeIn .2s ease}
+.tc-panel{display:none}
+.tc-panel.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Stat rows inside panels */
 .sr{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px}
 .sr:last-child{border-bottom:none}
-.sr-l{color:var(--txs)}.sr-v{font-weight:700;color:var(--wh)}
+.sr-l{color:var(--txs);font-weight:400}
+.sr-v{font-weight:700;color:var(--wh)}
+
+/* Bar chart (horizontal) */
 .hbar{margin:8px 0}
 .hbar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11px}
 .hbar-label{width:70px;text-align:right;color:var(--txs);flex-shrink:0;font-weight:500}
-.hbar-track{flex:1;height:14px;background:var(--bdr);border-radius:3px;overflow:hidden}
+.hbar-track{flex:1;height:14px;background:var(--bdr);border-radius:3px;overflow:hidden;position:relative}
 .hbar-fill{height:100%;border-radius:3px;transition:width .5s ease}
 .hbar-val{width:44px;color:var(--txm);font-weight:600;font-size:11px}
+
+/* Compare button */
 .tc-cmp{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;border:1px solid var(--bdr);background:transparent;color:var(--txs);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;opacity:0;z-index:5}
 .tc:hover .tc-cmp{opacity:1}
 .tc-cmp:hover{background:var(--lime);color:var(--bg3);border-color:var(--lime)}
@@ -180,8 +155,55 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
 .ftr{padding:20px;border-top:1px solid var(--bdr);text-align:center;font-size:11px;color:var(--txm)}
 .ftr a{color:var(--lime);text-decoration:none}
 
+/* TOP ROW: search + chat toggle */
+.top-row{display:flex;gap:10px;align-items:stretch;margin-bottom:14px;max-width:680px}
+.top-row .sbar{flex:1;margin-bottom:0}
+
+.chat-toggle{display:flex;align-items:center;gap:7px;padding:0 18px;background:var(--lime);color:var(--bg3);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,box-shadow .15s;flex-shrink:0}
+.chat-toggle:hover{background:#d4e838;box-shadow:0 2px 12px rgba(188,208,49,.25)}
+.chat-toggle.active{background:var(--bg3);color:var(--lime);box-shadow:inset 0 0 0 2px var(--lime)}
+.chat-toggle svg{flex-shrink:0}
+
+/* INLINE CHAT PANEL */
+.chat-panel{background:var(--card);border:1px solid var(--bdr);border-radius:12px;margin-bottom:16px;display:none;flex-direction:column;overflow:hidden;max-width:680px;animation:slideDown .25s ease}
+.chat-panel.open{display:flex}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+.chat-body{max-height:480px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent}
+.chat-body::-webkit-scrollbar{width:4px}
+.chat-body::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+
+.chat-welcome{padding:8px 4px}
+.chat-welcome p{font-size:13px;color:var(--txs);margin-bottom:10px;line-height:1.5}
+.chat-prompts{display:flex;flex-wrap:wrap;gap:6px}
+.chat-prompt{background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:8px 12px;font-family:var(--font);font-size:11px;color:var(--txs);cursor:pointer;text-align:left;transition:border-color .15s,color .15s;white-space:nowrap}
+.chat-prompt:hover{border-color:var(--lime);color:var(--lime)}
+
+.chat-msg{max-width:92%;font-size:13px;line-height:1.55;animation:fadeIn .2s ease}
+.chat-msg.user{align-self:flex-end;background:var(--lime);color:var(--bg3);padding:10px 14px;border-radius:12px 12px 4px 12px;font-weight:600}
+.chat-msg.ai{align-self:flex-start;background:var(--bg3);color:var(--tx);padding:12px 14px;border-radius:12px 12px 12px 4px;border:1px solid var(--bdr)}
+.chat-msg.ai .rank-item{display:flex;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.chat-msg.ai .rank-item:last-child{border-bottom:none}
+.chat-msg.ai .rank-num{color:var(--lime);font-weight:800;font-size:15px;min-width:20px}
+.chat-msg.ai .rank-name{font-weight:700;color:var(--wh)}
+.chat-msg.ai .rank-val{color:var(--txs);font-size:12px;margin-left:auto;flex-shrink:0}
+.chat-msg.ai .ai-note{font-size:11px;color:var(--txm);margin-top:8px;font-style:italic}
+.chat-typing{align-self:flex-start;display:flex;gap:4px;padding:10px 14px}
+.chat-typing span{width:7px;height:7px;background:var(--txm);border-radius:50%;animation:bounce .6s infinite alternate}
+.chat-typing span:nth-child(2){animation-delay:.15s}
+.chat-typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{to{opacity:.3;transform:translateY(-4px)}}
+
+.chat-input-wrap{padding:10px 14px;border-top:1px solid var(--bdr);display:flex;gap:8px;flex-shrink:0}
+.chat-input{flex:1;padding:9px 12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;color:var(--tx);font-family:var(--font);font-size:14px;outline:none;resize:none;min-height:40px;max-height:72px}
+.chat-input:focus{border-color:var(--lime)}
+.chat-input::placeholder{color:var(--txm)}
+.chat-send{width:40px;height:40px;border-radius:8px;background:var(--lime);color:var(--bg3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s;flex-shrink:0}
+.chat-send:disabled{opacity:.4;cursor:default}
+.chat-send svg{width:16px;height:16px}
+
 @media(max-width:1024px){.tg{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}.cdr-g{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.sidebar{display:none}.mob-nav{display:block}.app{flex-direction:column}.main{padding:14px 16px 16px}.hero{padding:20px 16px 14px}.sbar{max-width:100%}.sbar input{font-size:16px}.tg{grid-template-columns:1fr}.cdr-g{grid-template-columns:1fr 1fr}.cdr{padding:12px 16px}.toolbar{flex-direction:column;align-items:stretch}.top-row{max-width:100%}.chat-panel{max-width:100%}.chat-toggle-label{display:none}.chat-toggle{padding:0 14px}}
+@media(max-width:768px){.sidebar{display:none}.mob-c{display:block}.app{flex-direction:column}.main{padding:14px 16px 16px}.hero{padding:20px 16px 14px}.sbar{max-width:100%}.sbar input{font-size:16px}.tg{grid-template-columns:1fr}.cdr-g{grid-template-columns:1fr 1fr}.cdr{padding:12px 16px}.toolbar{flex-direction:column;align-items:stretch}.top-row{max-width:100%}.chat-panel{max-width:100%}.chat-prompts{flex-wrap:wrap}.chat-toggle-label{display:none}.chat-toggle{padding:0 14px}}
 @media(max-width:420px){.cdr-g{grid-template-columns:1fr}.hdr-lbl,.hdr-sep{display:none}}
 </style>
 </head>
@@ -191,49 +213,41 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
   <div class="hdr-sep"></div><span class="hdr-lbl">Data &amp; Interactives</span>
 </div></header>
 <section class="hero">
-  <h1>U.S. <em>Census Explorer</em></h1>
-  <p>Explore Census data for every municipality in every state. Search towns, browse by county, compare communities and rank by any metric.</p>
-  <p class="src">Source: U.S. Census Bureau, 2020&ndash;2024 ACS 5-Year Estimates (Data Profiles) &middot; <a href="https://data.census.gov" target="_blank">data.census.gov</a></p>
+  <h1>New Jersey <em>Census Explorer</em></h1>
+  <p>Explore detailed U.S. Census data &mdash; demographics, economy, housing and more &mdash; for every municipality in the Garden State.</p>
+  <p class="src">Source: U.S. Census Bureau, 2020&ndash;2024 American Community Survey 5-Year Estimates &middot; <a href="https://data.census.gov" target="_blank">data.census.gov</a></p>
 </section>
 <div class="app">
   <nav class="sidebar" id="sidebar">
-    <div class="sb-section">
-      <div class="sb-lbl">State</div>
-      <select class="sb-sel" id="state-sel"></select>
-    </div>
-    <div class="sb-flt"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="sb-f" placeholder="Filter counties&hellip;" autocomplete="off"/></div>
-    <div class="sb-lbl" style="padding-top:4px">Counties</div>
-    <div class="sb-list" id="sb-list"><div class="sb-loading">Loading counties&hellip;</div></div>
+    <div class="sb-hd">Counties</div>
+    <div class="sb-flt"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="sb-f" placeholder="Filter&hellip;" autocomplete="off"/></div>
+    <div class="sb-list" id="sb-list"></div>
   </nav>
   <div class="main">
-    <div class="mob-nav" id="mob-nav">
-      <div class="mob-row">
-        <select class="mob-sel" id="mob-state"></select>
-        <select class="mob-sel" id="mob-county"><option>Loading&hellip;</option></select>
-      </div>
-    </div>
+    <div class="mob-c" id="mob-c"><button class="mc-btn" id="mc-btn"><span id="mc-lbl">Atlantic County</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="mc-dd" id="mc-dd"></div></div>
     <div class="top-row">
-      <div class="sbar" id="sbar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="search" placeholder="Search towns in current state&hellip;" autocomplete="off"/><div class="sdd" id="sdd"></div></div>
+      <div class="sbar" id="sbar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="search" placeholder="Search any NJ town&hellip;" autocomplete="off"/><div class="sdd" id="sdd"></div></div>
       <button class="chat-toggle" id="chat-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="chat-toggle-label">Rank Data</span></button>
     </div>
+    <!-- INLINE CHAT PANEL -->
     <div class="chat-panel" id="chat-panel">
       <div class="chat-body" id="chat-body">
         <div class="chat-welcome">
-          <p>Rank towns, counties, or states. Say "national" for cross-state rankings. Specify a count up to 500. Use "load national" to fetch all 51 states (~1 min).</p>
+          <p>Get top 25 rankings for NJ towns and counties by any Census metric:</p>
           <div class="chat-prompts">
-            <button class="chat-prompt" data-q="Load national">⬇️ Load all 51 states</button>
-            <button class="chat-prompt" data-q="Load all">⬇️ Load current state</button>
-            <button class="chat-prompt" data-q="Top 100 richest towns nationally">💰 Top 100 national income</button>
-            <button class="chat-prompt" data-q="Rank states by median home value">🏠 States by home value</button>
-            <button class="chat-prompt" data-q="Top 500 most educated towns nationally">🎓 Top 500 educated nationally</button>
-            <button class="chat-prompt" data-q="Rank counties by population">📊 Counties by population</button>
-            <button class="chat-prompt" data-q="Top 50 richest towns in New Jersey">🏆 NJ top 50 income</button>
-            <button class="chat-prompt" data-q="Top 200 youngest towns nationally">👶 200 youngest nationally</button>
+            <button class="chat-prompt" data-q="Highest income towns in Bergen County">🏆 Highest income in Bergen</button>
+            <button class="chat-prompt" data-q="Rank counties by median home value">🏠 Counties by home value</button>
+            <button class="chat-prompt" data-q="Most educated towns in NJ">🎓 Most educated towns</button>
+            <button class="chat-prompt" data-q="Most diverse towns in Middlesex County">🌍 Most diverse in Middlesex</button>
+            <button class="chat-prompt" data-q="Lowest poverty rates in NJ">📊 Lowest poverty</button>
+            <button class="chat-prompt" data-q="Youngest towns in NJ">👶 Youngest towns</button>
+            <button class="chat-prompt" data-q="Highest work from home rate">🏡 Most WFH</button>
+            <button class="chat-prompt" data-q="Most expensive rent in Hudson County">💰 Priciest rent in Hudson</button>
           </div>
         </div>
       </div>
       <div class="chat-input-wrap">
-        <textarea class="chat-input" id="chat-input" placeholder="e.g. top 100 national richest towns, rank New Jersey counties by education&hellip;" rows="1"></textarea>
+        <textarea class="chat-input" id="chat-input" placeholder="e.g. richest towns in Morris County&hellip;" rows="1"></textarea>
         <button class="chat-send" id="chat-send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
       </div>
     </div>
@@ -244,235 +258,183 @@ body{font-family:var(--font);background:var(--bg2);color:var(--tx);line-height:1
   </div>
 </div>
 <div class="cdr" id="cdr"><div class="cdr-in"><div class="cdr-top"><span class="cdr-t">Comparing <span id="cd-nm"></span></span><button class="cdr-x" id="cd-x">&#10005; Clear</button></div><div class="cdr-g" id="cd-g"></div></div></div>
-<footer class="ftr">Data: U.S. Census Bureau &middot; 2020-2024 ACS 5-Year Estimates &middot; <a href="https://data.census.gov" target="_blank">data.census.gov</a><br>&copy; <script>document.write(new Date().getFullYear())</script> NJ Advance Media for NJ.com</footer>
+<footer class="ftr">Data: U.S. Census Bureau &middot; 2020-2024 ACS 5-Year Estimates (Data Profiles) &middot; <a href="https://data.census.gov" target="_blank">data.census.gov</a><br>&copy; <script>document.write(new Date().getFullYear())</script> NJ Advance Media for NJ.com</footer>
 
 <script>
-const STATES=[["01","Alabama"],["02","Alaska"],["04","Arizona"],["05","Arkansas"],["06","California"],["08","Colorado"],["09","Connecticut"],["10","Delaware"],["11","District of Columbia"],["12","Florida"],["13","Georgia"],["15","Hawaii"],["16","Idaho"],["17","Illinois"],["18","Indiana"],["19","Iowa"],["20","Kansas"],["21","Kentucky"],["22","Louisiana"],["23","Maine"],["24","Maryland"],["25","Massachusetts"],["26","Michigan"],["27","Minnesota"],["28","Mississippi"],["29","Missouri"],["30","Montana"],["31","Nebraska"],["32","Nevada"],["33","New Hampshire"],["34","New Jersey"],["35","New Mexico"],["36","New York"],["37","North Carolina"],["38","North Dakota"],["39","Ohio"],["40","Oklahoma"],["41","Oregon"],["42","Pennsylvania"],["44","Rhode Island"],["45","South Carolina"],["46","South Dakota"],["47","Tennessee"],["48","Texas"],["49","Utah"],["50","Vermont"],["51","Virginia"],["53","Washington"],["54","West Virginia"],["55","Wisconsin"],["56","Wyoming"]];
-const RACE_COLORS=['#6ba3d6','#e8724a','#8cc474','#c97dd6','#d6c95e','#9e9e9e'];
+/* ═══ EMBEDDED TOWN LIST (for instant sidebar) ═══ */
+const RAW=[{"n":"Absecon","t":"city","c":"Atlantic","f":"001"},{"n":"Atlantic City","t":"city","c":"Atlantic","f":"001"},{"n":"Brigantine","t":"city","c":"Atlantic","f":"001"},{"n":"Buena","t":"borough","c":"Atlantic","f":"001"},{"n":"Buena Vista","t":"township","c":"Atlantic","f":"001"},{"n":"Corbin City","t":"city","c":"Atlantic","f":"001"},{"n":"Egg Harbor City","t":"city","c":"Atlantic","f":"001"},{"n":"Egg Harbor","t":"township","c":"Atlantic","f":"001"},{"n":"Estell Manor","t":"city","c":"Atlantic","f":"001"},{"n":"Folsom","t":"borough","c":"Atlantic","f":"001"},{"n":"Galloway","t":"township","c":"Atlantic","f":"001"},{"n":"Hamilton","t":"township","c":"Atlantic","f":"001"},{"n":"Hammonton","t":"town","c":"Atlantic","f":"001"},{"n":"Linwood","t":"city","c":"Atlantic","f":"001"},{"n":"Longport","t":"borough","c":"Atlantic","f":"001"},{"n":"Margate City","t":"city","c":"Atlantic","f":"001"},{"n":"Mullica","t":"township","c":"Atlantic","f":"001"},{"n":"Northfield","t":"city","c":"Atlantic","f":"001"},{"n":"Pleasantville","t":"city","c":"Atlantic","f":"001"},{"n":"Port Republic","t":"city","c":"Atlantic","f":"001"},{"n":"Somers Point","t":"city","c":"Atlantic","f":"001"},{"n":"Ventnor City","t":"city","c":"Atlantic","f":"001"},{"n":"Weymouth","t":"township","c":"Atlantic","f":"001"},{"n":"Alpine","t":"borough","c":"Bergen","f":"003"},{"n":"Bergenfield","t":"borough","c":"Bergen","f":"003"},{"n":"Bogota","t":"borough","c":"Bergen","f":"003"},{"n":"Carlstadt","t":"borough","c":"Bergen","f":"003"},{"n":"Cliffside Park","t":"borough","c":"Bergen","f":"003"},{"n":"Closter","t":"borough","c":"Bergen","f":"003"},{"n":"Cresskill","t":"borough","c":"Bergen","f":"003"},{"n":"Demarest","t":"borough","c":"Bergen","f":"003"},{"n":"Dumont","t":"borough","c":"Bergen","f":"003"},{"n":"East Rutherford","t":"borough","c":"Bergen","f":"003"},{"n":"Edgewater","t":"borough","c":"Bergen","f":"003"},{"n":"Elmwood Park","t":"borough","c":"Bergen","f":"003"},{"n":"Emerson","t":"borough","c":"Bergen","f":"003"},{"n":"Englewood","t":"city","c":"Bergen","f":"003"},{"n":"Englewood Cliffs","t":"borough","c":"Bergen","f":"003"},{"n":"Fair Lawn","t":"borough","c":"Bergen","f":"003"},{"n":"Fairview","t":"borough","c":"Bergen","f":"003"},{"n":"Fort Lee","t":"borough","c":"Bergen","f":"003"},{"n":"Franklin Lakes","t":"borough","c":"Bergen","f":"003"},{"n":"Garfield","t":"city","c":"Bergen","f":"003"},{"n":"Glen Rock","t":"borough","c":"Bergen","f":"003"},{"n":"Hackensack","t":"city","c":"Bergen","f":"003"},{"n":"Harrington Park","t":"borough","c":"Bergen","f":"003"},{"n":"Hasbrouck Heights","t":"borough","c":"Bergen","f":"003"},{"n":"Haworth","t":"borough","c":"Bergen","f":"003"},{"n":"Hillsdale","t":"borough","c":"Bergen","f":"003"},{"n":"Ho-Ho-Kus","t":"borough","c":"Bergen","f":"003"},{"n":"Leonia","t":"borough","c":"Bergen","f":"003"},{"n":"Little Ferry","t":"borough","c":"Bergen","f":"003"},{"n":"Lodi","t":"borough","c":"Bergen","f":"003"},{"n":"Lyndhurst","t":"township","c":"Bergen","f":"003"},{"n":"Mahwah","t":"township","c":"Bergen","f":"003"},{"n":"Maywood","t":"borough","c":"Bergen","f":"003"},{"n":"Midland Park","t":"borough","c":"Bergen","f":"003"},{"n":"Montvale","t":"borough","c":"Bergen","f":"003"},{"n":"Moonachie","t":"borough","c":"Bergen","f":"003"},{"n":"New Milford","t":"borough","c":"Bergen","f":"003"},{"n":"North Arlington","t":"borough","c":"Bergen","f":"003"},{"n":"Northvale","t":"borough","c":"Bergen","f":"003"},{"n":"Norwood","t":"borough","c":"Bergen","f":"003"},{"n":"Oakland","t":"borough","c":"Bergen","f":"003"},{"n":"Old Tappan","t":"borough","c":"Bergen","f":"003"},{"n":"Oradell","t":"borough","c":"Bergen","f":"003"},{"n":"Palisades Park","t":"borough","c":"Bergen","f":"003"},{"n":"Paramus","t":"borough","c":"Bergen","f":"003"},{"n":"Park Ridge","t":"borough","c":"Bergen","f":"003"},{"n":"Ramsey","t":"borough","c":"Bergen","f":"003"},{"n":"Ridgefield","t":"borough","c":"Bergen","f":"003"},{"n":"Ridgefield Park","t":"village","c":"Bergen","f":"003"},{"n":"Ridgewood","t":"village","c":"Bergen","f":"003"},{"n":"River Edge","t":"borough","c":"Bergen","f":"003"},{"n":"River Vale","t":"township","c":"Bergen","f":"003"},{"n":"Rochelle Park","t":"township","c":"Bergen","f":"003"},{"n":"Rockleigh","t":"borough","c":"Bergen","f":"003"},{"n":"Rutherford","t":"borough","c":"Bergen","f":"003"},{"n":"Saddle Brook","t":"township","c":"Bergen","f":"003"},{"n":"Saddle River","t":"borough","c":"Bergen","f":"003"},{"n":"South Hackensack","t":"township","c":"Bergen","f":"003"},{"n":"Teaneck","t":"township","c":"Bergen","f":"003"},{"n":"Tenafly","t":"borough","c":"Bergen","f":"003"},{"n":"Teterboro","t":"borough","c":"Bergen","f":"003"},{"n":"Upper Saddle River","t":"borough","c":"Bergen","f":"003"},{"n":"Waldwick","t":"borough","c":"Bergen","f":"003"},{"n":"Wallington","t":"borough","c":"Bergen","f":"003"},{"n":"Washington","t":"township","c":"Bergen","f":"003"},{"n":"Westwood","t":"borough","c":"Bergen","f":"003"},{"n":"Wood-Ridge","t":"borough","c":"Bergen","f":"003"},{"n":"Woodcliff Lake","t":"borough","c":"Bergen","f":"003"},{"n":"Wyckoff","t":"township","c":"Bergen","f":"003"},{"n":"Beverly","t":"city","c":"Burlington","f":"005"},{"n":"Bordentown","t":"city","c":"Burlington","f":"005"},{"n":"Bordentown","t":"township","c":"Burlington","f":"005"},{"n":"Burlington","t":"city","c":"Burlington","f":"005"},{"n":"Burlington","t":"township","c":"Burlington","f":"005"},{"n":"Chesterfield","t":"township","c":"Burlington","f":"005"},{"n":"Cinnaminson","t":"township","c":"Burlington","f":"005"},{"n":"Delanco","t":"township","c":"Burlington","f":"005"},{"n":"Delran","t":"township","c":"Burlington","f":"005"},{"n":"Eastampton","t":"township","c":"Burlington","f":"005"},{"n":"Edgewater Park","t":"township","c":"Burlington","f":"005"},{"n":"Evesham","t":"township","c":"Burlington","f":"005"},{"n":"Fieldsboro","t":"borough","c":"Burlington","f":"005"},{"n":"Florence","t":"township","c":"Burlington","f":"005"},{"n":"Hainesport","t":"township","c":"Burlington","f":"005"},{"n":"Lumberton","t":"township","c":"Burlington","f":"005"},{"n":"Mansfield","t":"township","c":"Burlington","f":"005"},{"n":"Maple Shade","t":"township","c":"Burlington","f":"005"},{"n":"Medford","t":"township","c":"Burlington","f":"005"},{"n":"Medford Lakes","t":"borough","c":"Burlington","f":"005"},{"n":"Moorestown","t":"township","c":"Burlington","f":"005"},{"n":"Mount Holly","t":"township","c":"Burlington","f":"005"},{"n":"Mount Laurel","t":"township","c":"Burlington","f":"005"},{"n":"New Hanover","t":"township","c":"Burlington","f":"005"},{"n":"North Hanover","t":"township","c":"Burlington","f":"005"},{"n":"Palmyra","t":"borough","c":"Burlington","f":"005"},{"n":"Pemberton","t":"borough","c":"Burlington","f":"005"},{"n":"Pemberton","t":"township","c":"Burlington","f":"005"},{"n":"Riverside","t":"township","c":"Burlington","f":"005"},{"n":"Riverton","t":"borough","c":"Burlington","f":"005"},{"n":"Shamong","t":"township","c":"Burlington","f":"005"},{"n":"Southampton","t":"township","c":"Burlington","f":"005"},{"n":"Springfield","t":"township","c":"Burlington","f":"005"},{"n":"Tabernacle","t":"township","c":"Burlington","f":"005"},{"n":"Washington","t":"township","c":"Burlington","f":"005"},{"n":"Westampton","t":"township","c":"Burlington","f":"005"},{"n":"Willingboro","t":"township","c":"Burlington","f":"005"},{"n":"Woodland","t":"township","c":"Burlington","f":"005"},{"n":"Wrightstown","t":"borough","c":"Burlington","f":"005"},{"n":"Audubon","t":"borough","c":"Camden","f":"007"},{"n":"Audubon Park","t":"borough","c":"Camden","f":"007"},{"n":"Barrington","t":"borough","c":"Camden","f":"007"},{"n":"Bellmawr","t":"borough","c":"Camden","f":"007"},{"n":"Berlin","t":"borough","c":"Camden","f":"007"},{"n":"Berlin","t":"township","c":"Camden","f":"007"},{"n":"Brooklawn","t":"borough","c":"Camden","f":"007"},{"n":"Camden","t":"city","c":"Camden","f":"007"},{"n":"Cherry Hill","t":"township","c":"Camden","f":"007"},{"n":"Chesilhurst","t":"borough","c":"Camden","f":"007"},{"n":"Clementon","t":"borough","c":"Camden","f":"007"},{"n":"Collingswood","t":"borough","c":"Camden","f":"007"},{"n":"Gibbsboro","t":"borough","c":"Camden","f":"007"},{"n":"Gloucester City","t":"city","c":"Camden","f":"007"},{"n":"Gloucester","t":"township","c":"Camden","f":"007"},{"n":"Haddon","t":"township","c":"Camden","f":"007"},{"n":"Haddonfield","t":"borough","c":"Camden","f":"007"},{"n":"Haddon Heights","t":"borough","c":"Camden","f":"007"},{"n":"Hi-Nella","t":"borough","c":"Camden","f":"007"},{"n":"Laurel Springs","t":"borough","c":"Camden","f":"007"},{"n":"Lawnside","t":"borough","c":"Camden","f":"007"},{"n":"Lindenwold","t":"borough","c":"Camden","f":"007"},{"n":"Magnolia","t":"borough","c":"Camden","f":"007"},{"n":"Merchantville","t":"borough","c":"Camden","f":"007"},{"n":"Mount Ephraim","t":"borough","c":"Camden","f":"007"},{"n":"Oaklyn","t":"borough","c":"Camden","f":"007"},{"n":"Pennsauken","t":"township","c":"Camden","f":"007"},{"n":"Pine Hill","t":"borough","c":"Camden","f":"007"},{"n":"Pine Valley","t":"borough","c":"Camden","f":"007"},{"n":"Runnemede","t":"borough","c":"Camden","f":"007"},{"n":"Somerdale","t":"borough","c":"Camden","f":"007"},{"n":"Stratford","t":"borough","c":"Camden","f":"007"},{"n":"Tavistock","t":"borough","c":"Camden","f":"007"},{"n":"Voorhees","t":"township","c":"Camden","f":"007"},{"n":"Waterford","t":"township","c":"Camden","f":"007"},{"n":"Winslow","t":"township","c":"Camden","f":"007"},{"n":"Woodlynne","t":"borough","c":"Camden","f":"007"},{"n":"Avalon","t":"borough","c":"Cape May","f":"009"},{"n":"Cape May","t":"city","c":"Cape May","f":"009"},{"n":"Cape May Point","t":"borough","c":"Cape May","f":"009"},{"n":"Dennis","t":"township","c":"Cape May","f":"009"},{"n":"Lower","t":"township","c":"Cape May","f":"009"},{"n":"Middle","t":"township","c":"Cape May","f":"009"},{"n":"North Wildwood","t":"city","c":"Cape May","f":"009"},{"n":"Ocean City","t":"city","c":"Cape May","f":"009"},{"n":"Sea Isle City","t":"city","c":"Cape May","f":"009"},{"n":"Stone Harbor","t":"borough","c":"Cape May","f":"009"},{"n":"Upper","t":"township","c":"Cape May","f":"009"},{"n":"West Cape May","t":"borough","c":"Cape May","f":"009"},{"n":"West Wildwood","t":"borough","c":"Cape May","f":"009"},{"n":"Wildwood","t":"city","c":"Cape May","f":"009"},{"n":"Wildwood Crest","t":"borough","c":"Cape May","f":"009"},{"n":"Woodbine","t":"borough","c":"Cape May","f":"009"},{"n":"Bridgeton","t":"city","c":"Cumberland","f":"011"},{"n":"Commercial","t":"township","c":"Cumberland","f":"011"},{"n":"Deerfield","t":"township","c":"Cumberland","f":"011"},{"n":"Downe","t":"township","c":"Cumberland","f":"011"},{"n":"Fairfield","t":"township","c":"Cumberland","f":"011"},{"n":"Greenwich","t":"township","c":"Cumberland","f":"011"},{"n":"Hopewell","t":"township","c":"Cumberland","f":"011"},{"n":"Lawrence","t":"township","c":"Cumberland","f":"011"},{"n":"Maurice River","t":"township","c":"Cumberland","f":"011"},{"n":"Millville","t":"city","c":"Cumberland","f":"011"},{"n":"Shiloh","t":"borough","c":"Cumberland","f":"011"},{"n":"Stow Creek","t":"township","c":"Cumberland","f":"011"},{"n":"Upper Deerfield","t":"township","c":"Cumberland","f":"011"},{"n":"Vineland","t":"city","c":"Cumberland","f":"011"},{"n":"Belleville","t":"township","c":"Essex","f":"013"},{"n":"Bloomfield","t":"township","c":"Essex","f":"013"},{"n":"Caldwell","t":"borough","c":"Essex","f":"013"},{"n":"Cedar Grove","t":"township","c":"Essex","f":"013"},{"n":"East Orange","t":"city","c":"Essex","f":"013"},{"n":"Essex Fells","t":"borough","c":"Essex","f":"013"},{"n":"Fairfield","t":"township","c":"Essex","f":"013"},{"n":"Glen Ridge","t":"borough","c":"Essex","f":"013"},{"n":"Irvington","t":"township","c":"Essex","f":"013"},{"n":"Livingston","t":"township","c":"Essex","f":"013"},{"n":"Maplewood","t":"township","c":"Essex","f":"013"},{"n":"Millburn","t":"township","c":"Essex","f":"013"},{"n":"Montclair","t":"township","c":"Essex","f":"013"},{"n":"Newark","t":"city","c":"Essex","f":"013"},{"n":"North Caldwell","t":"borough","c":"Essex","f":"013"},{"n":"Nutley","t":"township","c":"Essex","f":"013"},{"n":"Orange","t":"city","c":"Essex","f":"013"},{"n":"Roseland","t":"borough","c":"Essex","f":"013"},{"n":"South Orange","t":"township","c":"Essex","f":"013"},{"n":"Verona","t":"township","c":"Essex","f":"013"},{"n":"West Caldwell","t":"township","c":"Essex","f":"013"},{"n":"West Orange","t":"township","c":"Essex","f":"013"},{"n":"Clayton","t":"borough","c":"Gloucester","f":"015"},{"n":"Deptford","t":"township","c":"Gloucester","f":"015"},{"n":"East Greenwich","t":"township","c":"Gloucester","f":"015"},{"n":"Elk","t":"township","c":"Gloucester","f":"015"},{"n":"Franklin","t":"township","c":"Gloucester","f":"015"},{"n":"Glassboro","t":"borough","c":"Gloucester","f":"015"},{"n":"Greenwich","t":"township","c":"Gloucester","f":"015"},{"n":"Harrison","t":"township","c":"Gloucester","f":"015"},{"n":"Logan","t":"township","c":"Gloucester","f":"015"},{"n":"Mantua","t":"township","c":"Gloucester","f":"015"},{"n":"Monroe","t":"township","c":"Gloucester","f":"015"},{"n":"National Park","t":"borough","c":"Gloucester","f":"015"},{"n":"Newfield","t":"borough","c":"Gloucester","f":"015"},{"n":"Paulsboro","t":"borough","c":"Gloucester","f":"015"},{"n":"Pitman","t":"borough","c":"Gloucester","f":"015"},{"n":"South Harrison","t":"township","c":"Gloucester","f":"015"},{"n":"Swedesboro","t":"borough","c":"Gloucester","f":"015"},{"n":"Washington","t":"township","c":"Gloucester","f":"015"},{"n":"Wenonah","t":"borough","c":"Gloucester","f":"015"},{"n":"West Deptford","t":"township","c":"Gloucester","f":"015"},{"n":"Westville","t":"borough","c":"Gloucester","f":"015"},{"n":"Woodbury","t":"city","c":"Gloucester","f":"015"},{"n":"Woodbury Heights","t":"borough","c":"Gloucester","f":"015"},{"n":"Woolwich","t":"township","c":"Gloucester","f":"015"},{"n":"Bayonne","t":"city","c":"Hudson","f":"017"},{"n":"East Newark","t":"borough","c":"Hudson","f":"017"},{"n":"Guttenberg","t":"town","c":"Hudson","f":"017"},{"n":"Harrison","t":"town","c":"Hudson","f":"017"},{"n":"Hoboken","t":"city","c":"Hudson","f":"017"},{"n":"Jersey City","t":"city","c":"Hudson","f":"017"},{"n":"Kearny","t":"town","c":"Hudson","f":"017"},{"n":"North Bergen","t":"township","c":"Hudson","f":"017"},{"n":"Secaucus","t":"town","c":"Hudson","f":"017"},{"n":"Union City","t":"city","c":"Hudson","f":"017"},{"n":"Weehawken","t":"township","c":"Hudson","f":"017"},{"n":"West New York","t":"town","c":"Hudson","f":"017"},{"n":"Alexandria","t":"township","c":"Hunterdon","f":"019"},{"n":"Bethlehem","t":"township","c":"Hunterdon","f":"019"},{"n":"Bloomsbury","t":"borough","c":"Hunterdon","f":"019"},{"n":"Califon","t":"borough","c":"Hunterdon","f":"019"},{"n":"Clinton","t":"town","c":"Hunterdon","f":"019"},{"n":"Clinton","t":"township","c":"Hunterdon","f":"019"},{"n":"Delaware","t":"township","c":"Hunterdon","f":"019"},{"n":"East Amwell","t":"township","c":"Hunterdon","f":"019"},{"n":"Flemington","t":"borough","c":"Hunterdon","f":"019"},{"n":"Franklin","t":"township","c":"Hunterdon","f":"019"},{"n":"Frenchtown","t":"borough","c":"Hunterdon","f":"019"},{"n":"Glen Gardner","t":"borough","c":"Hunterdon","f":"019"},{"n":"Hampton","t":"borough","c":"Hunterdon","f":"019"},{"n":"High Bridge","t":"borough","c":"Hunterdon","f":"019"},{"n":"Holland","t":"township","c":"Hunterdon","f":"019"},{"n":"Kingwood","t":"township","c":"Hunterdon","f":"019"},{"n":"Lambertville","t":"city","c":"Hunterdon","f":"019"},{"n":"Lebanon","t":"borough","c":"Hunterdon","f":"019"},{"n":"Lebanon","t":"township","c":"Hunterdon","f":"019"},{"n":"Milford","t":"borough","c":"Hunterdon","f":"019"},{"n":"Raritan","t":"township","c":"Hunterdon","f":"019"},{"n":"Readington","t":"township","c":"Hunterdon","f":"019"},{"n":"Stockton","t":"borough","c":"Hunterdon","f":"019"},{"n":"Tewksbury","t":"township","c":"Hunterdon","f":"019"},{"n":"Union","t":"township","c":"Hunterdon","f":"019"},{"n":"West Amwell","t":"township","c":"Hunterdon","f":"019"},{"n":"East Windsor","t":"township","c":"Mercer","f":"021"},{"n":"Ewing","t":"township","c":"Mercer","f":"021"},{"n":"Hamilton","t":"township","c":"Mercer","f":"021"},{"n":"Hightstown","t":"borough","c":"Mercer","f":"021"},{"n":"Hopewell","t":"borough","c":"Mercer","f":"021"},{"n":"Hopewell","t":"township","c":"Mercer","f":"021"},{"n":"Lawrence","t":"township","c":"Mercer","f":"021"},{"n":"Pennington","t":"borough","c":"Mercer","f":"021"},{"n":"Princeton","t":"municipality","c":"Mercer","f":"021"},{"n":"Robbinsville","t":"township","c":"Mercer","f":"021"},{"n":"Trenton","t":"city","c":"Mercer","f":"021"},{"n":"Washington","t":"township","c":"Mercer","f":"021"},{"n":"West Windsor","t":"township","c":"Mercer","f":"021"},{"n":"Carteret","t":"borough","c":"Middlesex","f":"023"},{"n":"Cranbury","t":"township","c":"Middlesex","f":"023"},{"n":"Dunellen","t":"borough","c":"Middlesex","f":"023"},{"n":"East Brunswick","t":"township","c":"Middlesex","f":"023"},{"n":"Edison","t":"township","c":"Middlesex","f":"023"},{"n":"Helmetta","t":"borough","c":"Middlesex","f":"023"},{"n":"Highland Park","t":"borough","c":"Middlesex","f":"023"},{"n":"Jamesburg","t":"borough","c":"Middlesex","f":"023"},{"n":"Metuchen","t":"borough","c":"Middlesex","f":"023"},{"n":"Middlesex","t":"borough","c":"Middlesex","f":"023"},{"n":"Milltown","t":"borough","c":"Middlesex","f":"023"},{"n":"Monroe","t":"township","c":"Middlesex","f":"023"},{"n":"New Brunswick","t":"city","c":"Middlesex","f":"023"},{"n":"North Brunswick","t":"township","c":"Middlesex","f":"023"},{"n":"Old Bridge","t":"township","c":"Middlesex","f":"023"},{"n":"Perth Amboy","t":"city","c":"Middlesex","f":"023"},{"n":"Piscataway","t":"township","c":"Middlesex","f":"023"},{"n":"Plainsboro","t":"township","c":"Middlesex","f":"023"},{"n":"Sayreville","t":"borough","c":"Middlesex","f":"023"},{"n":"South Amboy","t":"city","c":"Middlesex","f":"023"},{"n":"South Brunswick","t":"township","c":"Middlesex","f":"023"},{"n":"South Plainfield","t":"borough","c":"Middlesex","f":"023"},{"n":"South River","t":"borough","c":"Middlesex","f":"023"},{"n":"Spotswood","t":"borough","c":"Middlesex","f":"023"},{"n":"Woodbridge","t":"township","c":"Middlesex","f":"023"},{"n":"Aberdeen","t":"township","c":"Monmouth","f":"025"},{"n":"Allenhurst","t":"borough","c":"Monmouth","f":"025"},{"n":"Asbury Park","t":"city","c":"Monmouth","f":"025"},{"n":"Atlantic Highlands","t":"borough","c":"Monmouth","f":"025"},{"n":"Avon-by-the-Sea","t":"borough","c":"Monmouth","f":"025"},{"n":"Belmar","t":"borough","c":"Monmouth","f":"025"},{"n":"Bradley Beach","t":"borough","c":"Monmouth","f":"025"},{"n":"Brielle","t":"borough","c":"Monmouth","f":"025"},{"n":"Colts Neck","t":"township","c":"Monmouth","f":"025"},{"n":"Deal","t":"borough","c":"Monmouth","f":"025"},{"n":"Eatontown","t":"borough","c":"Monmouth","f":"025"},{"n":"Englishtown","t":"borough","c":"Monmouth","f":"025"},{"n":"Fair Haven","t":"borough","c":"Monmouth","f":"025"},{"n":"Farmingdale","t":"borough","c":"Monmouth","f":"025"},{"n":"Freehold","t":"borough","c":"Monmouth","f":"025"},{"n":"Freehold","t":"township","c":"Monmouth","f":"025"},{"n":"Hazlet","t":"township","c":"Monmouth","f":"025"},{"n":"Highlands","t":"borough","c":"Monmouth","f":"025"},{"n":"Holmdel","t":"township","c":"Monmouth","f":"025"},{"n":"Howell","t":"township","c":"Monmouth","f":"025"},{"n":"Interlaken","t":"borough","c":"Monmouth","f":"025"},{"n":"Keansburg","t":"borough","c":"Monmouth","f":"025"},{"n":"Keyport","t":"borough","c":"Monmouth","f":"025"},{"n":"Lake Como","t":"borough","c":"Monmouth","f":"025"},{"n":"Little Silver","t":"borough","c":"Monmouth","f":"025"},{"n":"Long Branch","t":"city","c":"Monmouth","f":"025"},{"n":"Manalapan","t":"township","c":"Monmouth","f":"025"},{"n":"Manasquan","t":"borough","c":"Monmouth","f":"025"},{"n":"Marlboro","t":"township","c":"Monmouth","f":"025"},{"n":"Matawan","t":"borough","c":"Monmouth","f":"025"},{"n":"Middletown","t":"township","c":"Monmouth","f":"025"},{"n":"Millstone","t":"township","c":"Monmouth","f":"025"},{"n":"Monmouth Beach","t":"borough","c":"Monmouth","f":"025"},{"n":"Neptune","t":"township","c":"Monmouth","f":"025"},{"n":"Neptune City","t":"borough","c":"Monmouth","f":"025"},{"n":"Ocean","t":"township","c":"Monmouth","f":"025"},{"n":"Oceanport","t":"borough","c":"Monmouth","f":"025"},{"n":"Red Bank","t":"borough","c":"Monmouth","f":"025"},{"n":"Roosevelt","t":"borough","c":"Monmouth","f":"025"},{"n":"Rumson","t":"borough","c":"Monmouth","f":"025"},{"n":"Sea Bright","t":"borough","c":"Monmouth","f":"025"},{"n":"Sea Girt","t":"borough","c":"Monmouth","f":"025"},{"n":"Shrewsbury","t":"borough","c":"Monmouth","f":"025"},{"n":"Shrewsbury","t":"township","c":"Monmouth","f":"025"},{"n":"Spring Lake","t":"borough","c":"Monmouth","f":"025"},{"n":"Spring Lake Heights","t":"borough","c":"Monmouth","f":"025"},{"n":"Tinton Falls","t":"borough","c":"Monmouth","f":"025"},{"n":"Union Beach","t":"borough","c":"Monmouth","f":"025"},{"n":"Upper Freehold","t":"township","c":"Monmouth","f":"025"},{"n":"Wall","t":"township","c":"Monmouth","f":"025"},{"n":"West Long Branch","t":"borough","c":"Monmouth","f":"025"},{"n":"Boonton","t":"town","c":"Morris","f":"027"},{"n":"Boonton","t":"township","c":"Morris","f":"027"},{"n":"Butler","t":"borough","c":"Morris","f":"027"},{"n":"Chatham","t":"borough","c":"Morris","f":"027"},{"n":"Chatham","t":"township","c":"Morris","f":"027"},{"n":"Chester","t":"borough","c":"Morris","f":"027"},{"n":"Chester","t":"township","c":"Morris","f":"027"},{"n":"Denville","t":"township","c":"Morris","f":"027"},{"n":"Dover","t":"town","c":"Morris","f":"027"},{"n":"East Hanover","t":"township","c":"Morris","f":"027"},{"n":"Florham Park","t":"borough","c":"Morris","f":"027"},{"n":"Hanover","t":"township","c":"Morris","f":"027"},{"n":"Harding","t":"township","c":"Morris","f":"027"},{"n":"Jefferson","t":"township","c":"Morris","f":"027"},{"n":"Kinnelon","t":"borough","c":"Morris","f":"027"},{"n":"Lincoln Park","t":"borough","c":"Morris","f":"027"},{"n":"Long Hill","t":"township","c":"Morris","f":"027"},{"n":"Madison","t":"borough","c":"Morris","f":"027"},{"n":"Mendham","t":"borough","c":"Morris","f":"027"},{"n":"Mendham","t":"township","c":"Morris","f":"027"},{"n":"Mine Hill","t":"township","c":"Morris","f":"027"},{"n":"Montville","t":"township","c":"Morris","f":"027"},{"n":"Morris","t":"township","c":"Morris","f":"027"},{"n":"Morris Plains","t":"borough","c":"Morris","f":"027"},{"n":"Morristown","t":"town","c":"Morris","f":"027"},{"n":"Mount Arlington","t":"borough","c":"Morris","f":"027"},{"n":"Mount Olive","t":"township","c":"Morris","f":"027"},{"n":"Mountain Lakes","t":"borough","c":"Morris","f":"027"},{"n":"Netcong","t":"borough","c":"Morris","f":"027"},{"n":"Parsippany-Troy Hills","t":"township","c":"Morris","f":"027"},{"n":"Pequannock","t":"township","c":"Morris","f":"027"},{"n":"Randolph","t":"township","c":"Morris","f":"027"},{"n":"Riverdale","t":"borough","c":"Morris","f":"027"},{"n":"Rockaway","t":"borough","c":"Morris","f":"027"},{"n":"Rockaway","t":"township","c":"Morris","f":"027"},{"n":"Roxbury","t":"township","c":"Morris","f":"027"},{"n":"Victory Gardens","t":"borough","c":"Morris","f":"027"},{"n":"Washington","t":"township","c":"Morris","f":"027"},{"n":"Wharton","t":"borough","c":"Morris","f":"027"},{"n":"Barnegat","t":"township","c":"Ocean","f":"029"},{"n":"Barnegat Light","t":"borough","c":"Ocean","f":"029"},{"n":"Bay Head","t":"borough","c":"Ocean","f":"029"},{"n":"Beach Haven","t":"borough","c":"Ocean","f":"029"},{"n":"Beachwood","t":"borough","c":"Ocean","f":"029"},{"n":"Berkeley","t":"township","c":"Ocean","f":"029"},{"n":"Brick","t":"township","c":"Ocean","f":"029"},{"n":"Dover","t":"township","c":"Ocean","f":"029"},{"n":"Eagleswood","t":"township","c":"Ocean","f":"029"},{"n":"Harvey Cedars","t":"borough","c":"Ocean","f":"029"},{"n":"Island Heights","t":"borough","c":"Ocean","f":"029"},{"n":"Jackson","t":"township","c":"Ocean","f":"029"},{"n":"Lacey","t":"township","c":"Ocean","f":"029"},{"n":"Lakehurst","t":"borough","c":"Ocean","f":"029"},{"n":"Lakewood","t":"township","c":"Ocean","f":"029"},{"n":"Lavallette","t":"borough","c":"Ocean","f":"029"},{"n":"Little Egg Harbor","t":"township","c":"Ocean","f":"029"},{"n":"Long Beach","t":"township","c":"Ocean","f":"029"},{"n":"Manchester","t":"township","c":"Ocean","f":"029"},{"n":"Mantoloking","t":"borough","c":"Ocean","f":"029"},{"n":"Ocean","t":"township","c":"Ocean","f":"029"},{"n":"Ocean Gate","t":"borough","c":"Ocean","f":"029"},{"n":"Pine Beach","t":"borough","c":"Ocean","f":"029"},{"n":"Plumsted","t":"township","c":"Ocean","f":"029"},{"n":"Point Pleasant","t":"borough","c":"Ocean","f":"029"},{"n":"Point Pleasant Beach","t":"borough","c":"Ocean","f":"029"},{"n":"Seaside Heights","t":"borough","c":"Ocean","f":"029"},{"n":"Seaside Park","t":"borough","c":"Ocean","f":"029"},{"n":"Ship Bottom","t":"borough","c":"Ocean","f":"029"},{"n":"South Toms River","t":"borough","c":"Ocean","f":"029"},{"n":"Stafford","t":"township","c":"Ocean","f":"029"},{"n":"Surf City","t":"borough","c":"Ocean","f":"029"},{"n":"Tuckerton","t":"borough","c":"Ocean","f":"029"},{"n":"Bloomingdale","t":"borough","c":"Passaic","f":"031"},{"n":"Clifton","t":"city","c":"Passaic","f":"031"},{"n":"Haledon","t":"borough","c":"Passaic","f":"031"},{"n":"Hawthorne","t":"borough","c":"Passaic","f":"031"},{"n":"Little Falls","t":"township","c":"Passaic","f":"031"},{"n":"North Haledon","t":"borough","c":"Passaic","f":"031"},{"n":"Passaic","t":"city","c":"Passaic","f":"031"},{"n":"Paterson","t":"city","c":"Passaic","f":"031"},{"n":"Pompton Lakes","t":"borough","c":"Passaic","f":"031"},{"n":"Prospect Park","t":"borough","c":"Passaic","f":"031"},{"n":"Ringwood","t":"borough","c":"Passaic","f":"031"},{"n":"Totowa","t":"borough","c":"Passaic","f":"031"},{"n":"Wanaque","t":"borough","c":"Passaic","f":"031"},{"n":"Wayne","t":"township","c":"Passaic","f":"031"},{"n":"West Milford","t":"township","c":"Passaic","f":"031"},{"n":"Woodland Park","t":"borough","c":"Passaic","f":"031"},{"n":"Alloway","t":"township","c":"Salem","f":"033"},{"n":"Carneys Point","t":"township","c":"Salem","f":"033"},{"n":"Elmer","t":"borough","c":"Salem","f":"033"},{"n":"Elsinboro","t":"township","c":"Salem","f":"033"},{"n":"Lower Alloways Creek","t":"township","c":"Salem","f":"033"},{"n":"Mannington","t":"township","c":"Salem","f":"033"},{"n":"Oldmans","t":"township","c":"Salem","f":"033"},{"n":"Penns Grove","t":"borough","c":"Salem","f":"033"},{"n":"Pennsville","t":"township","c":"Salem","f":"033"},{"n":"Pilesgrove","t":"township","c":"Salem","f":"033"},{"n":"Pittsgrove","t":"township","c":"Salem","f":"033"},{"n":"Quinton","t":"township","c":"Salem","f":"033"},{"n":"Salem","t":"city","c":"Salem","f":"033"},{"n":"Upper Pittsgrove","t":"township","c":"Salem","f":"033"},{"n":"Woodstown","t":"borough","c":"Salem","f":"033"},{"n":"Bedminster","t":"township","c":"Somerset","f":"035"},{"n":"Bernards","t":"township","c":"Somerset","f":"035"},{"n":"Bernardsville","t":"borough","c":"Somerset","f":"035"},{"n":"Bound Brook","t":"borough","c":"Somerset","f":"035"},{"n":"Branchburg","t":"township","c":"Somerset","f":"035"},{"n":"Bridgewater","t":"township","c":"Somerset","f":"035"},{"n":"Far Hills","t":"borough","c":"Somerset","f":"035"},{"n":"Franklin","t":"township","c":"Somerset","f":"035"},{"n":"Green Brook","t":"township","c":"Somerset","f":"035"},{"n":"Hillsborough","t":"township","c":"Somerset","f":"035"},{"n":"Manville","t":"borough","c":"Somerset","f":"035"},{"n":"Millstone","t":"borough","c":"Somerset","f":"035"},{"n":"Montgomery","t":"township","c":"Somerset","f":"035"},{"n":"North Plainfield","t":"borough","c":"Somerset","f":"035"},{"n":"Peapack-Gladstone","t":"borough","c":"Somerset","f":"035"},{"n":"Raritan","t":"borough","c":"Somerset","f":"035"},{"n":"Rocky Hill","t":"borough","c":"Somerset","f":"035"},{"n":"Somerville","t":"borough","c":"Somerset","f":"035"},{"n":"South Bound Brook","t":"borough","c":"Somerset","f":"035"},{"n":"Warren","t":"township","c":"Somerset","f":"035"},{"n":"Watchung","t":"borough","c":"Somerset","f":"035"},{"n":"Andover","t":"borough","c":"Sussex","f":"037"},{"n":"Andover","t":"township","c":"Sussex","f":"037"},{"n":"Branchville","t":"borough","c":"Sussex","f":"037"},{"n":"Byram","t":"township","c":"Sussex","f":"037"},{"n":"Frankford","t":"township","c":"Sussex","f":"037"},{"n":"Franklin","t":"borough","c":"Sussex","f":"037"},{"n":"Fredon","t":"township","c":"Sussex","f":"037"},{"n":"Green","t":"township","c":"Sussex","f":"037"},{"n":"Hamburg","t":"borough","c":"Sussex","f":"037"},{"n":"Hampton","t":"township","c":"Sussex","f":"037"},{"n":"Hardyston","t":"township","c":"Sussex","f":"037"},{"n":"Hopatcong","t":"borough","c":"Sussex","f":"037"},{"n":"Lafayette","t":"township","c":"Sussex","f":"037"},{"n":"Montague","t":"township","c":"Sussex","f":"037"},{"n":"Newton","t":"town","c":"Sussex","f":"037"},{"n":"Ogdensburg","t":"borough","c":"Sussex","f":"037"},{"n":"Sandyston","t":"township","c":"Sussex","f":"037"},{"n":"Sparta","t":"township","c":"Sussex","f":"037"},{"n":"Stanhope","t":"borough","c":"Sussex","f":"037"},{"n":"Stillwater","t":"township","c":"Sussex","f":"037"},{"n":"Sussex","t":"borough","c":"Sussex","f":"037"},{"n":"Vernon","t":"township","c":"Sussex","f":"037"},{"n":"Walpack","t":"township","c":"Sussex","f":"037"},{"n":"Wantage","t":"township","c":"Sussex","f":"037"},{"n":"Berkeley Heights","t":"township","c":"Union","f":"039"},{"n":"Clark","t":"township","c":"Union","f":"039"},{"n":"Cranford","t":"township","c":"Union","f":"039"},{"n":"Elizabeth","t":"city","c":"Union","f":"039"},{"n":"Fanwood","t":"borough","c":"Union","f":"039"},{"n":"Garwood","t":"borough","c":"Union","f":"039"},{"n":"Hillside","t":"township","c":"Union","f":"039"},{"n":"Kenilworth","t":"borough","c":"Union","f":"039"},{"n":"Linden","t":"city","c":"Union","f":"039"},{"n":"Mountainside","t":"borough","c":"Union","f":"039"},{"n":"New Providence","t":"borough","c":"Union","f":"039"},{"n":"Plainfield","t":"city","c":"Union","f":"039"},{"n":"Rahway","t":"city","c":"Union","f":"039"},{"n":"Roselle","t":"borough","c":"Union","f":"039"},{"n":"Roselle Park","t":"borough","c":"Union","f":"039"},{"n":"Scotch Plains","t":"township","c":"Union","f":"039"},{"n":"Springfield","t":"township","c":"Union","f":"039"},{"n":"Summit","t":"city","c":"Union","f":"039"},{"n":"Union","t":"township","c":"Union","f":"039"},{"n":"Westfield","t":"town","c":"Union","f":"039"},{"n":"Winfield","t":"township","c":"Union","f":"039"},{"n":"Allamuchy","t":"township","c":"Warren","f":"041"},{"n":"Alpha","t":"borough","c":"Warren","f":"041"},{"n":"Belvidere","t":"town","c":"Warren","f":"041"},{"n":"Blairstown","t":"township","c":"Warren","f":"041"},{"n":"Franklin","t":"township","c":"Warren","f":"041"},{"n":"Frelinghuysen","t":"township","c":"Warren","f":"041"},{"n":"Greenwich","t":"township","c":"Warren","f":"041"},{"n":"Hackettstown","t":"town","c":"Warren","f":"041"},{"n":"Hardwick","t":"township","c":"Warren","f":"041"},{"n":"Harmony","t":"township","c":"Warren","f":"041"},{"n":"Hope","t":"township","c":"Warren","f":"041"},{"n":"Independence","t":"township","c":"Warren","f":"041"},{"n":"Knowlton","t":"township","c":"Warren","f":"041"},{"n":"Liberty","t":"township","c":"Warren","f":"041"},{"n":"Lopatcong","t":"township","c":"Warren","f":"041"},{"n":"Mansfield","t":"township","c":"Warren","f":"041"},{"n":"Oxford","t":"township","c":"Warren","f":"041"},{"n":"Pahaquarry","t":"township","c":"Warren","f":"041"},{"n":"Phillipsburg","t":"town","c":"Warren","f":"041"},{"n":"Pohatcong","t":"township","c":"Warren","f":"041"},{"n":"Washington","t":"borough","c":"Warren","f":"041"},{"n":"Washington","t":"township","c":"Warren","f":"041"},{"n":"White","t":"township","c":"Warren","f":"041"}];
+const TOWNS=RAW.map(r=>({name:r.n,type:r.t,county:r.c,fips:r.f,dn:r.n+(r.t?' ('+r.t+')':'')})).sort((a,b)=>a.name.localeCompare(b.name));
+const C=[...new Set(TOWNS.map(t=>t.county))].sort();
+const BC={};TOWNS.forEach(t=>{if(!BC[t.county])BC[t.county]=[];BC[t.county].push(t)});
+
+let cur=C[0],srt='name',cmpA=null,cmpB=null;
+const cache={};
+
+/* ═══ CENSUS API CONFIG ═══ */
 const ACS='https://api.census.gov/data/2024/acs/acs5/profile';
-const VARS=['NAME','DP05_0001E','DP05_0002PE','DP05_0003PE','DP05_0018E','DP05_0019PE','DP05_0024PE','DP05_0029PE','DP05_0077PE','DP05_0078PE','DP05_0080PE','DP05_0083PE','DP05_0071PE','DP03_0004PE','DP03_0009PE','DP03_0019PE','DP03_0021PE','DP03_0024PE','DP03_0025E','DP03_0062E','DP03_0088E','DP03_0096PE','DP03_0128PE','DP04_0001E','DP04_0002PE','DP04_0003PE','DP04_0046PE','DP04_0047PE','DP04_0089E','DP04_0134E','DP02_0065PE','DP02_0067PE','DP02_0068PE','DP02_0113PE','DP02_0114PE','DP02_0072PE','DP02_0152PE','DP02_0153PE'].join(',');
+const ST='34';
+/* Variables: DP05=demographics, DP03=economic, DP04=housing, DP02=social */
+const VARS=[
+'NAME',
+/* DP05: Demographics */
+'DP05_0001E','DP05_0002PE','DP05_0003PE','DP05_0018E',
+'DP05_0019PE','DP05_0024PE','DP05_0029PE',
+'DP05_0077PE','DP05_0078PE','DP05_0080PE','DP05_0083PE','DP05_0071PE',
+/* DP03: Economic */
+'DP03_0004PE','DP03_0009PE','DP03_0019PE','DP03_0021PE','DP03_0024PE','DP03_0025E',
+'DP03_0062E','DP03_0088E','DP03_0096PE','DP03_0128PE',
+/* DP04: Housing */
+'DP04_0001E','DP04_0002PE','DP04_0003PE','DP04_0046PE','DP04_0047PE',
+'DP04_0089E','DP04_0134E',
+/* DP02: Social */
+'DP02_0065PE','DP02_0067PE','DP02_0068PE',
+'DP02_0113PE','DP02_0114PE','DP02_0072PE','DP02_0152PE','DP02_0153PE'
+].join(',');
 
-let curState='34'; // NJ default
-let curCounty=null;
-let counties=[];    // [{fips,name,pop}] for current state
-let townNames=[];   // [{name,type,county,countyFips,dn}] for current state's loaded counties
-let srt='name',cmpA=null,cmpB=null;
-const cache={};     // key: "stateFips-countyFips" → {subFips: parsedRow}
-const countyCache={}; // key: stateFips → [{fips,name,pop}]
+const RACE_COLORS=['#6ba3d6','#e8724a','#8cc474','#c97dd6','#d6c95e','#9e9e9e'];
 
-/* ═══ API HELPERS ═══ */
-async function fetchCounties(stateFips){
-  if(countyCache[stateFips])return countyCache[stateFips];
-  const url=`${ACS}?get=NAME,DP05_0001E&for=county:*&in=state:${stateFips}`;
+async function fetchCounty(countyFips){
+  if(cache[countyFips])return cache[countyFips];
+  const url=`${ACS}?get=${VARS}&for=county%20subdivision:*&in=state:${ST}&in=county:${countyFips}`;
   const res=await fetch(url);
-  if(!res.ok)throw new Error('API error '+res.status);
+  if(!res.ok)throw new Error('Census API returned '+res.status);
   const raw=await res.json();
-  const list=raw.slice(1).map(r=>({fips:r[3],name:r[0].replace(/,.*$/,'').replace(/ County$/,'').replace(/ Parish$/,'').replace(/ Borough$/,'').replace(/ Census Area$/,'').replace(/ Municipality$/,''),pop:parseInt(r[1])||0})).filter(c=>c.pop>0).sort((a,b)=>a.name.localeCompare(b.name));
-  countyCache[stateFips]=list;
-  return list;
-}
-
-async function fetchTowns(stateFips,countyFips){
-  const key=stateFips+'-'+countyFips;
-  if(cache[key])return cache[key];
-  const url=`${ACS}?get=${VARS}&for=county%20subdivision:*&in=state:${stateFips}&in=county:${countyFips}`;
-  const res=await fetch(url);
-  if(!res.ok)throw new Error('API error '+res.status);
-  const raw=await res.json();
-  const hdr=raw[0],data={};
-  raw.slice(1).forEach(row=>{
+  const hdr=raw[0],rows=raw.slice(1);
+  const data={};
+  rows.forEach(row=>{
     const o={};hdr.forEach((h,i)=>o[h]=row[i]);
-    data[o['county subdivision']]=parseRow(o);
+    const key=o['county subdivision'];
+    data[key]=parseRow(o);
   });
-  cache[key]=data;
+  cache[countyFips]=data;
   return data;
 }
 
-/* Fetch ALL county subdivisions in a state in ONE call */
-const stateFullyLoaded={};
-async function fetchState(stateFips){
-  if(stateFullyLoaded[stateFips])return;
-  const url=`${ACS}?get=${VARS}&for=county%20subdivision:*&in=state:${stateFips}`;
-  const res=await fetch(url);
-  if(!res.ok)throw new Error('API error '+res.status);
-  const raw=await res.json();
-  const hdr=raw[0];
-  // Group rows by county FIPS and store into cache
-  raw.slice(1).forEach(row=>{
-    const o={};hdr.forEach((h,i)=>o[h]=row[i]);
-    const cf=o['county'];const key=stateFips+'-'+cf;
-    if(!cache[key])cache[key]={};
-    cache[key][o['county subdivision']]=parseRow(o);
-  });
-  stateFullyLoaded[stateFips]=true;
-}
-
 function parseRow(o){
-  const v=k=>{const x=parseFloat(o[k]);return(isNaN(x)||x<0)?null:x};
-  return{name:o.NAME||'',pop:v('DP05_0001E'),malePct:v('DP05_0002PE'),femalePct:v('DP05_0003PE'),medAge:v('DP05_0018E'),under5:v('DP05_0019PE'),under18:v('DP05_0024PE'),over65:v('DP05_0029PE'),white:v('DP05_0077PE'),black:v('DP05_0078PE'),asian:v('DP05_0080PE'),twoPlus:v('DP05_0083PE'),hispanic:v('DP05_0071PE'),empRate:v('DP03_0004PE'),unempRate:v('DP03_0009PE'),droveAlone:v('DP03_0019PE'),transit:v('DP03_0021PE'),wfh:v('DP03_0024PE'),commute:v('DP03_0025E'),medIncome:v('DP03_0062E'),perCapita:v('DP03_0088E'),insured:v('DP03_0096PE'),poverty:v('DP03_0128PE'),totalUnits:v('DP04_0001E'),occupied:v('DP04_0002PE'),vacant:v('DP04_0003PE'),owner:v('DP04_0046PE'),renter:v('DP04_0047PE'),medHome:v('DP04_0089E'),medRent:v('DP04_0134E'),hsGrad:v('DP02_0065PE'),bachelors:v('DP02_0067PE'),graduate:v('DP02_0068PE'),foreignBorn:v('DP02_0113PE'),nonEnglish:v('DP02_0114PE'),disability:v('DP02_0072PE'),computer:v('DP02_0152PE'),internet:v('DP02_0153PE')};
+  const v=(k)=>{const x=parseFloat(o[k]);return(isNaN(x)||x<0)?null:x};
+  return{
+    name:o.NAME||'',pop:v('DP05_0001E'),
+    malePct:v('DP05_0002PE'),femalePct:v('DP05_0003PE'),medAge:v('DP05_0018E'),
+    under5:v('DP05_0019PE'),under18:v('DP05_0024PE'),over65:v('DP05_0029PE'),
+    white:v('DP05_0077PE'),black:v('DP05_0078PE'),asian:v('DP05_0080PE'),twoPlus:v('DP05_0083PE'),hispanic:v('DP05_0071PE'),
+    empRate:v('DP03_0004PE'),unempRate:v('DP03_0009PE'),
+    droveAlone:v('DP03_0019PE'),transit:v('DP03_0021PE'),wfh:v('DP03_0024PE'),commute:v('DP03_0025E'),
+    medIncome:v('DP03_0062E'),perCapita:v('DP03_0088E'),insured:v('DP03_0096PE'),poverty:v('DP03_0128PE'),
+    totalUnits:v('DP04_0001E'),occupied:v('DP04_0002PE'),vacant:v('DP04_0003PE'),
+    owner:v('DP04_0046PE'),renter:v('DP04_0047PE'),
+    medHome:v('DP04_0089E'),medRent:v('DP04_0134E'),
+    hsGrad:v('DP02_0065PE'),bachelors:v('DP02_0067PE'),graduate:v('DP02_0068PE'),
+    foreignBorn:v('DP02_0113PE'),nonEnglish:v('DP02_0114PE'),disability:v('DP02_0072PE'),
+    computer:v('DP02_0152PE'),internet:v('DP02_0153PE'),
+  };
 }
 
-/* ═══ STATE & COUNTY SELECTORS ═══ */
-// Desktop
-const stateSel=document.getElementById('state-sel');
-{const o=document.createElement('option');o.value='US';o.textContent='🇺🇸 United States (All States)';stateSel.appendChild(o)}
-STATES.forEach(s=>{const o=document.createElement('option');o.value=s[0];o.textContent=s[1];if(s[0]==='34')o.selected=true;stateSel.appendChild(o)});
-stateSel.onchange=()=>{curState=stateSel.value;document.getElementById('mob-state').value=curState;loadState()};
+/* ═══ SIDEBAR ═══ */
+function buildSB(){const l=document.getElementById('sb-list');l.innerHTML='';C.forEach(c=>{const d=document.createElement('div');d.className='sb-item'+(c===cur?' active':'');d.dataset.c=c;d.innerHTML=c+'<span class="sb-ct">'+BC[c].length+'</span>';d.onclick=()=>{cur=c;updAll()};l.appendChild(d)})}
+function updSB(){document.querySelectorAll('.sb-item').forEach(d=>d.classList.toggle('active',d.dataset.c===cur))}
+document.getElementById('sb-f').addEventListener('input',function(){const q=this.value.toLowerCase();document.querySelectorAll('.sb-item').forEach(d=>{d.style.display=d.dataset.c.toLowerCase().includes(q)?'':'none'})});
 
-// Mobile
-const mobState=document.getElementById('mob-state');
-{const o=document.createElement('option');o.value='US';o.textContent='🇺🇸 United States (All)';mobState.appendChild(o)}
-STATES.forEach(s=>{const o=document.createElement('option');o.value=s[0];o.textContent=s[1];if(s[0]==='34')o.selected=true;mobState.appendChild(o)});
-mobState.onchange=()=>{curState=mobState.value;stateSel.value=curState;loadState()};
+/* MOBILE */
+function buildMob(){const dd=document.getElementById('mc-dd');dd.innerHTML='';C.forEach(c=>{const d=document.createElement('div');d.className='mc-ddi'+(c===cur?' active':'');d.innerHTML=c+' County<span class="mc-ct">'+BC[c].length+'</span>';d.onclick=()=>{cur=c;dd.classList.remove('open');document.getElementById('mc-btn').classList.remove('open');updAll()};dd.appendChild(d)})}
+function updMob(){document.getElementById('mc-lbl').textContent=cur+' County';document.querySelectorAll('.mc-ddi').forEach((d,i)=>d.classList.toggle('active',C[i]===cur))}
+document.getElementById('mc-btn').onclick=function(){this.classList.toggle('open');document.getElementById('mc-dd').classList.toggle('open')};
 
-const mobCounty=document.getElementById('mob-county');
-mobCounty.onchange=()=>{const f=mobCounty.value;if(f){curCounty=f;updSB();render()}};
+function updAll(){updSB();updMob();render()}
 
-async function loadState(){
-  const list=document.getElementById('sb-list');
-  const content=document.getElementById('content');
-  curCounty=null;
-  content.innerHTML='';
-  document.getElementById('co-sum').textContent='';
-
-  // ── FULL U.S. LOAD ──
-  if(curState==='US'){
-    list.innerHTML='<div class="sb-loading">Loading all 51 states&hellip;</div>';
-    content.innerHTML='<div class="loading"><div class="spin"></div><p>Loading national dataset &mdash; 51 states&hellip;</p><div id="us-prog" style="max-width:300px;margin:12px auto"><div style="background:var(--bdr);border-radius:4px;height:8px;overflow:hidden"><div id="us-bar" style="height:100%;background:var(--lime);border-radius:4px;width:0%;transition:width .3s"></div></div><div id="us-status" style="font-size:11px;color:var(--txm);margin-top:6px;text-align:center">0 of 51</div></div></div>';
-    let done=0,failed=0;
-    counties=[];
-    for(const st of STATES){
-      try{
-        if(!countyCache[st[0]])await fetchCounties(st[0]);
-        if(!stateFullyLoaded[st[0]])await fetchState(st[0]);
-      }catch{failed++}
-      done++;
-      const bar=document.getElementById('us-bar');if(bar)bar.style.width=(done/STATES.length*100)+'%';
-      const status=document.getElementById('us-status');if(status)status.textContent=done+' of '+STATES.length+' — '+st[1];
-      // Collect all counties for sidebar
-      if(countyCache[st[0]])countyCache[st[0]].forEach(c=>{counties.push({...c,state:st[1],stateFips:st[0]})});
-      await new Promise(r=>setTimeout(r,600));
-    }
-    counties.sort((a,b)=>a.name.localeCompare(b.name)||(a.state||'').localeCompare(b.state||''));
-    buildSB_US();buildMobCounty_US();
-    const allTowns=getAllTowns();
-    content.innerHTML='<div style="text-align:center;padding:40px 20px"><div style="font-size:20px;font-weight:800;margin-bottom:6px;color:var(--lime)">'+allTowns.length.toLocaleString()+' Municipalities Loaded</div><div style="font-size:13px;color:var(--txs)">All 50 states + DC. Select a county from the sidebar, search for a town, or use <strong>Rank Data</strong> for national rankings.</div></div>';
-    document.getElementById('co-sum').textContent=allTowns.length.toLocaleString()+' municipalities across '+STATES.length+' states';
-    return;
-  }
-
-  // ── SINGLE STATE LOAD ──
-  list.innerHTML='<div class="sb-loading">Loading counties&hellip;</div>';
-  try{
-    counties=await fetchCounties(curState);
-    buildSB();buildMobCounty();
-    if(counties.length){curCounty=counties[0].fips;updSB();render()}
-  }catch(e){
-    list.innerHTML='<div class="sb-loading" style="color:#e85a3a">Failed to load counties.</div>';
-  }
-}
-
-/* US-mode sidebar: shows counties with state labels */
-function buildSB_US(){
-  const list=document.getElementById('sb-list');list.innerHTML='';
-  counties.forEach(c=>{
-    const d=document.createElement('div');d.className='sb-item';
-    d.dataset.f=c.fips;d.dataset.sf=c.stateFips;d.dataset.n=(c.name+' '+c.state).toLowerCase();
-    d.innerHTML=c.name+'<span class="sb-ct">'+c.state+'</span>';
-    d.onclick=()=>{curCounty=c.fips;curState=c.stateFips;stateSel.value='US';
-      document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));
-      d.classList.add('active');render()};
-    list.appendChild(d);
-  });
-}
-function buildMobCounty_US(){
-  mobCounty.innerHTML='';
-  counties.slice(0,200).forEach(c=>{const o=document.createElement('option');o.value=c.stateFips+'-'+c.fips;o.textContent=c.name+', '+c.state;mobCounty.appendChild(o)});
-}
-
-function buildSB(){
-  const list=document.getElementById('sb-list');list.innerHTML='';
-  counties.forEach(c=>{
-    const d=document.createElement('div');d.className='sb-item'+(c.fips===curCounty?' active':'');d.dataset.f=c.fips;d.dataset.n=c.name.toLowerCase();
-    d.innerHTML=c.name+'<span class="sb-ct">'+c.pop.toLocaleString()+'</span>';
-    d.onclick=()=>{curCounty=c.fips;updSB();mobCounty.value=c.fips;render()};
-    list.appendChild(d);
-  });
-}
-function updSB(){document.querySelectorAll('.sb-item').forEach(d=>d.classList.toggle('active',d.dataset.f===curCounty))}
-document.getElementById('sb-f').addEventListener('input',function(){const q=this.value.toLowerCase();document.querySelectorAll('.sb-item').forEach(d=>{d.style.display=d.dataset.n.includes(q)?'':'none'})});
-
-function buildMobCounty(){
-  mobCounty.innerHTML='';
-  counties.forEach(c=>{const o=document.createElement('option');o.value=c.fips;o.textContent=c.name;mobCounty.appendChild(o)});
-  if(curCounty)mobCounty.value=curCounty;
-}
-
-/* ═══ SORT ═══ */
+/* SORT */
 document.getElementById('sort').onchange=e=>{srt=e.target.value;render()};
 
-/* ═══ SEARCH ═══ */
+/* SEARCH */
 const si=document.getElementById('search'),sd=document.getElementById('sdd');
-si.addEventListener('input',()=>{
-  const q=si.value.toLowerCase().trim();if(q.length<1){sd.classList.remove('open');return}
-  // Search across all loaded towns for current state
-  const all=getAllTowns();
-  const ms=all.filter(t=>t.shortName.toLowerCase().includes(q)).sort((a,b)=>{const aS=a.shortName.toLowerCase().startsWith(q)?0:1;const bS=b.shortName.toLowerCase().startsWith(q)?0:1;return aS-bS||(b.pop||0)-(a.pop||0)}).slice(0,25);
-  sd.innerHTML='';ms.forEach(t=>{const d=document.createElement('div');d.className='sdd-i';
-    const nm=t.shortName;const idx=nm.toLowerCase().indexOf(q);let hl=nm;if(idx>=0)hl=nm.slice(0,idx)+'<strong style="color:var(--lime)">'+nm.slice(idx,idx+q.length)+'</strong>'+nm.slice(idx+q.length);
-    d.innerHTML='<span>'+hl+'</span><span class="st">'+(t.state?t.county+', '+t.state:t.county)+'</span>';
-    d.onclick=()=>{si.value='';sd.classList.remove('open');
-      // If in US mode, keep US but set curState for render resolution
-      if(stateSel.value!=='US'){curState=t.stateFips;stateSel.value=curState;document.getElementById('mob-state').value=curState}
-      curCounty=t.countyFips;updSB();render();
-      setTimeout(()=>{const c=document.querySelector('[data-t="'+CSS.escape(t.shortName)+'"]');if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.style.borderColor='var(--lime)';setTimeout(()=>{c.style.borderColor=''},2000)}},600)};
-    sd.appendChild(d)});sd.classList.add('open')});
+si.addEventListener('input',()=>{const q=si.value.toLowerCase().trim();if(q.length<1){sd.classList.remove('open');return}
+const ms=TOWNS.filter(t=>t.name.toLowerCase().includes(q)||t.dn.toLowerCase().includes(q)).sort((a,b)=>{const aS=a.name.toLowerCase().startsWith(q)?0:1;const bS=b.name.toLowerCase().startsWith(q)?0:1;return aS-bS}).slice(0,25);
+sd.innerHTML='';ms.forEach(t=>{const d=document.createElement('div');d.className='sdd-i';const idx=t.dn.toLowerCase().indexOf(q);let hl=t.dn;if(idx>=0)hl=t.dn.slice(0,idx)+'<strong style="color:var(--lime)">'+t.dn.slice(idx,idx+q.length)+'</strong>'+t.dn.slice(idx+q.length);
+d.innerHTML='<span>'+hl+'</span><span class="st">'+t.county+'</span>';
+d.onclick=()=>{si.value='';sd.classList.remove('open');cur=t.county;updAll();setTimeout(()=>{const c=document.querySelector('[data-t="'+CSS.escape(t.dn)+'"]');if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.style.borderColor='var(--lime)';setTimeout(()=>{c.style.borderColor=''},2000)}},600)};
+sd.appendChild(d)});sd.classList.add('open')});
 si.addEventListener('focus',()=>{if(si.value.length>=1)si.dispatchEvent(new Event('input'))});
 document.addEventListener('click',e=>{if(!e.target.closest('#sbar'))sd.classList.remove('open')});
 
 /* ═══ RENDER ═══ */
 async function render(){
   const el=document.getElementById('content');
-  if(!curCounty){el.innerHTML='<p style="color:var(--txm)">Select a county.</p>';return}
-  // Resolve actual state FIPS (curState might be 'US')
-  const countyObj=counties.find(c=>c.fips===curCounty);
-  const actualStateFips=countyObj?.stateFips||curState;
-  const countyName=countyObj?.name||'';
-  const stateName=countyObj?.state||STATES.find(s=>s[0]===actualStateFips)?.[1]||'';
-  document.getElementById('co-sum').textContent=countyName+' County, '+stateName;
+  const towns=BC[cur]||[];
+  const countyFips=towns[0]?.fips;
+  document.getElementById('co-sum').textContent=towns.length+' municipalities in '+cur+' County';
 
-  el.innerHTML='<div class="loading"><div class="spin"></div><p>Loading '+countyName+' County&hellip;</p></div>';
+  if(!countyFips){el.innerHTML='<p style="color:var(--txm)">No data.</p>';return}
+
+  // Show loading
+  el.innerHTML='<div class="loading"><div class="spin"></div><p>Loading Census data for '+cur+' County&hellip;</p></div>';
+
   try{
-    const data=await fetchTowns(actualStateFips,curCounty);
-    const enriched=Object.values(data).filter(d=>d.pop>0).map(d=>{
-      const parts=d.name.split(',')[0].trim();
-      const typeMatch=parts.match(/(township|borough|city|town|village|CDP|plantation|municipality)/i);
-      const type=typeMatch?typeMatch[1]:'';
-      const nm=parts.replace(/\s*(township|borough|city|town|village|CDP|plantation|municipality)\s*/gi,'').trim();
-      return{name:nm||parts,type,dn:nm||parts,d,county:countyName,countyFips:curCounty,shortName:nm||parts};
-    });
+    const data=await fetchCounty(countyFips);
+    // Match embedded towns to API data
+    const enriched=towns.map(t=>{
+      // Find matching row - match by name substring
+      const match=Object.values(data).find(d=>{
+        const apiName=(d.name||'').toLowerCase();
+        return apiName.includes(t.name.toLowerCase())&&apiName.includes(t.type.toLowerCase());
+      });
+      return{...t,d:match||null};
+    }).filter(t=>t.d&&t.d.pop>0);
+
+    // Sort
     const sorted=sortTowns(enriched);
-    document.getElementById('co-sum').textContent=sorted.length+' municipalities in '+countyName+' County, '+stateName;
-    el.innerHTML='<div class="tg">'+sorted.map(renderCard).join('')+'</div>';
-    el.querySelectorAll('.tc-tab').forEach(tab=>{tab.onclick=()=>{const card=tab.closest('.tc');card.querySelectorAll('.tc-tab').forEach(t=>t.classList.remove('active'));card.querySelectorAll('.tc-panel').forEach(p=>p.classList.remove('active'));tab.classList.add('active');card.querySelector('.tc-panel[data-p="'+tab.dataset.p+'"]').classList.add('active')}});
+    el.innerHTML='<div class="tg">'+sorted.map(t=>renderCard(t)).join('')+'</div>';
+
+    // Wire tabs
+    el.querySelectorAll('.tc-tab').forEach(tab=>{
+      tab.onclick=()=>{
+        const card=tab.closest('.tc');
+        card.querySelectorAll('.tc-tab').forEach(t=>t.classList.remove('active'));
+        card.querySelectorAll('.tc-panel').forEach(p=>p.classList.remove('active'));
+        tab.classList.add('active');
+        card.querySelector('.tc-panel[data-p="'+tab.dataset.p+'"]').classList.add('active');
+      };
+    });
+    // Wire compare buttons
     el.querySelectorAll('.tc-cmp').forEach(b=>{b.onclick=e=>{e.stopPropagation();const t=enriched.find(x=>x.dn===b.dataset.d);if(t)togCmp(t)}});
     updCmpUI();
+
   }catch(err){
-    el.innerHTML='<div class="err-msg">Unable to load data for '+countyName+' County. Census API may be unavailable.<br><small style="color:var(--txm)">'+err.message+'</small></div>';
+    el.innerHTML='<div class="err-msg"><strong>Unable to load Census data for '+cur+' County.</strong><br>The Census Bureau API may be temporarily unavailable. <a href="https://api.census.gov" target="_blank">Check status</a>.<br><small style="color:var(--txm)">'+err.message+'</small></div>';
   }
 }
 
-function sortTowns(list){const a=[...list];switch(srt){case'pop':return a.sort((x,y)=>(y.d?.pop||0)-(x.d?.pop||0));case'inc':return a.sort((x,y)=>(y.d?.medIncome||0)-(x.d?.medIncome||0));case'hv':return a.sort((x,y)=>(y.d?.medHome||0)-(x.d?.medHome||0));default:return a.sort((x,y)=>x.name.localeCompare(y.name))}}
+function sortTowns(list){
+  const a=[...list];
+  switch(srt){
+    case'pop':return a.sort((x,y)=>(y.d?.pop||0)-(x.d?.pop||0));
+    case'inc':return a.sort((x,y)=>(y.d?.medIncome||0)-(x.d?.medIncome||0));
+    case'hv':return a.sort((x,y)=>(y.d?.medHome||0)-(x.d?.medHome||0));
+    default:return a.sort((x,y)=>x.name.localeCompare(y.name));
+  }
+}
 
-function renderCard(t){const d=t.d;if(!d)return'';const sel=(cmpA&&cmpA.dn===t.dn)||(cmpB&&cmpB.dn===t.dn);
-  const knownRace=[{l:'White',v:d.white,c:RACE_COLORS[0]},{l:'Black',v:d.black,c:RACE_COLORS[1]},{l:'Hispanic',v:d.hispanic,c:RACE_COLORS[2]},{l:'Asian',v:d.asian,c:RACE_COLORS[3]},{l:'Two+',v:d.twoPlus,c:RACE_COLORS[4]}].filter(r=>r.v!=null&&r.v>0);
-  const knownSum=knownRace.reduce((s,r)=>s+r.v,0);const other=Math.max(0,+(100-knownSum).toFixed(1));
-  const raceData=[...knownRace];if(other>=0.5)raceData.push({l:'Other',v:other,c:RACE_COLORS[5]});raceData.sort((a,b)=>b.v-a.v);
+function renderCard(t){
+  const d=t.d;if(!d)return'';
+  const sel=(cmpA&&cmpA.dn===t.dn)||(cmpB&&cmpB.dn===t.dn);
+  const knownRace=[
+    {l:'White',v:d.white,c:RACE_COLORS[0]},{l:'Black',v:d.black,c:RACE_COLORS[1]},
+    {l:'Hispanic',v:d.hispanic,c:RACE_COLORS[2]},{l:'Asian',v:d.asian,c:RACE_COLORS[3]},
+    {l:'Two+',v:d.twoPlus,c:RACE_COLORS[4]}
+  ].filter(r=>r.v!=null&&r.v>0);
+  const knownSum=knownRace.reduce((s,r)=>s+r.v,0);
+  const other=Math.max(0,+(100-knownSum).toFixed(1));
+  const raceData=[...knownRace];
+  if(other>=0.5)raceData.push({l:'Other',v:other,c:RACE_COLORS[5]});
+  raceData.sort((a,b)=>b.v-a.v);
 
   return `<div class="tc${sel?' sel':''}" data-t="${t.dn}">
 <button class="tc-cmp${sel?' on':''}" data-d="${t.dn}" title="Compare">&#43;</button>
 <div class="tc-head"><div><div class="tc-nm">${t.name}</div><div class="tc-tp">${t.type}</div></div><div class="tc-pop"><div class="tc-pv">${fN(d.pop)}</div><div class="tc-pl">Population</div></div></div>
-<div class="tc-tabs"><button class="tc-tab active" data-p="demo">Demographics</button><button class="tc-tab" data-p="econ">Economy</button><button class="tc-tab" data-p="house">Housing</button><button class="tc-tab" data-p="social">Social</button></div>
+<div class="tc-tabs">
+<button class="tc-tab active" data-p="demo">Demographics</button>
+<button class="tc-tab" data-p="econ">Economy</button>
+<button class="tc-tab" data-p="house">Housing</button>
+<button class="tc-tab" data-p="social">Social</button>
+</div>
 <div class="tc-body">
 <div class="tc-panel active" data-p="demo">
 ${sr('Median Age',fV(d.medAge))}${sr('Under 18',fPc(d.under18))}${sr('65 and Over',fPc(d.over65))}${sr('Male / Female',fPc(d.malePct)+' / '+fPc(d.femalePct))}
@@ -491,11 +453,12 @@ ${sr('Total Housing Units',fN(d.totalUnits))}${sr('Occupied',fPc(d.occupied))}${
 <div class="tc-panel" data-p="social">
 ${sr("HS Grad or Higher",fPc(d.hsGrad))}${sr("Bachelor's Degree+",fPc(d.bachelors))}${sr("Graduate Degree+",fPc(d.graduate))}${sr('Foreign Born',fPc(d.foreignBorn))}${sr('Non-English at Home',fPc(d.nonEnglish))}${sr('With Disability',fPc(d.disability))}${sr('Households w/ Computer',fPc(d.computer))}${sr('Broadband Internet',fPc(d.internet))}
 </div>
-</div></div>`}
+</div></div>`;
+}
 
-function sr(l,v){return `<div class="sr"><span class="sr-l">${l}</span><span class="sr-v">${v}</span></div>`}
+function sr(label,val){return `<div class="sr"><span class="sr-l">${label}</span><span class="sr-v">${val}</span></div>`}
 
-/* ═══ COMPARE ═══ */
+/* COMPARE */
 function togCmp(tw){if(cmpA&&cmpA.dn===tw.dn){cmpA=cmpB;cmpB=null}else if(cmpB&&cmpB.dn===tw.dn){cmpB=null}else if(!cmpA)cmpA=tw;else if(!cmpB)cmpB=tw;else{cmpA=cmpB;cmpB=tw}updCmpUI();rCdr()}
 function updCmpUI(){document.querySelectorAll('.tc').forEach(c=>{const d=c.dataset.t;const s=(cmpA&&cmpA.dn===d)||(cmpB&&cmpB.dn===d);c.classList.toggle('sel',s);const b=c.querySelector('.tc-cmp');if(b)b.classList.toggle('on',s)})}
 function rCdr(){const dr=document.getElementById('cdr');if(!cmpA?.d||!cmpB?.d){dr.classList.remove('open');return}dr.classList.add('open');
@@ -505,238 +468,207 @@ document.getElementById('cd-g').innerHTML=ms.map(m=>{const av=a[m[1]],bv=b[m[1]]
 return `<div class="cdr-m"><div class="cdr-ml">${m[0]}</div><div class="cdr-r"><span class="cn">${cmpA.name}</span><span class="cv ${ac}">${m[2](av)}</span></div><div class="cdr-b"><div class="cdr-bf a" style="width:${(av||0)/mx*100}%"></div></div><div class="cdr-r"><span class="cn">${cmpB.name}</span><span class="cv ${bc}">${m[2](bv)}</span></div><div class="cdr-b"><div class="cdr-bf b" style="width:${(bv||0)/mx*100}%"></div></div></div>`}).join('')}
 document.getElementById('cd-x').onclick=()=>{cmpA=null;cmpB=null;document.getElementById('cdr').classList.remove('open');updCmpUI()};
 
-/* ═══ CHAT / RANKING ENGINE ═══ */
-const chatToggle=document.getElementById('chat-toggle');
-const chatPanel=document.getElementById('chat-panel');
-const chatBody=document.getElementById('chat-body');
-const chatInput=document.getElementById('chat-input');
-const chatSend=document.getElementById('chat-send');
-chatToggle.onclick=()=>{const isOpen=chatPanel.classList.toggle('open');chatToggle.classList.toggle('active',isOpen);if(isOpen)chatInput.focus()};
-chatInput.addEventListener('input',()=>{chatSend.disabled=!chatInput.value.trim();chatInput.style.height='auto';chatInput.style.height=Math.min(chatInput.scrollHeight,72)+'px'});
-chatInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
-chatSend.onclick=sendChat;
-document.querySelectorAll('.chat-prompt').forEach(b=>{b.onclick=()=>{chatInput.value=b.dataset.q;chatSend.disabled=false;sendChat()}});
-
-function getAllTowns(){
-  const out=[];
-  for(const [key,data] of Object.entries(cache)){
-    const [st,cf]=key.split('-');
-    const stName=STATES.find(s=>s[0]===st)?.[1]||'';
-    const cName=countyCache[st]?.find(c=>c.fips===cf)?.name||'';
-    for(const d of Object.values(data)){
-      if(!d||!d.pop||d.pop<=0)continue;
-      const nm=d.name?.split(',')[0]?.trim()||'Unknown';
-      out.push({...d,shortName:nm,county:cName,countyFips:cf,state:stName,stateFips:st});
-    }
-  }
-  return out;
-}
-
-const METRICS=[
-  {keys:['population','populous','people','residents','biggest','largest','smallest'],field:'pop',label:'Population',fmt:fN,dir:'desc',type:'count'},
-  {keys:['income','earn','salary','rich','wealthy','wealthiest'],field:'medIncome',label:'Median Household Income',fmt:fD,dir:'desc',type:'dollar'},
-  {keys:['home value','house value','property value','expensive','home price','cheapest home','priciest'],field:'medHome',label:'Median Home Value',fmt:fD,dir:'desc',type:'dollar'},
-  {keys:['rent','rental'],field:'medRent',label:'Median Gross Rent',fmt:fD,dir:'desc',type:'dollar'},
-  {keys:['age','oldest','youngest','median age'],field:'medAge',label:'Median Age',fmt:fV,dir:'desc',type:'num'},
-  {keys:['poverty','poor','impoverished'],field:'poverty',label:'Poverty Rate',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['bachelor','college','educated','education','degree'],field:'bachelors',label:"Bachelor's Degree+",fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['graduate degree','masters','advanced degree'],field:'graduate',label:'Graduate Degree+',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['unemploy','jobless'],field:'unempRate',label:'Unemployment Rate',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['employ','job','working'],field:'empRate',label:'Employment Rate',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['homeowner','own','ownership'],field:'owner',label:'Homeownership Rate',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['diverse','diversity','minority','nonwhite'],field:'_diverse',label:'Diversity (non-White %)',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['white'],field:'white',label:'% White (non-Hispanic)',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['black','african american'],field:'black',label:'% Black (non-Hispanic)',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['asian'],field:'asian',label:'% Asian (non-Hispanic)',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['hispanic','latino'],field:'hispanic',label:'% Hispanic/Latino',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['foreign','immigrant'],field:'foreignBorn',label:'% Foreign Born',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['commute','travel time'],field:'commute',label:'Mean Commute (min)',fmt:v=>v?v.toFixed(1)+' min':'—',dir:'desc',type:'num'},
-  {keys:['work from home','remote','wfh','telework'],field:'wfh',label:'% Work from Home',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['transit','public transport'],field:'transit',label:'% Public Transit',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['internet','broadband'],field:'internet',label:'% Broadband Internet',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['disab'],field:'disability',label:'% With Disability',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['insur','health coverage'],field:'insured',label:'% Health Insured',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['vacant','empty'],field:'vacant',label:'% Vacant Housing',fmt:fPc,dir:'desc',type:'pct'},
-  {keys:['per capita'],field:'perCapita',label:'Per Capita Income',fmt:fD,dir:'desc',type:'dollar'},
-];
-
-async function sendChat(){
-  const q=chatInput.value.trim();if(!q)return;
-  const welcome=chatBody.querySelector('.chat-welcome');if(welcome)welcome.remove();
-  addMsg(q,'user');chatInput.value='';chatSend.disabled=true;chatInput.style.height='auto';
-  const ql=q.toLowerCase();
-
-  // ── LOAD NATIONAL (all 51 states, ~1 min) ──
-  if(ql.includes('load national')||ql.includes('load all states')||ql.includes('load entire')||ql.includes('load everything')){
-    const prog=document.createElement('div');prog.className='chat-msg ai';prog.id='load-prog';prog.innerHTML='<div style="margin-bottom:6px"><strong>Loading national dataset&hellip;</strong></div><div id="load-bar-wrap" style="background:var(--bdr);border-radius:3px;height:8px;overflow:hidden;margin:6px 0"><div id="load-bar" style="height:100%;background:var(--lime);border-radius:3px;width:0%;transition:width .3s"></div></div><div id="load-status" style="font-size:11px;color:var(--txm)">0 of 51 states&hellip;</div>';
-    chatBody.appendChild(prog);chatBody.scrollTop=chatBody.scrollHeight;
-    let done=0,failed=0,skipped=0,totalTowns=0;
-    for(const st of STATES){
-      const bar=document.getElementById('load-bar');
-      const status=document.getElementById('load-status');
-      if(stateFullyLoaded[st[0]]){skipped++;done++;
-        if(bar)bar.style.width=(done/STATES.length*100)+'%';
-        if(status)status.textContent=`${done} of ${STATES.length} — skipped ${st[1]} (cached)`;
-        continue}
-      try{
-        if(!countyCache[st[0]])await fetchCounties(st[0]);
-        await fetchState(st[0]);
-        totalTowns+=Object.values(cache).reduce((s,d)=>{return typeof d==='object'?s+Object.keys(d).length:s},0);
-        done++;
-      }catch{failed++;done++}
-      if(bar)bar.style.width=(done/STATES.length*100)+'%';
-      if(status)status.textContent=`${done} of ${STATES.length} — loaded ${st[1]}`;
-      chatBody.scrollTop=chatBody.scrollHeight;
-      await new Promise(r=>setTimeout(r,800));
-    }
-    const progEl=document.getElementById('load-prog');
-    if(progEl){
-      const towns=getAllTowns();
-      progEl.innerHTML=`<strong>National dataset loaded.</strong> ${STATES.length-failed} states, ~${towns.length.toLocaleString()} municipalities ready for ranking.${failed?' ('+failed+' failed)':''}`}
-    chatBody.scrollTop=chatBody.scrollHeight;
-    return;
-  }
-
-  // ── LOAD ALL (current state, 1 API call) ──
-  if(ql.includes('load all')){
-    const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
-    const stateName=STATES.find(s=>s[0]===curState)?.[1]||'';
-    try{
-      if(!countyCache[curState])await fetchCounties(curState);
-      await fetchState(curState);
-      typing.remove();
-      const towns=Object.entries(cache).filter(([k])=>k.startsWith(curState+'-')).reduce((s,[,d])=>s+Object.keys(d).length,0);
-      addMsg(`Loaded all of ${stateName} in one request — ${towns} municipalities now cached for rankings.`,'ai');
-    }catch(e){typing.remove();addMsg(`Failed to load ${stateName}: ${e.message}`,'ai')}
-    return;
-  }
-
-  // ── LOAD [STATE NAME] (1 API call) ──
-  const loadMatch=ql.match(/load\s+(.+)/);
-  if(loadMatch){
-    const target=loadMatch[1].trim();
-    const st=STATES.find(s=>s[1].toLowerCase()===target);
-    if(st){
-      const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
-      try{
-        if(!countyCache[st[0]])await fetchCounties(st[0]);
-        await fetchState(st[0]);
-        typing.remove();
-        const towns=Object.entries(cache).filter(([k])=>k.startsWith(st[0]+'-')).reduce((s,[,d])=>s+Object.keys(d).length,0);
-        addMsg(`Loaded ${st[1]} — ${towns} municipalities now cached.`,'ai');
-      }catch(e){typing.remove();addMsg(`Failed to load ${st[1]}: ${e.message}`,'ai')}
-      return;
-    }
-  }
-
-  // ── RANKING QUERY ──
-  const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
-  const allTowns=getAllTowns();
-  await new Promise(r=>setTimeout(r,200));typing.remove();
-  if(!allTowns.length){addMsg("No Census data loaded yet. Try:\n• \"load all\" — loads current state\n• \"load california\" — loads a specific state\n• \"load national\" — loads all 51 states (~1 min)","ai");return}
-  renderResult(queryData(ql,allTowns));
-}
-
-/* ═══ PARSE REQUESTED COUNT ═══ */
-function parseCount(q){
-  // Match patterns: "top 50", "100 richest", "show 200", "rank 75", "list 300"
-  const m=q.match(/(?:top|show|list|rank|first|give me|get)\s+(\d+)/i)||q.match(/(\d+)\s+(?:most|least|highest|lowest|richest|poorest|youngest|oldest|biggest|smallest|cheapest|priciest)/i)||q.match(/(\d+)\s+(?:towns?|cities|counties|states|places|municipalities)/i);
-  if(m){const n=parseInt(m[1]);if(n>=1&&n<=500)return n}
-  return 25;
-}
-
-/* ═══ QUERY ENGINE ═══ */
-function queryData(q,allTowns){
-  const count=parseCount(q);
-  const wantLow=q.includes('lowest')||q.includes('least')||q.includes('cheapest')||q.includes('youngest')||q.includes('smallest')||q.includes('fewest')||q.includes('shortest')||q.includes('poorest')||q.includes('bottom');
-
-  // Determine ranking level: states, counties, or towns
-  // "rank states" = aggregate to state level
-  // "rank counties" = aggregate to county level
-  // "national/nationwide/across all states/all states + towns" = town-level, all loaded data
-  // "towns in [state]" = town-level, one state
-  // default = town-level, all loaded data
-  const wantStateAgg=(q.includes('rank state')||q.includes('states by')||q.includes('compare state')||q.includes('state ranking'))&&!q.includes('town')&&!q.includes('cities')&&!q.includes('municipal');
-  const wantCountyAgg=(q.includes('county')||q.includes('counties'))&&!q.includes('town')&&!q.includes('cities')&&!q.includes('municipal')&&!q.includes('in ')&&!q.match(/\bcounty\b(?!\s+ranking|\s+by)/)||q.includes('rank count')||q.includes('counties by');
-  const isNational=q.includes('national')||q.includes('nationwide')||q.includes('across all')||q.includes('all states')||q.includes('in america')||q.includes('in the us')||q.includes('in the country');
-
-  // Detect county filter
-  let filterCounty=null;
-  const uniqueCounties=[...new Set(allTowns.map(t=>t.county))].filter(Boolean);
-  for(const c of uniqueCounties){if(c&&c.length>3&&q.includes(c.toLowerCase())){filterCounty=c;break}}
-
-  // Detect state filter — but not if asking for state-level aggregation
-  let filterState=null;
-  if(!wantStateAgg){
-    for(const s of STATES){if(q.includes(s[1].toLowerCase())){filterState=s[1];break}}
-  }
-
-  let bestMetric=null,bestScore=0;
-  for(const m of METRICS){for(const k of m.keys){if(q.includes(k)&&k.length>bestScore){bestScore=k.length;bestMetric=m}}}
-  if(!bestMetric)return{intro:"I can rank towns, counties, or states by: population, income, home value, rent, age, poverty, education, employment, homeownership, diversity, commute, work-from-home, internet access, and more. Say \"national\" for cross-state rankings. Include a number up to 500 (e.g. \"top 200\").",rankings:[],note:null};
-
-  const dir=wantLow?'asc':'desc';const field=bestMetric.field;
-
-  // ── STATE-LEVEL AGGREGATION ──
-  if(wantStateAgg){
-    const sa={};allTowns.forEach(t=>{
-      if(!t.state)return;
-      if(!sa[t.state])sa[t.state]={name:t.state,tp:0,wS:0,wN:0,sum:0,ct:0};
-      const s=sa[t.state];const val=field==='_diverse'?(t.white!=null?100-t.white:null):t[field];
-      s.tp+=t.pop;if(val!=null){if(bestMetric.type==='count'){s.sum+=val;s.ct++}else{s.wS+=val*t.pop;s.wN+=t.pop;s.ct++}}
-    });
-    let list=Object.values(sa).filter(s=>s.ct>0).map(s=>({name:s.name,value:bestMetric.type==='count'?s.sum:(s.wN>0?s.wS/s.wN:null),towns:s.ct})).filter(s=>s.value!=null);
-    list.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
-    const top=list.slice(0,Math.min(count,list.length));
-    const loadedStates=[...new Set(allTowns.map(t=>t.state))].length;
-    return{intro:`States ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length}):`,
-      rankings:top.map((s,i)=>({rank:i+1,name:s.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(s.value):s.value),detail:s.towns+' towns loaded'})),
-      note:`${loadedStates} state${loadedStates>1?'s':''} with loaded data. Load more with "load [state name]".`};
-  }
-
-  // ── COUNTY-LEVEL AGGREGATION ──
-  if(wantCountyAgg){
-    const pool=filterState?allTowns.filter(t=>t.state===filterState):allTowns;
-    const ca={};pool.forEach(t=>{
-      const k=(t.county||'')+'|'+(t.state||'');if(!t.county)return;
-      if(!ca[k])ca[k]={name:t.county+(t.state?', '+t.state:''),tp:0,wS:0,wN:0,sum:0,ct:0};
-      const c=ca[k];const val=field==='_diverse'?(t.white!=null?100-t.white:null):t[field];
-      c.tp+=t.pop;if(val!=null){if(bestMetric.type==='count'){c.sum+=val;c.ct++}else{c.wS+=val*t.pop;c.wN+=t.pop;c.ct++}}
-    });
-    let list=Object.values(ca).filter(c=>c.ct>0).map(c=>({name:c.name,value:bestMetric.type==='count'?c.sum:(c.wN>0?c.wS/c.wN:null)})).filter(c=>c.value!=null);
-    list.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
-    const top=list.slice(0,Math.min(count,list.length));
-    const scope=filterState||'all loaded states';
-    return{intro:`Counties in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length}):`,
-      rankings:top.map((c,i)=>({rank:i+1,name:c.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(c.value):c.value)})),
-      note:`Population-weighted averages. ${list.length} total counties with data.`};
-  }
-
-  // ── TOWN-LEVEL RANKING ──
-  let pool=allTowns;
-  if(filterState&&!isNational)pool=pool.filter(t=>t.state===filterState);
-  if(filterCounty)pool=pool.filter(t=>t.county===filterCounty);
-  let towns=pool.map(t=>{const val=field==='_diverse'?(t.white!=null?+(100-t.white).toFixed(1):null):t[field];
-    return{name:t.shortName,county:t.county,state:t.state,value:val}}).filter(t=>t.value!=null);
-  towns.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
-  const top=towns.slice(0,Math.min(count,towns.length));
-  const loadedStates=[...new Set(allTowns.map(t=>t.state))].filter(Boolean);
-  const scope=filterCounty?filterCounty+' County'+(filterState?', '+filterState:''):filterState?filterState:isNational?'all '+loadedStates.length+' loaded states':'all loaded areas';
-  return{intro:`Towns in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first, showing ${top.length} of ${towns.length}):`,
-    rankings:top.map((t,i)=>({rank:i+1,name:t.name,value:bestMetric.fmt(t.value),detail:(t.county||'')+(t.state?', '+t.state:'')})),
-    note:`${towns.length} municipalities with data across ${Object.keys(cache).length} loaded counties${loadedStates.length>1?' in '+loadedStates.length+' states':''}.`};
-}
-
-function addMsg(text,type){const d=document.createElement('div');d.className='chat-msg '+type;d.textContent=text;chatBody.appendChild(d);chatBody.scrollTop=chatBody.scrollHeight}
-function renderResult(p){const d=document.createElement('div');d.className='chat-msg ai';let h='';if(p.intro)h+=`<div style="margin-bottom:8px">${p.intro}</div>`;if(p.rankings?.length)h+=p.rankings.map(r=>`<div class="rank-item"><span class="rank-num">${r.rank}.</span><span class="rank-name">${r.name}</span><span class="rank-val">${r.value||''}${r.detail?' · '+r.detail:''}</span></div>`).join('');if(p.note)h+=`<div class="ai-note">${p.note}</div>`;d.innerHTML=h||'No results. Try a different question.';chatBody.appendChild(d);chatBody.scrollTop=chatBody.scrollHeight}
-
 function fN(v){return v!=null?v.toLocaleString():'—'}
 function fD(v){return v!=null?'$'+Math.round(v).toLocaleString():'—'}
 function fPc(v){return v!=null?v.toFixed(1)+'%':'—'}
 function fV(v){return v!=null?v.toFixed(1):'—'}
 
-/* ═══ INIT: default to NJ ═══ */
-loadState();
+/* ═══ CHAT ═══ */
+const chatToggle=document.getElementById('chat-toggle');
+const chatPanel=document.getElementById('chat-panel');
+const chatBody=document.getElementById('chat-body');
+const chatInput=document.getElementById('chat-input');
+const chatSend=document.getElementById('chat-send');
+
+chatToggle.onclick=()=>{
+  const isOpen=chatPanel.classList.toggle('open');
+  chatToggle.classList.toggle('active',isOpen);
+  if(isOpen)chatInput.focus();
+};
+
+chatInput.addEventListener('input',()=>{chatSend.disabled=!chatInput.value.trim();chatInput.style.height='auto';chatInput.style.height=Math.min(chatInput.scrollHeight,80)+'px'});
+chatInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
+chatSend.onclick=sendChat;
+
+document.querySelectorAll('.chat-prompt').forEach(b=>{b.onclick=()=>{chatInput.value=b.dataset.q;chatSend.disabled=false;sendChat()}});
+
+async function sendChat(){
+  const q=chatInput.value.trim();if(!q)return;
+  const welcome=chatBody.querySelector('.chat-welcome');if(welcome)welcome.remove();
+  addMsg(q,'user');chatInput.value='';chatSend.disabled=true;chatInput.style.height='auto';
+
+  // Brief delay for feel
+  const typing=document.createElement('div');typing.className='chat-typing';typing.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(typing);chatBody.scrollTop=chatBody.scrollHeight;
+
+  // Gather all loaded town data
+  const allTowns=getAllTowns();
+
+  await new Promise(r=>setTimeout(r,400));
+  typing.remove();
+
+  if(!allTowns.length){
+    addMsg("I don't have any Census data loaded yet. Browse a few counties first — the data loads automatically when you click a county in the sidebar.","ai");
+    return;
+  }
+
+  const result=queryData(q.toLowerCase(),allTowns);
+  renderResult(result);
+}
+
+function getAllTowns(){
+  const out=[];
+  for(const [fips,data] of Object.entries(cache)){
+    const county=TOWNS.find(t=>t.fips===fips)?.county||'';
+    for(const d of Object.values(data)){
+      if(!d||!d.pop||d.pop<=0)continue;
+      const name=d.name?.split(',')[0]?.trim()||'Unknown';
+      out.push({...d,shortName:name,county});
+    }
+  }
+  return out;
+}
+
+/* ═══ LOCAL QUERY ENGINE ═══ */
+const METRICS=[
+  {keys:['population','populous','people','residents','biggest','largest','smallest'],field:'pop',label:'Population',fmt:fN,dir:'desc',type:'count'},
+  {keys:['income','earn','salary','rich','wealthy','wealthiest','poorest income','highest income','lowest income'],field:'medIncome',label:'Median Household Income',fmt:fD,dir:'desc',type:'dollar'},
+  {keys:['home value','house value','property value','expensive','home price','house price','cheapest home','priciest'],field:'medHome',label:'Median Home Value',fmt:fD,dir:'desc',type:'dollar'},
+  {keys:['rent','rental','renter cost'],field:'medRent',label:'Median Gross Rent',fmt:fD,dir:'desc',type:'dollar'},
+  {keys:['age','oldest','youngest','median age'],field:'medAge',label:'Median Age',fmt:fV,dir:'desc',type:'num'},
+  {keys:['poverty','poor','impoverished','low income'],field:'poverty',label:'Poverty Rate',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['bachelor','college','educated','education','degree'],field:'bachelors',label:"Bachelor's Degree or Higher",fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['graduate degree','masters','advanced degree','phd'],field:'graduate',label:'Graduate Degree or Higher',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['unemploy','jobless'],field:'unempRate',label:'Unemployment Rate',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['employ','job','working','labor'],field:'empRate',label:'Employment Rate',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['homeowner','own','ownership'],field:'owner',label:'Homeownership Rate',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['diverse','diversity','minority','nonwhite','non-white'],field:'_diverse',label:'Diversity (non-White %)',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['white'],field:'white',label:'% White',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['black','african american'],field:'black',label:'% Black',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['asian'],field:'asian',label:'% Asian',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['hispanic','latino','latina'],field:'hispanic',label:'% Hispanic/Latino',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['foreign','immigrant','born abroad'],field:'foreignBorn',label:'% Foreign Born',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['commute','travel time','drive'],field:'commute',label:'Mean Commute (min)',fmt:v=>v?v.toFixed(1)+' min':'—',dir:'desc',type:'num'},
+  {keys:['work from home','remote','wfh','telework'],field:'wfh',label:'% Work from Home',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['transit','public transport','bus','train','subway'],field:'transit',label:'% Public Transit',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['internet','broadband','connected','online'],field:'internet',label:'% Broadband Internet',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['disab','handicap'],field:'disability',label:'% With Disability',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['insur','health coverage','covered'],field:'insured',label:'% Health Insured',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['vacant','empty','unoccupied'],field:'vacant',label:'% Vacant Housing',fmt:fPc,dir:'desc',type:'pct'},
+  {keys:['per capita'],field:'perCapita',label:'Per Capita Income',fmt:fD,dir:'desc',type:'dollar'},
+];
+
+function queryData(q,allTowns){
+  // Detect if asking about counties
+  const isCounty=q.includes('county')||q.includes('counties');
+  // Detect direction
+  const wantLow=q.includes('lowest')||q.includes('least')||q.includes('cheapest')||q.includes('youngest')||q.includes('smallest')||q.includes('fewest')||q.includes('shortest')||q.includes('poorest')||q.includes('bottom');
+  // Detect specific county filter
+  let filterCounty=null;
+  for(const c of C){
+    if(q.includes(c.toLowerCase())){filterCounty=c;break}
+  }
+
+  // Find best matching metric
+  let bestMetric=null;let bestScore=0;
+  for(const m of METRICS){
+    for(const k of m.keys){
+      if(q.includes(k)){
+        const score=k.length;
+        if(score>bestScore){bestScore=score;bestMetric=m}
+      }
+    }
+  }
+
+  if(!bestMetric){
+    // Default: try to guess from common words
+    if(q.includes('safe')||q.includes('crime'))return{intro:"Crime data isn't available in the Census ACS profiles. Try questions about income, education, housing, demographics, or employment.",rankings:[],note:null};
+    if(q.includes('school')||q.includes('district'))return{intro:"School data isn't in the Census profiles. For school-related data, check the NJDOE School District Compare tool.",rankings:[],note:null};
+    return{intro:"I can rank towns by: population, income, home value, rent, age, poverty, education, employment, homeownership, diversity, commute, work-from-home, internet access, and more. Try asking something like \"highest income towns\" or \"most educated towns in Bergen County.\"",rankings:[],note:null};
+  }
+
+  const dir=wantLow?'asc':'desc';
+  const field=bestMetric.field;
+
+  if(isCounty&&!filterCounty){
+    // Aggregate by county
+    const countyAgg={};
+    allTowns.forEach(t=>{
+      if(!t.county)return;
+      if(!countyAgg[t.county])countyAgg[t.county]={name:t.county+' County',totalPop:0,wSum:0,wN:0,sum:0,count:0};
+      const ca=countyAgg[t.county];
+      const val=field==='_diverse'?(t.white!=null?100-t.white:null):t[field];
+      ca.totalPop+=t.pop;
+      if(val!=null){
+        if(bestMetric.type==='count'){ca.sum+=val;ca.count++}
+        else{ca.wSum+=val*t.pop;ca.wN+=t.pop;ca.count++}
+      }
+    });
+    let counties=Object.values(countyAgg).filter(c=>c.count>0).map(c=>({
+      name:c.name,
+      value:bestMetric.type==='count'?c.sum:(c.wN>0?c.wSum/c.wN:null),
+      pop:c.totalPop
+    })).filter(c=>c.value!=null);
+
+    counties.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
+    const top=counties.slice(0,25);
+    return{
+      intro:`NJ counties ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first):`,
+      rankings:top.map((c,i)=>({rank:i+1,name:c.name,value:bestMetric.fmt(bestMetric.type==='count'?Math.round(c.value):c.value)})),
+      note:bestMetric.type!=='count'?'Values are population-weighted averages across loaded municipalities.':null
+    };
+  }
+
+  // Town-level ranking
+  let towns=filterCounty?allTowns.filter(t=>t.county===filterCounty):[...allTowns];
+  towns=towns.map(t=>{
+    const val=field==='_diverse'?(t.white!=null?+(100-t.white).toFixed(1):null):t[field];
+    return{name:t.shortName,county:t.county,value:val};
+  }).filter(t=>t.value!=null);
+
+  towns.sort((a,b)=>dir==='desc'?b.value-a.value:a.value-b.value);
+  const top=towns.slice(0,25);
+  const scope=filterCounty?filterCounty+' County':'New Jersey';
+  return{
+    intro:`Towns in ${scope} ranked by ${bestMetric.label} (${dir==='desc'?'highest':'lowest'} first):`,
+    rankings:top.map((t,i)=>({rank:i+1,name:t.name,value:bestMetric.fmt(t.value),detail:filterCounty?null:t.county+' Co.'})),
+    note:`Based on ${towns.length} municipalities with available data${Object.keys(cache).length<21?' (browse more counties to expand results).':'.'}`
+  };
+}
+
+function addMsg(text,type){
+  const d=document.createElement('div');
+  d.className='chat-msg '+type;
+  d.textContent=text;
+  chatBody.appendChild(d);
+  chatBody.scrollTop=chatBody.scrollHeight;
+}
+
+function renderResult(parsed){
+  const d=document.createElement('div');
+  d.className='chat-msg ai';
+  let html='';
+  if(parsed.intro)html+=`<div style="margin-bottom:8px">${parsed.intro}</div>`;
+  if(parsed.rankings&&parsed.rankings.length){
+    html+=parsed.rankings.map(r=>`<div class="rank-item"><span class="rank-num">${r.rank}.</span><span class="rank-name">${r.name}</span><span class="rank-val">${r.value||''}${r.detail?' · '+r.detail:''}</span></div>`).join('');
+  }
+  if(parsed.note)html+=`<div class="ai-note">${parsed.note}</div>`;
+  d.innerHTML=html||'No results found. Try a different question.';
+  chatBody.appendChild(d);
+  chatBody.scrollTop=chatBody.scrollHeight;
+}
+
+/* Auto-load all counties in background for chat */
+async function preloadForChat(){
+  for(const county of C){
+    const fips=BC[county]?.[0]?.fips;
+    if(fips&&!cache[fips]){
+      try{await fetchCounty(fips);await new Promise(r=>setTimeout(r,200))}catch{}
+    }
+  }
+}
+setTimeout(preloadForChat,2000);
+
+buildSB();buildMob();updMob();render();
 </script>
 </body>
 </html>
